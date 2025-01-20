@@ -1,0 +1,103 @@
+---
+interface Media {
+  alt: string;
+  url: string;
+}
+
+interface Author {
+  name: string;
+  avatar: Media;
+}
+
+interface Post {
+  id: string;
+  title: string;
+  featuredImage: Media;
+  author: Author;
+  publishedDate: string;
+  estimatedReadTime: number;
+}
+
+async function fetchPosts() {
+  try {
+    const response = await fetch('http://localhost:3000/api/posts', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    const data = await response.json();
+    
+    const posts = data.docs
+      .filter(post => post.status === 'published')
+      .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime())
+      .slice(0, 3); 
+    
+    return posts;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return [];
+  }
+}
+
+const posts = await fetchPosts();
+
+// Helper function to format date
+function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+---
+
+<section class="py-20 bg-gray-50">
+  <div class="max-w-[2000px] mx-auto px-44">
+    <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Latest News</h2>
+    
+    <div class="grid grid-cols-3 gap-8">
+      {posts.map((post) => (
+        <article class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+          <a href={`/blog/${post.id}`} class="block">
+            <div class="aspect-[16/9] overflow-hidden">
+              <img 
+                src={post.featuredImage.url} 
+                alt={post.featuredImage.alt}
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            
+            <div class="p-6">
+              {/* Author info */}
+              <div class="flex items-center mb-4">
+                <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                  <img 
+                    src={post.author.avatar?.url || '/assets/default-avatar.png'} 
+                    alt={`${post.author.name}'s avatar`}
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900">{post.author.name}</p>
+                  <div class="flex items-center text-sm text-gray-500">
+                    <time datetime={post.publishedDate}>
+                      {formatDate(post.publishedDate)}
+                    </time>
+                    <span class="mx-2">•</span>
+                    <span>{post.estimatedReadTime} min read</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Post title */}
+              <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2 hover:text-cyan-600 transition-colors">
+                {post.title}
+              </h3>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
