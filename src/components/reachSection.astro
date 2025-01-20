@@ -1,0 +1,63 @@
+---
+const stats = [
+  {
+    number: "47",
+    label: "Projects",
+    icon: "/assets/homepageAssets/projects.png"
+  },
+  {
+    number: "2,066,428",
+    label: "People reached",
+    icon: "/public/assets/homepageAssets/peopleReached.png"
+  },
+  {
+    number: "14",
+    label: "Countries",
+    icon: "/public/assets/homepageAssets/countries.png"
+  }
+];
+---
+
+<section class="py-20">
+  <div class="max-w-[2000px] mx-auto px-44">
+    <div class="max-w-4xl mx-auto text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">
+        For people in rural communities, there's a growing digital divide. We have a way to reach them.
+      </h2>
+      
+      <p class="text-gray-700 text-lg mb-8">
+        Amplio is on a mission to reach the world's most vulnerable communities through inclusive digital technology and knowledge sharing. Nearly 800 million people in the world can't read or write. Most of them are women and girls.
+      </p>
+
+      <p class="text-lg">
+        Our <a href="#" class="text-cyan-500 hover:text-cyan-600">Talking Book technology</a>, 
+        <a href="#" class="text-cyan-500 hover:text-cyan-600">services</a>, and 
+        <a href="#" class="text-cyan-500 hover:text-cyan-600">partnerships</a> help close the digital divide, share vital information, and unlock potential for people who are often left behind.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-8">
+      {stats.map(stat => (
+        <div class="flex flex-col items-center">
+          <div class="w-48 h-48 mb-6">
+            <img 
+              src={stat.icon} 
+              alt={stat.label} 
+              class="w-full h-full object-contain p-6 rounded-full overflow-hidden" 
+            />
+          </div>
+          <div class="text-center">
+            <p class="text-[#FF5843] text-5xl font-bold mb-2">{stat.number}</p>
+            <p class="text-gray-700">{stat.label}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-md hover:border-gray-400 transition-colors">
+        SEE OUR IMPACT
+      </a>
+    </div>
+  </div>
+</section>
