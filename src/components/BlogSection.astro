@@ -1,46 +1,104 @@
 ---
 interface Media {
+  id: string;
   alt: string;
   url: string;
+  filename: string;
+  mimeType: string;
+  filesize: number;
+  width: number;
+  height: number;
+}
+
+interface SocialLinks {
+  twitter?: string;
+  linkedin?: string;
+  github?: string;
 }
 
 interface Author {
+  id: string;
+  username: string;
   name: string;
-  avatar: Media;
+  profileImage: Media;
+  bio?: string;
+  socialLinks?: SocialLinks;
 }
 
-interface Post {
+interface ApiPost {
   id: string;
   title: string;
   featuredImage: Media;
   author: Author;
   publishedDate: string;
   estimatedReadTime: number;
+  status: 'draft' | 'published';
 }
 
-async function fetchPosts() {
+interface TransformedPost {
+  id: string;
+  title: string;
+  featuredImage: Media & { url: string };
+  author: Omit<Author, 'profileImage'> & {
+    profileImage?: Media & { url: string };
+  };
+  publishedDate: string;
+  estimatedReadTime: number;
+  status: 'draft' | 'published';
+}
+
+interface ApiResponse {
+  docs: ApiPost[];
+  totalDocs: number;
+  limit: number;
+  totalPages: number;
+  page: number;
+  pagingCounter: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
+  prevPage: number | null;
+  nextPage: number | null;
+}
+
+const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
+
+async function fetchPosts(): Promise<TransformedPost[]> {
   try {
-    const response = await fetch('http://localhost:3000/api/posts', {
+    const response = await fetch(`${PAYLOAD_URL}/api/posts?depth=2`, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
     
-    const data = await response.json();
+    const data: ApiResponse = await response.json();
     
-    const posts = data.docs
-      .filter(post => post.status === 'published')
+    const transformedPosts: TransformedPost[] = data.docs
+      .filter((post): post is ApiPost => post.status === 'published')
+      .map((post: ApiPost): TransformedPost => ({
+        ...post,
+        featuredImage: {
+          ...post.featuredImage,
+          url: `${PAYLOAD_URL}${post.featuredImage.url}`,
+        },
+        author: {
+          ...post.author,
+          profileImage: post.author.profileImage ? {
+            ...post.author.profileImage,
+            url: `${PAYLOAD_URL}${post.author.profileImage.url}`,
+          } : undefined,
+        },
+      }));
+
+    // Sort the posts
+    return transformedPosts
       .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime())
-      .slice(0, 3); 
+      .slice(0, 3);
     
-    return posts;
   } catch (error) {
     console.error('Error fetching posts:', error);
     return [];
   }
 }
-
-const posts = await fetchPosts();
 
 // Helper function to format date
 function formatDate(dateString: string): string {
@@ -50,37 +108,47 @@ function formatDate(dateString: string): string {
     year: 'numeric'
   });
 }
+
+const posts = await fetchPosts();
 ---
 
-<section class="py-20 bg-gray-50">
-  <div class="max-w-[2000px] mx-auto px-44">
-    <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Latest News</h2>
+<section class="py-24 bg-gray-50">
+  <div class="max-w-[1400px] mx-auto px-4 md:px-8">
+    <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center">Latest News</h2>
     
-    <div class="grid grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
       {posts.map((post) => (
-        <article class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+        <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
           <a href={`/blog/${post.id}`} class="block">
-            <div class="aspect-[16/9] overflow-hidden">
+            <div class="aspect-video overflow-hidden">
               <img 
                 src={post.featuredImage.url} 
                 alt={post.featuredImage.alt}
+                width={post.featuredImage.width}
+                height={post.featuredImage.height}
                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
             
-            <div class="p-6">
+            <div class="p-8">
               {/* Author info */}
-              <div class="flex items-center mb-4">
-                <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+              <div class="flex items-center mb-6">
+                <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-gray-100">
                   <img 
-                    src={post.author.avatar?.url || '/assets/default-avatar.png'} 
-                    alt={`${post.author.name}'s avatar`}
+                    src={post.author.profileImage?.url || '/assets/default-avatar.png'} 
+                    alt={`${post.author.name}'s profile picture`}
+                    width="56"
+                    height="56"
                     class="w-full h-full object-cover"
                   />
                 </div>
                 <div>
-                  <p class="font-medium text-gray-900">{post.author.name}</p>
-                  <div class="flex items-center text-sm text-gray-500">
+                  <div class="flex items-center gap-2">
+                    <p class="font-medium text-gray-900">{post.author.name}</p>
+                    <span class="text-gray-400">•</span>
+                    <p class="text-gray-500">@{post.author.username}</p>
+                  </div>
+                  <div class="flex items-center text-sm text-gray-500 mt-1">
                     <time datetime={post.publishedDate}>
                       {formatDate(post.publishedDate)}
                     </time>
@@ -91,7 +159,7 @@ function formatDate(dateString: string): string {
               </div>
               
               {/* Post title */}
-              <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2 hover:text-cyan-600 transition-colors">
+              <h3 class="text-2xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-cyan-600 transition-colors">
                 {post.title}
               </h3>
             </div>
