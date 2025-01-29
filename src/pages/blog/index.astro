@@ -1,7 +1,6 @@
 ---
-import { Icon } from '@iconify/vue';
-import Layout from '../layouts/Layout.astro';
-import type { ApiResponse, Post, Category, CategoryResponse } from '../types/payload';
+import Layout from '../../layouts/Layout.astro';
+import type { ApiResponse, Post, Category, CategoryResponse } from '../../types/payload';
 
 async function fetchCategories(): Promise<Category[]> {
   try {

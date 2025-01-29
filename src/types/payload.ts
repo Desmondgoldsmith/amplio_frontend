@@ -74,6 +74,22 @@ export interface Post {
   };
 }
 
+export interface TextNode {
+  detail: number;
+  format: number;
+  mode: string;
+  style: string;
+  text: string;
+  type: string;
+  version: number;
+}
+
+export interface ContentNode {
+  children: Array<{
+    children: Array<TextNode>;
+  }>;
+}
+
 export interface ApiResponse {
   docs: Post[];
   totalDocs: number;
