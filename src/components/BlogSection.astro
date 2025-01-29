@@ -89,7 +89,6 @@ async function fetchPosts(): Promise<TransformedPost[]> {
         },
       }));
 
-    // Sort the posts
     return transformedPosts
       .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime())
       .slice(0, 3);
@@ -100,7 +99,6 @@ async function fetchPosts(): Promise<TransformedPost[]> {
   }
 }
 
-// Helper fn to format date
 function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString('en-US', {
     month: 'short',
@@ -112,9 +110,9 @@ function formatDate(dateString: string): string {
 const posts = await fetchPosts();
 ---
 
-<section class="py-24 bg-gray-50">
-  <div class="max-w-[1400px] mx-auto px-4 md:px-8">
-    <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center">Latest News</h2>
+<section class="bg-gray-50 py-20">
+  <div class="max-w-[2000px] mx-auto px-44">
+    <h2 class="text-4xl font-bold mb-16 text-center">Latest News</h2>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
       {posts.map((post) => (
@@ -131,22 +129,19 @@ const posts = await fetchPosts();
             </div>
             
             <div class="p-8">
-              {/* Author info */}
               <div class="flex items-center mb-6">
                 <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-gray-100">
                   <img 
-                    src={post.author.profileImage?.url || '/assets/default-avatar.png'} 
+                    src={post.author.profileImage?.url} 
                     alt={`${post.author.name}'s profile picture`}
-                    width="56"
-                    height="56"
+                    width="40"
+                    height="40"
                     class="w-full h-full object-cover"
                   />
                 </div>
                 <div>
                   <div class="flex items-center gap-2">
-                    <p class="font-medium text-gray-900">{post.author.name}</p>
-                    <span class="text-gray-400">•</span>
-                    <p class="text-gray-500">@{post.author.username}</p>
+                    <p class="font-medium text-gray-900">{post.author.name}</p>                   
                   </div>
                   <div class="flex items-center text-sm text-gray-500 mt-1">
                     <time datetime={post.publishedDate}>
@@ -158,8 +153,7 @@ const posts = await fetchPosts();
                 </div>
               </div>
               
-              {/* Post title */}
-              <h3 class="text-2xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-cyan-600 transition-colors">
+              <h3 class="font-bold text-gray-900 mb-3 line-clamp-3 hover:text-cyan-600 transition-colors">
                 {post.title}
               </h3>
             </div>
