@@ -9,7 +9,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@alpinejs/collapse": "^3.14.8",
+    "@astrojs/alpinejs": "^0.4.3",
     "@astrojs/tailwind": "^5.1.4",
+    "@iconify/vue": "^4.3.0",
     "astro": "^5.1.7",
     "tailwindcss": "^3.4.17"
   }

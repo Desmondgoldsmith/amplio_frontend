@@ -1,0 +1,285 @@
+---
+import { Icon } from '@iconify/vue';
+import Layout from '../layouts/Layout.astro';
+import type { ApiResponse, Post, Category, CategoryResponse } from '../types/payload';
+
+async function fetchCategories(): Promise<Category[]> {
+  try {
+    const response = await fetch('http://localhost:3000/api/categories');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: CategoryResponse = await response.json();
+    return data.docs;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+}
+
+async function fetchPosts(category?: string, search?: string): Promise<Post[]> {
+  try {
+    const params = new URLSearchParams();
+    params.append('depth', '2');
+    
+    // Add category and search filters 
+    if (category) params.append('where[category][equals]', category);
+    if (search) params.append('where[title][contains]', search);
+    
+    const response = await fetch(`http://localhost:3000/api/posts?${params.toString()}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data: ApiResponse = await response.json();
+    const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
+    
+    // Process and sort the posts
+    return data.docs
+      .filter(post => post.status === 'published')
+      .map(post => ({
+        ...post,
+        featuredImage: {
+          ...post.featuredImage,
+          url: `${PAYLOAD_URL}${post.featuredImage.url}`,
+        },
+        author: {
+          ...post.author,
+          profileImage: post.author.profileImage ? {
+            ...post.author.profileImage,
+            url: `${PAYLOAD_URL}${post.author.profileImage.url}`,
+          } : undefined,
+        },
+      }))
+      .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime());
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return [];
+  }
+}
+
+// Utility function to format dates consistently
+function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+// Get current URL parameters
+const searchParams = new URL(Astro.request.url).searchParams;
+const searchQuery = searchParams.get('search') || '';
+const currentCategory = searchParams.get('category') || '';
+
+// Fetch initial data
+const categories = await fetchCategories();
+const posts = await fetchPosts(currentCategory, searchQuery);
+
+// Split categories into main and more
+const mainCategories = categories.slice(0, 7);
+const moreCategories = categories.slice(7);
+---
+
+<Layout title="Amplio Blog">
+  <main class="max-w-[2000px] mx-auto lg:mt-20 border border-t px-4 md:px-8 lg:px-44 py-12">
+    <h1 class="text-4xl font-bold text-center mb-12">Amplio Blog</h1>
+    
+    <!-- Navigation and Search Bar -->
+    <div class="relative flex flex-wrap items-center justify-between gap-4 mb-12">
+      <!-- Categories Navigation -->
+      <div class="flex-1 flex flex-wrap items-center gap-6">
+        <!-- All Posts link -->
+        <a
+          href="/blog"
+          class={`text-gray-600 hover:text-cyan-600 transition-colors ${!currentCategory ? 'text-cyan-600 font-medium' : ''}`}
+        >
+          All Posts
+        </a>
+
+        <!-- Main Categories -->
+        {mainCategories.map((category) => (
+          <a
+            href={`/blog?category=${category.slug}`}
+            class={`text-gray-600 hover:text-cyan-600 transition-colors ${
+              currentCategory === category.slug ? 'text-cyan-600 font-medium' : ''
+            }`}
+          >
+            {category.name}
+          </a>
+        ))}
+        
+        <!-- More Categories Dropdown -->
+        {moreCategories.length > 0 && (
+          <div class="relative group">
+            <button class="flex items-center gap-1 text-gray-600 hover:text-cyan-600 transition-colors">
+              More
+              <svg 
+                class="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            
+            <div class="hidden group-hover:block absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
+              {moreCategories.map((category) => (
+                <a
+                  href={`/blog?category=${category.slug}`}
+                  class={`block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-cyan-600 transition-colors ${
+                    currentCategory === category.slug ? 'text-cyan-600 bg-gray-50' : ''
+                  }`}
+                >
+                  {category.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+      
+      <!-- Search Feature -->
+      <div class="relative" x-data="{ isSearching: false }">
+        <button
+          @click="isSearching = !isSearching"
+          class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
+          :class="{ 'hidden': isSearching }"
+        >
+          <svg 
+            class="w-6 h-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </button>
+        
+        <form
+          x-show="isSearching"
+          class="absolute right-0 top-0 w-64 flex items-center bg-white rounded-lg shadow-sm"
+          @submit.prevent="handleSearch"
+        >
+          <input
+            type="text"
+            name="search"
+            placeholder="Search posts..."
+            value={searchQuery}
+            class="w-full px-4 py-2 rounded-l-lg border-0 focus:ring-2 focus:ring-cyan-500"
+          />
+          <button
+            type="button"
+            @click="isSearching = false"
+            class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
+          >
+            <svg 
+              class="w-6 h-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Blog Posts Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      {posts.map((post) => (
+        <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+          <a href={`/blog/${post.id}`} class="block">
+            <div class="aspect-video overflow-hidden">
+              <img 
+                src={post.featuredImage.url} 
+                alt={post.featuredImage.alt}
+                width={post.featuredImage.width}
+                height={post.featuredImage.height}
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            
+            <div class="p-8">
+              <div class="flex items-center mb-6">
+                <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-gray-100">
+                  {post.author.profileImage && (
+                    <img 
+                      src={post.author.profileImage.url} 
+                      alt={`${post.author.name}'s profile picture`}
+                      width="40"
+                      height="40"
+                      class="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <p class="font-medium text-gray-900">{post.author.name}</p>
+                  </div>
+                  <div class="flex items-center text-sm text-gray-500 mt-1">
+                    <time datetime={post.publishedDate}>
+                      {formatDate(post.publishedDate)}
+                    </time>
+                    <span class="mx-2">•</span>
+                    <span>{post.estimatedReadTime} min read</span>
+                  </div>
+                </div>
+              </div>
+              
+              <h3 class="font-bold text-gray-900 mb-3 line-clamp-3 hover:text-cyan-600 transition-colors">
+                {post.title}
+              </h3>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import type { Alpine as AlpineType } from 'alpinejs';
+  
+  declare global {
+    interface Window {
+      Alpine: AlpineType;
+    }
+  }
+  
+  // Handle search functionality
+  document.addEventListener('alpine:init', () => {
+    window.Alpine.data('search', () => ({
+      isSearching: false,
+      
+      handleSearch(event: SubmitEvent) {
+        const form = event.target as HTMLFormElement;
+        const searchInput = form.querySelector('input[name="search"]') as HTMLInputElement;
+        
+        if (searchInput.value.trim()) {
+          const searchParams = new URLSearchParams(window.location.search);
+          searchParams.set('search', searchInput.value.trim());
+          window.location.href = `?${searchParams.toString()}`;
+        }
+      }
+    }));
+  });
+</script>
