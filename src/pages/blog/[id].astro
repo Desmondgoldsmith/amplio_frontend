@@ -6,13 +6,87 @@ import {
   PAYLOAD_URL, 
   transformPost, 
   formatDate, 
-  fetchCategories,
-  renderContentNode 
+  fetchCategories
 } from '../../utils/blog';
 import type { 
   Post, 
-  ApiResponse 
+  ApiResponse,
+  ContentNode 
 } from '../../types/payload';
+
+// Enhanced renderContentNode function to handle different node types
+function renderContentNode(node: any): string {
+  // If the node is a text node, return its content
+  if (node.type === 'text') {
+    let textContent = node.text;
+    
+    // Apply text formatting if present
+    if (node.bold) {
+      textContent = `<strong>${textContent}</strong>`;
+    }
+    if (node.italic) {
+      textContent = `<em>${textContent}</em>`;
+    }
+    if (node.underline) {
+      textContent = `<u>${textContent}</u>`;
+    }
+    if (node.code) {
+      textContent = `<code>${textContent}</code>`;
+    }
+    
+    return textContent;
+  }
+
+  // Handle heading nodes
+  if (node.type === 'heading') {
+    const headingContent = node.children.map(child => renderContentNode(child)).join('');
+    // Use the tag property if available, otherwise default to h3
+    const tag = node.tag || 'h3';
+    return `<${tag} class="text-2xl font-bold my-4">${headingContent}</${tag}>`;
+  }
+
+  // Handle paragraph nodes
+  if (node.type === 'paragraph') {
+    const paragraphContent = node.children.map(child => renderContentNode(child)).join('');
+    return `<p class="mb-4">${paragraphContent}</p>`;
+  }
+
+  // Handle list nodes
+  if (node.type === 'list') {
+    const listItems = node.children.map(item => {
+      const itemContent = item.children.map(child => renderContentNode(child)).join('');
+      return `<li>${itemContent}</li>`;
+    }).join('');
+    const listType = node.listType === 'numbered' ? 'ol' : 'ul';
+    const listClass = 'my-4 ml-6 ' + (listType === 'ul' ? 'list-disc' : 'list-decimal');
+    return `<${listType} class="${listClass}">${listItems}</${listType}>`;
+  }
+
+  // Handle link nodes
+  if (node.type === 'link') {
+    const linkContent = node.children.map(child => renderContentNode(child)).join('');
+    return `<a href="${node.url}" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">${linkContent}</a>`;
+  }
+
+  // Handle quote nodes
+  if (node.type === 'quote') {
+    const quoteContent = node.children.map(child => renderContentNode(child)).join('');
+    return `<blockquote class="border-l-4 border-gray-300 pl-4 my-4 italic">${quoteContent}</blockquote>`;
+  }
+
+  // Handle image nodes
+  if (node.type === 'image') {
+    return `<img src="${node.url}" alt="${node.alt || ''}" class="my-4 rounded-lg max-w-full" />`;
+  }
+
+  // If node has children but no specific type handling, process children
+  if (node.children) {
+    return node.children.map(child => renderContentNode(child)).join('');
+  }
+
+  // Default case: return empty string for unhandled node types
+  return '';
+}
 
 // Get static paths for all published posts
 export async function getStaticPaths() {
@@ -39,7 +113,7 @@ const categories = await fetchCategories();
 const mainCategories = categories.slice(0, 3);
 const moreCategories = categories.slice(3);
 
-// Process content
+// Process content with enhanced rendering
 const contentHtml = post.content.root.children
   .map(node => renderContentNode(node))
   .join('');
@@ -80,10 +154,10 @@ const contentHtml = post.content.root.children
             placeholder="Search..."
             class="pl-10 pr-4 py-2 border border-gray-300 rounded-full w-64"
           />
-          <Icon
-            name="heroicons:magnifying-glass"
+          <Icon 
+            icon="heroicons:magnifying-glass"
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            width="20"
+            width={20}
           />
         </div>
         <a href="/login" class="text-gray-700 hover:text-gray-900">Log in / Sign up</a>
