@@ -1,5 +1,3 @@
-// src/utils/blog.ts
-
 import type {
   Post,
   Category,
@@ -7,11 +5,9 @@ import type {
   ApiResponse,
 } from "../types/payload";
 
-// Define API URL - make sure this environment variable is set in your .env file
 export const PAYLOAD_URL =
   import.meta.env.PUBLIC_PAYLOAD_URL || "http://localhost:3000";
 
-// Transform post data to include full URLs
 export function transformPost(post: Post): Post {
   return {
     ...post,
@@ -35,7 +31,6 @@ export function transformPost(post: Post): Post {
   };
 }
 
-// Format date helper
 export function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString("en-US", {
     month: "short",
@@ -44,7 +39,6 @@ export function formatDate(dateString: string): string {
   });
 }
 
-// Fetch categories helper
 export async function fetchCategories(): Promise<Category[]> {
   try {
     const response = await fetch(`${PAYLOAD_URL}/api/categories`);
@@ -57,35 +51,87 @@ export async function fetchCategories(): Promise<Category[]> {
   }
 }
 
-// Render content based on node type
 export function renderContentNode(node: any): string {
   if (!node) return "";
 
-  switch (node.type) {
-    case "paragraph":
-      return `<p class="mb-6 text-gray-700 leading-relaxed">${node.children
-        ?.map((child) => child.text)
-        .join("")}</p>`;
+  const nodeTypes = {
+    text: () => {
+      let content = node.text;
+      if (node.bold) content = `<strong>${content}</strong>`;
+      if (node.italic) content = `<em>${content}</em>`;
+      if (node.underline) content = `<u>${content}</u>`;
+      if (node.code) content = `<code>${content}</code>`;
+      return content;
+    },
 
-    case "upload":
-      if (node.value) {
-        return `<div class="my-8">
-          <img
-            src="${PAYLOAD_URL}${node.value.url}"
-            alt="${node.value.alt || ""}"
-            class="w-full h-auto rounded-lg"
-            style="max-height: 500px; object-fit: cover;"
-          />
-        </div>`;
-      }
-      return "";
+    heading: () => {
+      const content = node.children
+        .map((child: any) => renderContentNode(child))
+        .join("");
+      const tag = node.tag || "h3";
+      return `<${tag} class="text-3xl font-bold my-6">${content}</${tag}>`;
+    },
 
-    case "blockquote":
-      return `<blockquote class="border-l-4 border-gray-300 pl-4 my-6 italic">
-        ${node.children?.map((child) => child.text).join("")}
-      </blockquote>`;
+    paragraph: () => {
+      const content = node.children
+        .map((child: any) => renderContentNode(child))
+        .join("");
+      return `<p class="mb-6 text-gray-700 leading-relaxed">${content}</p>`;
+    },
 
-    default:
-      return "";
+    list: () => {
+      const items = node.children
+        .map((item: any) => {
+          const content = item.children
+            .map((child: any) => renderContentNode(child))
+            .join("");
+          return `<li>${content}</li>`;
+        })
+        .join("");
+      const type = node.listType === "numbered" ? "ol" : "ul";
+      const className = type === "ul" ? "list-disc" : "list-decimal";
+      return `<${type} class="my-6 ml-6 ${className}">${items}</${type}>`;
+    },
+
+    link: () => {
+      const content = node.children
+        .map((child: any) => renderContentNode(child))
+        .join("");
+      return `<a href="${node.url}" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">${content}</a>`;
+    },
+
+    upload: () => {
+      if (!node.value) return "";
+      return `
+        <div class="my-8">
+          <a href="${PAYLOAD_URL}${
+        node.value.url
+      }" target="_blank" rel="noopener noreferrer">
+            <img
+              src="${PAYLOAD_URL}${node.value.url}"
+              alt="${node.value.alt || ""}"
+              class="w-full h-auto rounded-lg cursor-pointer transition-opacity hover:opacity-90"
+              style="max-height: 400px; object-fit: cover;"
+            />
+          </a>
+        </div>
+      `;
+    },
+
+    quote: () => {
+      const content = node.children
+        .map((child: any) => renderContentNode(child))
+        .join("");
+      return `<blockquote class="border-l-4 border-blue-700 pl-4 my-6 italic">${content}</blockquote>`;
+    },
+  };
+
+  const renderer = nodeTypes[node.type as keyof typeof nodeTypes];
+  if (renderer) return renderer();
+
+  if (node.children) {
+    return node.children.map((child: any) => renderContentNode(child)).join("");
   }
+
+  return "";
 }

@@ -6,89 +6,11 @@ import {
   PAYLOAD_URL, 
   transformPost, 
   formatDate, 
-  fetchCategories
+  fetchCategories,
+  renderContentNode 
 } from '../../utils/blog';
-import type { 
-  Post, 
-  ApiResponse,
-  ContentNode 
-} from '../../types/payload';
+import type { Post, ApiResponse } from '../../types/payload';
 
-// Enhanced renderContentNode function to handle different node types
-function renderContentNode(node: any): string {
-  // If the node is a text node, return its content
-  if (node.type === 'text') {
-    let textContent = node.text;
-    
-    // Apply text formatting if present
-    if (node.bold) {
-      textContent = `<strong>${textContent}</strong>`;
-    }
-    if (node.italic) {
-      textContent = `<em>${textContent}</em>`;
-    }
-    if (node.underline) {
-      textContent = `<u>${textContent}</u>`;
-    }
-    if (node.code) {
-      textContent = `<code>${textContent}</code>`;
-    }
-    
-    return textContent;
-  }
-
-  // Handle heading nodes
-  if (node.type === 'heading') {
-    const headingContent = node.children.map(child => renderContentNode(child)).join('');
-    // Use the tag property if available, otherwise default to h3
-    const tag = node.tag || 'h3';
-    return `<${tag} class="text-2xl font-bold my-4">${headingContent}</${tag}>`;
-  }
-
-  // Handle paragraph nodes
-  if (node.type === 'paragraph') {
-    const paragraphContent = node.children.map(child => renderContentNode(child)).join('');
-    return `<p class="mb-4">${paragraphContent}</p>`;
-  }
-
-  // Handle list nodes
-  if (node.type === 'list') {
-    const listItems = node.children.map(item => {
-      const itemContent = item.children.map(child => renderContentNode(child)).join('');
-      return `<li>${itemContent}</li>`;
-    }).join('');
-    const listType = node.listType === 'numbered' ? 'ol' : 'ul';
-    const listClass = 'my-4 ml-6 ' + (listType === 'ul' ? 'list-disc' : 'list-decimal');
-    return `<${listType} class="${listClass}">${listItems}</${listType}>`;
-  }
-
-  // Handle link nodes
-  if (node.type === 'link') {
-    const linkContent = node.children.map(child => renderContentNode(child)).join('');
-    return `<a href="${node.url}" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">${linkContent}</a>`;
-  }
-
-  // Handle quote nodes
-  if (node.type === 'quote') {
-    const quoteContent = node.children.map(child => renderContentNode(child)).join('');
-    return `<blockquote class="border-l-4 border-gray-300 pl-4 my-4 italic">${quoteContent}</blockquote>`;
-  }
-
-  // Handle image nodes
-  if (node.type === 'image') {
-    return `<img src="${node.url}" alt="${node.alt || ''}" class="my-4 rounded-lg max-w-full" />`;
-  }
-
-  // If node has children but no specific type handling, process children
-  if (node.children) {
-    return node.children.map(child => renderContentNode(child)).join('');
-  }
-
-  // Default case: return empty string for unhandled node types
-  return '';
-}
-
-// Get static paths for all published posts
 export async function getStaticPaths() {
   try {
     const response = await fetch(`${PAYLOAD_URL}/api/posts?where[status][equals]=published`);
@@ -105,15 +27,15 @@ export async function getStaticPaths() {
   }
 }
 
-// Get the post from props and fetch categories
+// Get current URL parameters and fetch data
 const { post } = Astro.props;
 const categories = await fetchCategories();
 
-// Split categories for navigation
 const mainCategories = categories.slice(0, 3);
 const moreCategories = categories.slice(3);
+const searchParams = new URL(Astro.request.url).searchParams;
+const searchQuery = searchParams.get('search') || '';
 
-// Process content with enhanced rendering
 const contentHtml = post.content.root.children
   .map(node => renderContentNode(node))
   .join('');
@@ -121,72 +43,126 @@ const contentHtml = post.content.root.children
 
 <Layout title={post.title}>
   <!-- Navigation Bar -->
-  <nav class="border-b border-gray-200 py-4">
-    <div class="max-w-[2000px] mx-auto px-44 flex items-center justify-between">
-      <div class="flex items-center space-x-8">
-        <a href="/blog" class="text-gray-700 hover:text-gray-900">All Posts</a>
-        {mainCategories.map(category => (
-          <a href={`/category/${category.slug}`} class="text-gray-700 hover:text-gray-900">
-            {category.name}
+  <nav class="border-t-2 border-gray-200 pt-[25px]">
+    <div class="max-w-[2000px] mx-auto lg:mt-20 md:px-8 lg:px-52 py-4">
+      <div class="flex items-center justify-between">
+        <!-- Categories -->
+        <div class="flex items-center gap-6">
+          <a 
+            href="/blog" 
+            class="text-gray-600 hover:text-cyan-600 transition-colors"
+          >
+            All Posts
           </a>
-        ))}
-        {moreCategories.length > 0 && (
-          <div class="relative group">
-            <button class="text-gray-700 hover:text-gray-900">More</button>
-            <div class="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-10">
-              {moreCategories.map(category => (
-                <a
-                  href={`/category/${category.slug}`}
-                  class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+          
+          {mainCategories.map((category) => (
+            <a
+              href={`/blog?category=${category.slug}`}
+              class="text-gray-600 hover:text-cyan-600 transition-colors"
+            >
+              {category.name}
+            </a>
+          ))}
+
+          {moreCategories.length > 0 && (
+            <div class="relative group">
+              <button class="flex items-center gap-1 text-gray-600 hover:text-cyan-600 transition-colors">
+                More
+                <svg 
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
                 >
-                  {category.name}
-                </a>
-              ))}
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+              
+              <div class="hidden group-hover:block absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
+                {moreCategories.map((category) => (
+                  <a
+                    href={`/blog?category=${category.slug}`}
+                    class="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-cyan-600 transition-colors"
+                  >
+                    {category.name}
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-      
-      <div class="flex items-center space-x-6">
-        <div class="relative">
-          <input
-            type="search"
-            placeholder="Search..."
-            class="pl-10 pr-4 py-2 border border-gray-300 rounded-full w-64"
-          />
-          <Icon 
-            icon="heroicons:magnifying-glass"
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            width={20}
-          />
+          )}
         </div>
-        <a href="/login" class="text-gray-700 hover:text-gray-900">Log in / Sign up</a>
+
+        <!-- Search and Login -->
+        <div class="flex items-center gap-6">
+          <div class="relative" x-data="{ isSearching: false }">
+            <button
+              @click="isSearching = !isSearching"
+              class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
+              :class="{ 'hidden': isSearching }"
+            >
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+            
+            <form
+              x-show="isSearching"
+              class="absolute right-0 top-0 w-64 flex items-center bg-white rounded-lg shadow-sm"
+              @submit.prevent="handleSearch"
+            >
+              <input
+                type="text"
+                name="search"
+                placeholder="Search posts..."
+                value={searchQuery}
+                class="w-full px-4 py-2 rounded-l-lg border-0 focus:ring-2 focus:ring-cyan-500"
+              />
+              <button
+                type="button"
+                @click="isSearching = false"
+                class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
+              >
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </form>
+          </div>
+          
+          <div 
+            class="border border-gray-300 p-2 text-blue-600 hover:text-blue-700 transition-colors"
+          >
+            <a href="/login" >Log in </a>/ <a href="/signup">Sign up</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
 
   <!-- Main Content -->
-  <main class="max-w-[2000px] mx-auto px-44 py-8">
-    <article class="bg-white border border-gray-200 rounded-lg p-8">
-      <!-- Author Info and Share Button -->
-      <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center">
+  <main class="max-w-[2000px] mx-auto px-4 md:px-8 lg:px-52 py-12">
+    <article class="bg-white border border-gray-200 rounded-lg p-3 lg:p-[80px]">
+      <!-- Author Info and Actions -->
+      <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-4">
           {post.author?.profileImage && (
             <img
               src={post.author.profileImage.url}
               alt={post.author.name}
-              class="w-12 h-12 rounded-full mr-4 object-cover border-2 border-gray-100"
+              class="w-12 h-12 rounded-full object-cover"
             />
           )}
-          <div>
-            <p class="font-medium text-gray-900">{post.author?.name}</p>
-            <div class="flex items-center text-sm text-gray-500">
-              <time datetime={post.publishedDate}>
-                {formatDate(post.publishedDate)}
-              </time>
-              <span class="mx-2">•</span>
-              <span>{post.estimatedReadTime} min read</span>
-            </div>
+          <div class="flex items-center gap-2 text-sm text-gray-500">
+            <span class="font-medium text-gray-900">{post.author?.name}</span>
+            <span>•</span>
+            <time datetime={post.publishedDate}>
+              {formatDate(post.publishedDate)}
+            </time>
+            <span>•</span>
+            <span>{post.estimatedReadTime} min read</span>
           </div>
         </div>
         
@@ -194,8 +170,8 @@ const contentHtml = post.content.root.children
           <button class="p-2 hover:bg-gray-100 rounded-full">
             <MoreVertical className="w-5 h-5 text-gray-500" />
           </button>
-          <div class="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-md hidden group-hover:block z-10">
-            <button class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center">
+          <div class="absolute left-0 mt-1 w-32 bg-white shadow-lg rounded-md hidden group-hover:block z-10">
+            <button class="w-full px-4 py-1 text-right text-gray-700 hover:bg-gray-100 flex items-center">
               <Share2 className="w-4 h-4 mr-2" />
               Share
             </button>
@@ -204,7 +180,7 @@ const contentHtml = post.content.root.children
       </div>
 
       <!-- Title -->
-      <h1 class="text-3xl font-bold text-gray-900 mb-8">{post.title}</h1>
+      <h1 class="text-5xl font-semibold text-gray-900 px-5 mb-8">{post.title}</h1>
 
       <!-- Dynamic Content -->
       <div class="prose max-w-none">
