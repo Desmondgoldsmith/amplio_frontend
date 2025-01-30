@@ -21,9 +21,13 @@ async function fetchPosts(category?: string, search?: string): Promise<Post[]> {
     const params = new URLSearchParams();
     params.append('depth', '2');
     
-    // Add category and search filters 
+    // Add category and search filters with improved search capabilities
     if (category) params.append('where[category][equals]', category);
-    if (search) params.append('where[title][contains]', search);
+    if (search) {
+      // Search in both title and content
+      params.append('where[or][0][title][contains]', search);
+      params.append('where[or][1][content][contains]', search);
+    }
     
     const response = await fetch(`http://localhost:3000/api/posts?${params.toString()}`, {
       headers: {
@@ -62,7 +66,6 @@ async function fetchPosts(category?: string, search?: string): Promise<Post[]> {
   }
 }
 
-// Utility function to format dates consistently
 function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString('en-US', {
     month: 'short',
@@ -83,6 +86,20 @@ const posts = await fetchPosts(currentCategory, searchQuery);
 // Split categories into main and more
 const mainCategories = categories.slice(0, 7);
 const moreCategories = categories.slice(7);
+
+// Create search context message
+const getSearchContext = () => {
+  if (searchQuery && currentCategory) {
+    return `${posts.length} posts found in "${categories.find(c => c.slug === currentCategory)?.name}" for "${searchQuery}"`;
+  } else if (searchQuery) {
+    return `${posts.length} posts found for "${searchQuery}"`;
+  } else if (currentCategory) {
+    return `${posts.length} posts in "${categories.find(c => c.slug === currentCategory)?.name}"`;
+  }
+  return '';
+};
+
+const searchContext = getSearchContext();
 ---
 
 <Layout title="Amplio Blog">
@@ -93,7 +110,6 @@ const moreCategories = categories.slice(7);
     <div class="relative flex flex-wrap items-center justify-between gap-4 mb-12">
       <!-- Categories Navigation -->
       <div class="flex-1 flex flex-wrap items-center gap-6">
-        <!-- All Posts link -->
         <a
           href="/blog"
           class={`text-gray-600 hover:text-cyan-600 transition-colors ${!currentCategory ? 'text-cyan-600 font-medium' : ''}`}
@@ -101,10 +117,9 @@ const moreCategories = categories.slice(7);
           All Posts
         </a>
 
-        <!-- Main Categories -->
         {mainCategories.map((category) => (
           <a
-            href={`/blog?category=${category.slug}`}
+            href={`/blog?category=${category.slug}${searchQuery ? `&search=${searchQuery}` : ''}`}
             class={`text-gray-600 hover:text-cyan-600 transition-colors ${
               currentCategory === category.slug ? 'text-cyan-600 font-medium' : ''
             }`}
@@ -113,7 +128,6 @@ const moreCategories = categories.slice(7);
           </a>
         ))}
         
-        <!-- More Categories Dropdown -->
         {moreCategories.length > 0 && (
           <div class="relative group">
             <button class="flex items-center gap-1 text-gray-600 hover:text-cyan-600 transition-colors">
@@ -134,7 +148,7 @@ const moreCategories = categories.slice(7);
             <div class="hidden group-hover:block absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
               {moreCategories.map((category) => (
                 <a
-                  href={`/blog?category=${category.slug}`}
+                  href={`/blog?category=${category.slug}${searchQuery ? `&search=${searchQuery}` : ''}`}
                   class={`block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-cyan-600 transition-colors ${
                     currentCategory === category.slug ? 'text-cyan-600 bg-gray-50' : ''
                   }`}
@@ -201,57 +215,95 @@ const moreCategories = categories.slice(7);
         </form>
       </div>
     </div>
+
+    <!-- Search Context -->
+    {searchContext && (
+      <div class="mb-8 text-gray-600">
+        {searchContext}
+      </div>
+    )}
     
-    <!-- Blog Posts Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-      {posts.map((post) => (
-        <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-          <a href={`/blog/${post.id}`} class="block">
-            <div class="aspect-video overflow-hidden">
-              <img 
-                src={post.featuredImage.url} 
-                alt={post.featuredImage.alt}
-                width={post.featuredImage.width}
-                height={post.featuredImage.height}
-                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-            
-            <div class="p-8">
-              <div class="flex items-center mb-6">
-                <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-gray-100">
-                  {post.author.profileImage && (
-                    <img 
-                      src={post.author.profileImage.url} 
-                      alt={`${post.author.name}'s profile picture`}
-                      width="40"
-                      height="40"
-                      class="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <div>
-                  <div class="flex items-center gap-2">
-                    <p class="font-medium text-gray-900">{post.author.name}</p>
-                  </div>
-                  <div class="flex items-center text-sm text-gray-500 mt-1">
-                    <time datetime={post.publishedDate}>
-                      {formatDate(post.publishedDate)}
-                    </time>
-                    <span class="mx-2">•</span>
-                    <span>{post.estimatedReadTime} min read</span>
-                  </div>
-                </div>
+    <!-- Blog Posts Grid or No Results Message -->
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {posts.map((post) => (
+          <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+            <a href={`/blog/${post.id}`} class="block">
+              <div class="aspect-video overflow-hidden">
+                <img 
+                  src={post.featuredImage.url} 
+                  alt={post.featuredImage.alt}
+                  width={post.featuredImage.width}
+                  height={post.featuredImage.height}
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
               </div>
               
-              <h3 class="font-bold text-gray-900 mb-3 line-clamp-3 hover:text-cyan-600 transition-colors">
-                {post.title}
-              </h3>
-            </div>
-          </a>
-        </article>
-      ))}
-    </div>
+              <div class="p-8">
+                <div class="flex items-center mb-6">
+                  <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-gray-100">
+                    {post.author.profileImage && (
+                      <img 
+                        src={post.author.profileImage.url} 
+                        alt={`${post.author.name}'s profile picture`}
+                        width="40"
+                        height="40"
+                        class="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <p class="font-medium text-gray-900">{post.author.name}</p>
+                    </div>
+                    <div class="flex items-center text-sm text-gray-500 mt-1">
+                      <time datetime={post.publishedDate}>
+                        {formatDate(post.publishedDate)}
+                      </time>
+                      <span class="mx-2">•</span>
+                      <span>{post.estimatedReadTime} min read</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <h3 class="font-bold text-gray-900 mb-3 line-clamp-3 hover:text-cyan-600 transition-colors">
+                  {post.title}
+                </h3>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-16">
+        <div class="mb-4">
+          <svg 
+            class="w-16 h-16 mx-auto text-gray-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">No posts found</h2>
+        <p class="text-gray-600 mb-6">
+          {searchQuery 
+            ? `We couldn't find any posts matching "${searchQuery}"${currentCategory ? ` in the selected category` : ''}.`
+            : "We couldn't find any posts in this category."}
+        </p>
+        <a 
+          href="/blog" 
+          class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 transition-colors"
+        >
+          View all posts
+        </a>
+      </div>
+    )}
   </main>
 </Layout>
 
@@ -264,7 +316,6 @@ const moreCategories = categories.slice(7);
     }
   }
   
-  // Handle search functionality
   document.addEventListener('alpine:init', () => {
     window.Alpine.data('search', () => ({
       isSearching: false,
@@ -272,12 +323,15 @@ const moreCategories = categories.slice(7);
       handleSearch(event: SubmitEvent) {
         const form = event.target as HTMLFormElement;
         const searchInput = form.querySelector('input[name="search"]') as HTMLInputElement;
+        const currentParams = new URLSearchParams(window.location.search);
         
         if (searchInput.value.trim()) {
-          const searchParams = new URLSearchParams(window.location.search);
-          searchParams.set('search', searchInput.value.trim());
-          window.location.href = `?${searchParams.toString()}`;
+          currentParams.set('search', searchInput.value.trim());
+        } else {
+          currentParams.delete('search');
         }
+        
+        window.location.href = `?${currentParams.toString()}`;
       }
     }));
   });
