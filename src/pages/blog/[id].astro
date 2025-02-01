@@ -11,54 +11,122 @@ import {
 } from '../../utils/blog';
 import type { Post, ApiResponse } from '../../types/payload';
 
-export async function getStaticPaths() {
+// Get the post ID from the URL parameters
+const { id } = Astro.params;
+
+// If no ID is provided, redirect to the blog index
+if (!id) {
+  return Astro.redirect('/blog');
+}
+
+// Fetch the post data
+const post = await getPost(id);
+
+// If no post is found, return a 404 response
+if (!post) {
+  return new Response('Post not found', {
+    status: 404,
+    statusText: 'Not Found'
+  });
+}
+
+// Fetch the post data server-side
+const searchParams = new URL(Astro.request.url).searchParams;
+const searchQuery = searchParams.get('search') || '';
+const currentCategory = searchParams.get('category') || '';
+
+// Fetch post data
+async function getPost(id: string) {
   try {
-    const response = await fetch(`${PAYLOAD_URL}/api/posts?where[status][equals]=published`);
-    if (!response.ok) throw new Error('Failed to fetch posts');
-    const data: ApiResponse = await response.json();
-    
-    return data.docs.map((post: Post) => ({
-      params: { id: post.id },
-      props: { post: transformPost(post) }
-    }));
+    const response = await fetch(`${PAYLOAD_URL}/api/posts/${id}`);
+    if (!response.ok) throw new Error('Failed to fetch post');
+    const post = await response.json();
+    return transformPost(post);
   } catch (error) {
-    console.error('Error in getStaticPaths:', error);
-    throw error;
+    console.error('Error fetching post:', error);
+    return null;
   }
 }
 
-// Get current URL parameters and fetch data
-const { post } = Astro.props;
+// Fetch related posts based on category and search
+async function getRelatedPosts(categorySlug: string, search: string, currentPostId: string) {
+  try {
+    const params = new URLSearchParams();
+    params.append('depth', '2');
+    
+    if (categorySlug) {
+      params.append('where[category.slug][equals]', categorySlug);
+    }
+    
+    if (search) {
+      params.append('where[or][0][title][contains]', search);
+      params.append('where[or][1][content][contains]', search);
+      params.append('where[or][2][category.name][contains]', search);
+    }
+    
+    params.append('where[id][not-equals]', currentPostId);
+    params.append('limit', '3');  // Limit to 3 related posts
+    
+    const response = await fetch(`${PAYLOAD_URL}/api/posts?${params.toString()}`);
+    if (!response.ok) throw new Error('Failed to fetch related posts');
+    const data: ApiResponse = await response.json();
+    return data.docs.map(transformPost);
+  } catch (error) {
+    console.error('Error fetching related posts:', error);
+    return [];
+  }
+}
+
+// const post = await getPost(id);
 const categories = await fetchCategories();
+const relatedPosts = await getRelatedPosts(
+  post?.category?.slug || '',
+  searchQuery,
+  id
+);
 
 const mainCategories = categories.slice(0, 3);
 const moreCategories = categories.slice(3);
-const searchParams = new URL(Astro.request.url).searchParams;
-const searchQuery = searchParams.get('search') || '';
 
-const contentHtml = post.content.root.children
+const contentHtml = post?.content.root.children
   .map(node => renderContentNode(node))
   .join('');
+
+// Create search context message
+const getSearchContext = () => {
+  if (searchQuery && currentCategory) {
+    return `${relatedPosts.length} related posts found in "${categories.find(c => c.slug === currentCategory)?.name}" for "${searchQuery}"`;
+  } else if (searchQuery) {
+    return `${relatedPosts.length} related posts found for "${searchQuery}"`;
+  } else if (currentCategory) {
+    return `${relatedPosts.length} related posts in "${categories.find(c => c.slug === currentCategory)?.name}"`;
+  }
+  return '';
+};
+
+const searchContext = getSearchContext();
 ---
 
 <Layout title={post.title}>
   <!-- Navigation Bar -->
-  <nav class=" pt-[25px]">
+  <nav class="pt-[25px]">
     <div class="max-w-[2000px] mx-auto lg:mt-20 md:px-8 lg:px-52 py-4">
       <div class="flex items-center justify-between">
         <!-- Categories -->
         <div class="flex items-center gap-6">
           <a 
             href="/blog" 
-            class="text-gray-600 hover:text-cyan-600 transition-colors"
+            class={`text-gray-600 hover:text-cyan-600 transition-colors ${!currentCategory ? 'text-cyan-600 font-medium' : ''}`}
           >
             All Posts
           </a>
           
           {mainCategories.map((category) => (
             <a
-              href={`/blog?category=${category.slug}`}
-              class="text-gray-600 hover:text-cyan-600 transition-colors"
+              href={`/blog?category=${category.slug}${searchQuery ? `&search=${searchQuery}` : ''}`}
+              class={`text-gray-600 hover:text-cyan-600 transition-colors ${
+                currentCategory === category.slug ? 'text-cyan-600 font-medium' : ''
+              }`}
             >
               {category.name}
             </a>
@@ -82,8 +150,10 @@ const contentHtml = post.content.root.children
               <div class="hidden group-hover:block absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
                 {moreCategories.map((category) => (
                   <a
-                    href={`/blog?category=${category.slug}`}
-                    class="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-cyan-600 transition-colors"
+                    href={`/blog?category=${category.slug}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                    class={`block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-cyan-600 transition-colors ${
+                      currentCategory === category.slug ? 'text-cyan-600 bg-gray-50' : ''
+                    }`}
                   >
                     {category.name}
                   </a>
@@ -93,53 +163,46 @@ const contentHtml = post.content.root.children
           )}
         </div>
 
-        <!-- Search and Login -->
-        <div class="flex items-center gap-6">
-          <div class="relative" x-data="{ isSearching: false }">
+        <!-- Search Form -->
+        <div class="relative" x-data="search">
+          <button
+            @click="isSearching = !isSearching"
+            class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
+            x-show="!isSearching"
+          >
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+          
+          <form
+            x-show="isSearching"
+            class="absolute right-0 top-0 w-64 flex items-center bg-white rounded-lg shadow-sm"
+            @submit.prevent="handleSearch"
+          >
+            <input
+              type="text"
+              name="search"
+              placeholder="Search posts..."
+              x-model="searchQuery"
+              class="w-full px-4 py-2 rounded-l-lg border-0 focus:ring-2 focus:ring-cyan-500"
+              @keyup.escape="isSearching = false"
+            />
             <button
-              @click="isSearching = !isSearching"
+              type="button"
+              @click="clearSearch"
+              x-show="searchQuery"
               class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
-              :class="{ 'hidden': isSearching }"
             >
               <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
-            
-            <form
-              x-show="isSearching"
-              class="absolute right-0 top-0 w-64 flex items-center bg-white rounded-lg shadow-sm"
-              @submit.prevent="handleSearch"
-            >
-              <input
-                type="text"
-                name="search"
-                placeholder="Search posts..."
-                value={searchQuery}
-                class="w-full px-4 py-2 rounded-l-lg border-0 focus:ring-2 focus:ring-cyan-500"
-              />
-              <button
-                type="button"
-                @click="isSearching = false"
-                class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
-              >
-                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
-            </form>
-          </div>
-          
-          <div 
-            class="border border-gray-300 p-2 text-blue-600 hover:text-blue-700 transition-colors"
-          >
-            <a href="/login" >Log in </a>/ <a href="/signup">Sign up</a>
-          </div>
+          </form>
         </div>
       </div>
-    </div>
   </nav>
 
   <!-- Main Content -->
@@ -170,7 +233,7 @@ const contentHtml = post.content.root.children
           <button class="p-2 hover:bg-gray-100 rounded-full">
             <MoreVertical className="w-5 h-5 text-gray-500" />
           </button>
-          <div class="absolute left-0 mt-1 w-32 bg-white shadow-lg rounded-md hidden group-hover:block z-10">
+          <div class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md hidden group-hover:block z-10">
             <button class="w-full px-4 py-1 text-right text-gray-700 hover:bg-gray-100 flex items-center">
               <Share2 className="w-4 h-4 mr-2" />
               Share
@@ -180,12 +243,100 @@ const contentHtml = post.content.root.children
       </div>
 
       <!-- Title -->
-      <h1 class="text-5xl font-semibold text-gray-900 px-5 mb-8">{post.title}</h1>
+      <h1 class="text-5xl font-semibold text-gray-900 mb-8">{post.title}</h1>
 
       <!-- Dynamic Content -->
       <div class="prose max-w-none">
         <Fragment set:html={contentHtml} />
       </div>
     </article>
+
+    <!-- Related Posts Section -->
+    {relatedPosts.length > 0 && (
+      <div class="mt-16">
+        {searchContext && (
+          <div class="mb-8 text-gray-600">
+            {searchContext}
+          </div>
+        )}
+        
+        <h2 class="text-2xl font-semibold mb-8">Related Posts</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {relatedPosts.map((relatedPost) => (
+            <a 
+              href={`/blog/${relatedPost.id}`}
+              class="block group"
+            >
+              <article class="bg-white rounded-xl overflow-hidden shadow-sm group-hover:shadow-lg transition-shadow duration-300">
+                <div class="aspect-video overflow-hidden">
+                  <img 
+                    src={relatedPost.featuredImage.url} 
+                    alt={relatedPost.featuredImage.alt}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div class="p-6">
+                  <h3 class="font-bold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors">
+                    {relatedPost.title}
+                  </h3>
+                  <div class="flex items-center text-sm text-gray-500">
+                    <time datetime={relatedPost.publishedDate}>
+                      {formatDate(relatedPost.publishedDate)}
+                    </time>
+                    <span class="mx-2">•</span>
+                    <span>{relatedPost.estimatedReadTime} min read</span>
+                  </div>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
   </main>
 </Layout>
+
+<script>
+  // First, let's define the proper types for Alpine.js
+  interface AlpineEvent extends Event {
+    target: HTMLElement;
+  }
+
+  interface AlpineInstance {
+    data: (name: string, callback: () => any) => void;
+  }
+
+  // Extend the Window interface to include Alpine
+  declare global {
+    interface Window {
+      Alpine: AlpineInstance;
+    }
+  }
+
+  document.addEventListener('alpine:init', () => {
+    window.Alpine.data('search', () => ({
+      isSearching: false,
+      
+      handleSearch(event: Event) {
+  event.preventDefault();
+  
+  const form = (event.target as HTMLElement).closest('form');
+  if (!form) return;
+  
+  const searchInput = form.querySelector('input[name="search"]') as HTMLInputElement | null;
+  if (!searchInput) return;
+  
+  const searchValue = searchInput.value.trim();
+  
+  // Always redirect to the main blog page with search parameters
+  const currentParams = new URLSearchParams();
+  if (searchValue) {
+    currentParams.set('search', searchValue);
+  }
+  
+  // Navigate to the blog index with search parameter
+  window.location.href = `/blog${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
+}
+    }));
+  });
+</script>

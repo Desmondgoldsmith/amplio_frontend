@@ -2,6 +2,12 @@
 import Layout from '../../layouts/Layout.astro';
 import type { ApiResponse, Post, Category, CategoryResponse } from '../../types/payload';
 
+function highlightText(text: string, searchQuery: string): string {
+  if (!searchQuery) return text;
+  const regex = new RegExp(`(${searchQuery})`, 'gi');
+  return text.replace(regex, '<mark class="bg-yellow-200">$1</mark>');
+}
+
 async function fetchCategories(): Promise<Category[]> {
   try {
     const response = await fetch('http://localhost:3000/api/categories');
@@ -19,14 +25,12 @@ async function fetchCategories(): Promise<Category[]> {
 async function fetchPosts(category?: string, search?: string): Promise<Post[]> {
   try {
     const params = new URLSearchParams();
-    params.append('depth', '2'); // This is important to populate relationships
+    params.append('depth', '2'); 
     
-    // Update category filter to match the relationship structure
     if (category) {
       params.append('where[category.slug][equals]', category);
     }
     
-    // Improve search functionality
     if (search) {
       const searchString = search.trim();
       params.append('where[or][0][title][contains]', searchString);
@@ -36,11 +40,7 @@ async function fetchPosts(category?: string, search?: string): Promise<Post[]> {
     }
     
     const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
-    const response = await fetch(`${PAYLOAD_URL}/api/posts?${params.toString()}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(`${PAYLOAD_URL}/api/posts?${params.toString()}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -48,7 +48,6 @@ async function fetchPosts(category?: string, search?: string): Promise<Post[]> {
     
     const data: ApiResponse = await response.json();
     
-    // Process and sort the posts
     return data.docs
       .filter(post => post.status === 'published')
       .map(post => ({
@@ -96,9 +95,9 @@ const moreCategories = categories.slice(7);
 // Create search context message
 const getSearchContext = () => {
   if (searchQuery && currentCategory) {
-    return `${posts.length} posts found in "${categories.find(c => c.slug === currentCategory)?.name}" for "${searchQuery}"`;
+    return `${posts.length} results for "${searchQuery}" in "${categories.find(c => c.slug === currentCategory)?.name}"`;
   } else if (searchQuery) {
-    return `${posts.length} posts found for "${searchQuery}"`;
+    return `${posts.length} results for "${searchQuery}"`;
   } else if (currentCategory) {
     return `${posts.length} posts in "${categories.find(c => c.slug === currentCategory)?.name}"`;
   }
@@ -112,7 +111,7 @@ const searchContext = getSearchContext();
   <main class="max-w-[2000px] mx-auto lg:mt-20 border border-t px-4 md:px-8 lg:px-44 py-12">
     <h1 class="text-4xl font-bold text-center mb-12">Amplio Blog</h1>
     
-    <!-- Navigation and Search Bar -->
+    <!-- Navigation and Search Section -->
     <div class="relative flex flex-wrap items-center justify-between gap-4 mb-12">
       <!-- Categories Navigation -->
       <div class="flex-1 flex flex-wrap items-center gap-6">
@@ -168,191 +167,247 @@ const searchContext = getSearchContext();
       </div>
       
       <!-- Search Feature -->
-      <div 
-    x-data="{ isSearching: false }" 
-    class="relative flex items-center"
-  >
-    <!-- Search Icon Button -->
-    <button
-      @click="isSearching = true"
-      x-show="!isSearching"
-      class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
-    >
-      <svg 
-        class="w-6 h-6"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      </svg>
-    </button>
-    
-    <!-- Search Form -->
-    <form
-      x-show="isSearching"
-      @submit.prevent="handleSearch($event)"
-      class="flex items-center bg-white rounded-lg shadow-sm"
-      @click.away="isSearching = false"
-    >
-      <input
-        type="text"
-        name="search"
-        placeholder="Search posts..."
-        value={searchQuery}
-        class="w-64 px-4 py-2 rounded-l-lg border-0 focus:ring-2 focus:ring-cyan-500"
-      />
-      <button
-        type="button"
-        @click="isSearching = false"
-        class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
-      >
-        <svg 
-          class="w-6 h-6"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+      <div class="relative" x-data="search">
+        <button
+          @click="isSearching = !isSearching"
+          class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
+          x-show="!isSearching"
         >
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-      </button>
-    </form>
-  </div>
-</div>
-
-    <!-- Search Context -->
-    {searchContext && (
-      <div class="mb-8 text-gray-600">
-        {searchContext}
-      </div>
-    )}
-    
-    <!-- Blog Posts Grid or No Results Message -->
-    {posts.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {posts.map((post) => (
-          <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-            <a href={`/blog/${post.id}`} class="block">
-              <div class="aspect-video overflow-hidden">
-                <img 
-                  src={post.featuredImage.url} 
-                  alt={post.featuredImage.alt}
-                  width={post.featuredImage.width}
-                  height={post.featuredImage.height}
-                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              
-              <div class="p-8">
-                <div class="flex items-center mb-6">
-                  <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-gray-100">
-                    {post.author.profileImage && (
-                      <img 
-                        src={post.author.profileImage.url} 
-                        alt={`${post.author.name}'s profile picture`}
-                        width="40"
-                        height="40"
-                        class="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  <div>
-                    <div class="flex items-center gap-2">
-                      <p class="font-medium text-gray-900">{post.author.name}</p>
-                    </div>
-                    <div class="flex items-center text-sm text-gray-500 mt-1">
-                      <time datetime={post.publishedDate}>
-                        {formatDate(post.publishedDate)}
-                      </time>
-                      <span class="mx-2">•</span>
-                      <span>{post.estimatedReadTime} min read</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <h3 class="font-bold text-gray-900 mb-3 line-clamp-3 hover:text-cyan-600 transition-colors">
-                  {post.title}
-                </h3>
-              </div>
-            </a>
-          </article>
-        ))}
-      </div>
-    ) : (
-      <div class="text-center py-16">
-        <div class="mb-4">
-          <svg 
-            class="w-16 h-16 mx-auto text-gray-400"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-        </div>
-        <h2 class="text-2xl font-semibold text-gray-900 mb-2">No posts found</h2>
-        <p class="text-gray-600 mb-6">
-          {searchQuery 
-            ? `We couldn't find any posts matching "${searchQuery}"${currentCategory ? ` in the selected category` : ''}.`
-            : "We couldn't find any posts in this category."}
-        </p>
-        <a 
-          href="/blog" 
-          class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 transition-colors"
+        </button>
+        
+        <form
+          x-show="isSearching"
+          class="absolute right-0 top-0 w-64 flex items-center bg-white rounded-lg shadow-sm"
+          @submit.prevent="handleSearch"
         >
-          View all posts
-        </a>
+          <input
+            type="text"
+            name="search"
+            placeholder="Search posts..."
+            value={searchQuery}
+            class="w-full px-4 py-2 rounded-l-lg border-0 focus:ring-2 focus:ring-cyan-500"
+            @keyup.escape="isSearching = false"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              @click="clearSearch"
+              class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
+            >
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          )}
+        </form>
       </div>
-    )}
+    </div>
+
+    <!-- Dynamic Content Section - Uses IIFE pattern for conditional rendering -->
+    {(() => {
+      // Case 1: No posts found for search or category
+      if ((searchQuery || currentCategory) && posts.length === 0) {
+        return (
+          <div class="text-center py-16">
+            <div class="mb-4">
+              <svg 
+                class="w-16 h-16 mx-auto text-gray-400"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </div>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-2">No posts found</h2>
+            <p class="text-gray-600 mb-6">
+              {searchQuery 
+                ? `We couldn't find any posts matching "${searchQuery}"${currentCategory ? ` in the selected category` : ''}.`
+                : "We couldn't find any posts in this category."}
+            </p>
+            <a 
+              href="/blog" 
+              class="inline-flex items-center justify-center px-6 py-3 rounded-md text-white bg-cyan-600 hover:bg-cyan-700 transition-colors"
+            >
+              View all posts
+            </a>
+          </div>
+        );
+      }
+
+      // Case 2: Search or category results found
+      if (searchQuery || currentCategory) {
+        return (
+          <>
+            {searchContext && (
+              <div class="mb-8 text-xl font-semibold text-gray-900">
+                {searchContext}
+              </div>
+            )}
+            
+            <div class="space-y-8">
+              {posts.map((post) => (
+                <article class="flex flex-col md:flex-row gap-8 p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                  <div class="md:w-1/3">
+                    <a href={`/blog/${post.id}`} class="block">
+                      <img 
+                        src={post.featuredImage.url} 
+                        alt={post.featuredImage.alt}
+                        class="w-full h-48 object-cover rounded-lg"
+                      />
+                    </a>
+                  </div>
+                  
+                  <div class="md:w-2/3 space-y-4">
+                    <div class="flex items-center gap-4">
+                      <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-100">
+                        {post.author.profileImage && (
+                          <img 
+                            src={post.author.profileImage.url} 
+                            alt={`${post.author.name}'s profile`}
+                            class="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <p class="font-medium text-gray-900">{post.author.name}</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                          <time datetime={post.publishedDate}>
+                            {formatDate(post.publishedDate)}
+                          </time>
+                          <span class="mx-2">•</span>
+                          <span>{post.estimatedReadTime} min read</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <a 
+                        href={`/blog/${post.id}`}
+                        class="block group"
+                      >
+                        <h2 
+                          class="text-xl text-gray-900 group-hover:text-cyan-600 transition-colors mb-2"
+                          set:html={highlightText(post.title, searchQuery)}
+                        />
+                        <p 
+                          class="text-gray-600 line-clamp-2"
+                          set:html={highlightText(
+                            post.content.root.children.find(child => child.children?.[0]?.text)?.children[0]?.text || '',
+                            searchQuery
+                          )}
+                        />
+                      </a>
+                    </div>
+                    
+                    <div class="flex items-center gap-3">
+                      <a
+                        href={`/blog?category=${post.category.slug}`}
+                        class="text-sm px-3 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                      >
+                        {post.category.name}
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </>
+        );
+      }
+
+      // Case 3: Default view (all posts)
+      return (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {posts.map((post) => (
+            <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+              <a href={`/blog/${post.id}`} class="block">
+                <div class="aspect-video overflow-hidden">
+                  <img 
+                    src={post.featuredImage.url} 
+                    alt={post.featuredImage.alt}
+                    width={post.featuredImage.width}
+                    height={post.featuredImage.height}
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                
+                <div class="p-8">
+                  <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-gray-100">
+                      {post.author.profileImage && (
+                        <img 
+                          src={post.author.profileImage.url} 
+                          alt={`${post.author.name}'s profile picture`}
+                          width="40"
+                          height="40"
+                          class="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <p class="font-medium text-gray-900">{post.author.name}</p>
+                      </div>
+                      <div class="flex items-center text-sm text-gray-500 mt-1">
+                        <time datetime={post.publishedDate}>
+                          {formatDate(post.publishedDate)}
+                        </time>
+                        <span class="mx-2">•</span>
+                        <span>{post.estimatedReadTime} min read</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <h3 class="font-bold text-gray-900 mb-3 line-clamp-3 hover:text-cyan-600 transition-colors">
+                    {post.title}
+                  </h3>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+      );
+    })()}
   </main>
 </Layout>
 
 <script>
-  // Define types for TypeScript
-  interface SearchData {
-    isSearching: boolean;
-    handleSearch: (event: SubmitEvent) => void;
-  }
-
   document.addEventListener('alpine:init', () => {
-    // Define the search functionality
     window.Alpine.data('search', () => ({
       isSearching: false,
       
-      handleSearch(event: SubmitEvent) {
+      handleSearch(event: Event) {
         event.preventDefault();
         const form = event.target as HTMLFormElement;
         const searchInput = form.querySelector('input[name="search"]') as HTMLInputElement;
-        const currentParams = new URLSearchParams(window.location.search);
+        const searchValue = searchInput.value.trim();
         
-        // Get the current category if any
+        const currentParams = new URLSearchParams(window.location.search);
         const category = currentParams.get('category');
         
-        // Clear out existing params
-        currentParams.delete('search');
+        const newParams = new URLSearchParams();
         if (category) {
-          currentParams.set('category', category);
+          newParams.set('category', category);
+        }
+        if (searchValue) {
+          newParams.set('search', searchValue);
         }
         
-        // Add search if there's a value
-        if (searchInput.value.trim()) {
-          currentParams.set('search', searchInput.value.trim());
-        }
-        
-        // Navigate to the new URL
-        window.location.href = `${window.location.pathname}?${currentParams.toString()}`;
+        window.location.href = `${window.location.pathname}${newParams.toString() ? `?${newParams.toString()}` : ''}`;
+      },
+
+      clearSearch() {
+        const currentParams = new URLSearchParams(window.location.search);
+        currentParams.delete('search');
+        window.location.href = `${window.location.pathname}${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
       }
     }));
   });
