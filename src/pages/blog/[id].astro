@@ -14,7 +14,7 @@ import type { Post, ApiResponse } from '../../types/payload';
 // Get the post ID from the URL parameters
 const { id } = Astro.params;
 
-// If no ID is provided, redirect to the blog index
+// If no ID is provided, redirect to the blog page
 if (!id) {
   return Astro.redirect('/blog');
 }
@@ -77,7 +77,6 @@ async function getRelatedPosts(categorySlug: string, search: string, currentPost
   }
 }
 
-// const post = await getPost(id);
 const categories = await fetchCategories();
 const relatedPosts = await getRelatedPosts(
   post?.category?.slug || '',
@@ -92,7 +91,7 @@ const contentHtml = post?.content.root.children
   .map(node => renderContentNode(node))
   .join('');
 
-// Create search context message
+// search context message
 const getSearchContext = () => {
   if (searchQuery && currentCategory) {
     return `${relatedPosts.length} related posts found in "${categories.find(c => c.slug === currentCategory)?.name}" for "${searchQuery}"`;
@@ -297,7 +296,6 @@ const searchContext = getSearchContext();
 </Layout>
 
 <script>
-  // First, let's define the proper types for Alpine.js
   interface AlpineEvent extends Event {
     target: HTMLElement;
   }
@@ -306,7 +304,6 @@ const searchContext = getSearchContext();
     data: (name: string, callback: () => any) => void;
   }
 
-  // Extend the Window interface to include Alpine
   declare global {
     interface Window {
       Alpine: AlpineInstance;
@@ -328,13 +325,11 @@ const searchContext = getSearchContext();
   
   const searchValue = searchInput.value.trim();
   
-  // Always redirect to the main blog page with search parameters
   const currentParams = new URLSearchParams();
   if (searchValue) {
     currentParams.set('search', searchValue);
   }
   
-  // Navigate to the blog index with search parameter
   window.location.href = `/blog${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
 }
     }));
