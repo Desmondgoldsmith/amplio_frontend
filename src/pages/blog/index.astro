@@ -208,7 +208,6 @@ const searchContext = getSearchContext();
       </div>
     </div>
 
-    <!-- Dynamic Content Section - Uses IIFE pattern for conditional rendering -->
     {(() => {
       // Case 1: No posts found for search or category
       if ((searchQuery || currentCategory) && posts.length === 0) {
