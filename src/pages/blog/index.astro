@@ -19,17 +19,24 @@ async function fetchCategories(): Promise<Category[]> {
 async function fetchPosts(category?: string, search?: string): Promise<Post[]> {
   try {
     const params = new URLSearchParams();
-    params.append('depth', '2');
+    params.append('depth', '2'); // This is important to populate relationships
     
-    // Add category and search filters with improved search capabilities
-    if (category) params.append('where[category][equals]', category);
-    if (search) {
-      // Search in both title and content
-      params.append('where[or][0][title][contains]', search);
-      params.append('where[or][1][content][contains]', search);
+    // Update category filter to match the relationship structure
+    if (category) {
+      params.append('where[category.slug][equals]', category);
     }
     
-    const response = await fetch(`http://localhost:3000/api/posts?${params.toString()}`, {
+    // Improve search functionality
+    if (search) {
+      const searchString = search.trim();
+      params.append('where[or][0][title][contains]', searchString);
+      params.append('where[or][1][content][contains]', searchString);
+      params.append('where[or][2][category.name][contains]', searchString);
+      params.append('where[or][3][author.name][contains]', searchString);
+    }
+    
+    const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
+    const response = await fetch(`${PAYLOAD_URL}/api/posts?${params.toString()}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -40,7 +47,6 @@ async function fetchPosts(category?: string, search?: string): Promise<Post[]> {
     }
     
     const data: ApiResponse = await response.json();
-    const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
     
     // Process and sort the posts
     return data.docs
@@ -162,59 +168,65 @@ const searchContext = getSearchContext();
       </div>
       
       <!-- Search Feature -->
-      <div class="relative" x-data="{ isSearching: false }">
-        <button
-          @click="isSearching = !isSearching"
-          class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
-          :class="{ 'hidden': isSearching }"
+      <div 
+    x-data="{ isSearching: false }" 
+    class="relative flex items-center"
+  >
+    <!-- Search Icon Button -->
+    <button
+      @click="isSearching = true"
+      x-show="!isSearching"
+      class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
+    >
+      <svg 
+        class="w-6 h-6"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+    </button>
+    
+    <!-- Search Form -->
+    <form
+      x-show="isSearching"
+      @submit.prevent="handleSearch($event)"
+      class="flex items-center bg-white rounded-lg shadow-sm"
+      @click.away="isSearching = false"
+    >
+      <input
+        type="text"
+        name="search"
+        placeholder="Search posts..."
+        value={searchQuery}
+        class="w-64 px-4 py-2 rounded-l-lg border-0 focus:ring-2 focus:ring-cyan-500"
+      />
+      <button
+        type="button"
+        @click="isSearching = false"
+        class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
+      >
+        <svg 
+          class="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         >
-          <svg 
-            class="w-6 h-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-        </button>
-        
-        <form
-          x-show="isSearching"
-          class="absolute right-0 top-0 w-64 flex items-center bg-white rounded-lg shadow-sm"
-          @submit.prevent="handleSearch"
-        >
-          <input
-            type="text"
-            name="search"
-            placeholder="Search posts..."
-            value={searchQuery}
-            class="w-full px-4 py-2 rounded-l-lg border-0 focus:ring-2 focus:ring-cyan-500"
-          />
-          <button
-            type="button"
-            @click="isSearching = false"
-            class="p-2 text-gray-600 hover:text-cyan-600 transition-colors"
-          >
-            <svg 
-              class="w-6 h-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-        </form>
-      </div>
-    </div>
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>
 
     <!-- Search Context -->
     {searchContext && (
@@ -308,30 +320,39 @@ const searchContext = getSearchContext();
 </Layout>
 
 <script>
-  import type { Alpine as AlpineType } from 'alpinejs';
-  
-  declare global {
-    interface Window {
-      Alpine: AlpineType;
-    }
+  // Define types for TypeScript
+  interface SearchData {
+    isSearching: boolean;
+    handleSearch: (event: SubmitEvent) => void;
   }
-  
+
   document.addEventListener('alpine:init', () => {
+    // Define the search functionality
     window.Alpine.data('search', () => ({
       isSearching: false,
       
       handleSearch(event: SubmitEvent) {
+        event.preventDefault();
         const form = event.target as HTMLFormElement;
         const searchInput = form.querySelector('input[name="search"]') as HTMLInputElement;
         const currentParams = new URLSearchParams(window.location.search);
         
-        if (searchInput.value.trim()) {
-          currentParams.set('search', searchInput.value.trim());
-        } else {
-          currentParams.delete('search');
+        // Get the current category if any
+        const category = currentParams.get('category');
+        
+        // Clear out existing params
+        currentParams.delete('search');
+        if (category) {
+          currentParams.set('category', category);
         }
         
-        window.location.href = `?${currentParams.toString()}`;
+        // Add search if there's a value
+        if (searchInput.value.trim()) {
+          currentParams.set('search', searchInput.value.trim());
+        }
+        
+        // Navigate to the new URL
+        window.location.href = `${window.location.pathname}?${currentParams.toString()}`;
       }
     }));
   });

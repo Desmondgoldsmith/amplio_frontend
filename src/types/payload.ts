@@ -54,7 +54,7 @@ export interface Post {
   featuredImage: Media;
   author: Author;
   publishedDate: string;
-  category: string;
+  category: Category;
   estimatedReadTime: number;
   status: "draft" | "published";
   content: {
