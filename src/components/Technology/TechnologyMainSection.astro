@@ -1,3 +1,17 @@
+---
+interface YouTubeDemoProps {
+  videoUrl: string;
+  title: string;
+  description: string;
+}
+
+const { 
+  videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ", 
+  title = "Watch a Talking Book demo",
+  description = "Watch a product demo to learn about Talking Book features and functions."
+} = Astro.props;
+---
+
 <section class="bg-white mt-36">
     <div>
       <div class="text-center mb-12 max-w-7xl mx-auto px-4">
@@ -39,6 +53,23 @@
           alt="Amplio Talking Book Device" 
           class ="max-w-full h-auto"
         />
+      </div>
+    </div>
+  </section>
+  <section class="w-full py-16 px-4 md:px-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl md:text-3xl font-bold  mb-6">{title}</h2>
+      <p class="text-lg  mb-8">{description}</p>
+      
+      <div class="aspect-w-16 aspect-h-32 w-full">
+        <iframe 
+          src={videoUrl} 
+          title="Talking Book Demo" 
+          class="w-full h-full rounded-lg shadow-lg"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen
+        >
+        </iframe>
       </div>
     </div>
   </section>
