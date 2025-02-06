@@ -16,7 +16,7 @@ const topRowAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/arm.png",
     title: "arm",
     description: "Selected by Arm as a technology solution to close the digital divide.",
-    link: "#",
+    link: "https://www.arm.com/company/sustainability",
     linkTarget: {
       text: "close the digital divide",
       isBlue: true
@@ -26,7 +26,7 @@ const topRowAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/candid.png",
     title: "Platinum Transparency 2023",
     description: "2023 Candid Platinum Seal of Transparency for impact. See our Guidestar profile.",
-    link: "#",
+    link: "https://www.guidestar.org/profile/26-1335205",
     linkTarget: {
       text: "See our Guidestar profile",
       isBlue: true
@@ -36,7 +36,7 @@ const topRowAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/charity.png",
     title: "Charity Navigator",
     description: "Achieved Charity Navigator's top rating for best practices, so you can give with confidence.",
-    link: "#",
+    link: "https://www.charitynavigator.org/ein/261335205",
     linkTarget: {
       text: "top rating",
       isBlue: true
@@ -49,7 +49,7 @@ const bottomRowAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/principe.png",
     title: "Principles for Digital Development",
     description: "Featured as a Principles for Digital Development case study.",
-    link: "#",
+    link: "https://digitalprinciples.org/resource/case-study-amplio-talking-book-reaching-the-worlds-hardest-to-reach-communities",
     linkTarget: {
       text: "case study",
       isBlue: true
@@ -69,7 +69,7 @@ const bottomRowAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/Clinton.png",
     title: "Clinton Foundation",
     description: "Joined Clinton Global Initiative, promoting solutions for the world's most pressing challenges.",
-    link: "#",
+    link: "https://www.clintonfoundation.org/programs/leadership-public-service/clinton-global-initiative/#impact",
     linkTarget: {
       text: "",
       isBlue: false
@@ -82,7 +82,7 @@ const secondPageAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/pearson.png",
     title: "UNESCO and Pearson",
     description: "Recognized by UNESCO as an inclusive digital solution for people with low literacy.",
-    link: "#",
+    link: "https://www.unesco.org/en/node/67090",
     linkTarget: {
       text: "an inclusive digital solution",
       isBlue: true
@@ -92,7 +92,7 @@ const secondPageAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/wise.png",
     title: "WISE Awards 2015",
     description: "2015 WISE Award for Ghana Talking Book program — Qatar Foundation.",
-    link: "#",
+    link: "https://www.youtube.com/watch?v=zvLq5QLc_UE&list=PLEYBWzu122np7ASRJz5cridNq-fxGv60Q",
     linkTarget: {
       text: "Ghana Talking Book program",
       isBlue: true
@@ -102,7 +102,7 @@ const secondPageAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/Microsoft.png",
     title: "Microsoft Alumni Network",
     description: "Our founder Cliff Schmidt was awarded Microsoft Integral Fellows awards n 2010 and 2014.",
-    link: "#",
+    link: "https://www.microsoftalumni.com/s/1769/19/interior.aspx?pgid=446&gid=2",
     linkTarget: {
       text: "",
       isBlue: false
@@ -115,7 +115,7 @@ const thirdPageAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/tech.png",
     title: "The Tech Awards",
     description: "Our founder was selected as the 2012 education laureate for using tech to improve lives.",
-    link: "#",
+    link: "https://www.pressreader.com/usa/the-mercury-news/20121118/282029029510098",
     linkTarget: {
       text: "",
       isBlue: false
@@ -125,7 +125,7 @@ const thirdPageAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/computer.png",
     title: "Computerworld",
     description: "Received 2013 Computerworld Honors Award for delivering life-changing lessons via a mobile audio device.",
-    link: "#",
+    link: "https://www.computerworld.com/article/1405181/computerworld-honors-2013-life-changing-lessons-via-mobile-device.html",
     linkTarget: {
       text: "",
       isBlue: false
@@ -135,7 +135,7 @@ const thirdPageAwards: Award[] = [
     logo: "/assets/aboutUsPageAssets/pbs.png",
     title: "PBS NewsHour",
     description: "Featured as an Agent for Social Change in 2013 for efforts to fix poverty and injustice.",
-    link: "#",
+    link: "https://www.pbs.org/newshour/world/literacy-bridge",
     linkTarget: {
       text: "",
       isBlue: false
@@ -174,6 +174,8 @@ const thirdPageAwards: Award[] = [
                           {i < award.description.split(award?.linkTarget.text).length - 1 && (
                             <a 
                               href={award.link} 
+                              target="_blank" 
+                            rel="noopener noreferrer"
                               class={`${award?.linkTarget.isBlue ? 'text-blue-600 hover:text-blue-800' : 'text-inherit'} font-semibold transition-colors`}
                             >
                               {award?.linkTarget.text}
@@ -185,6 +187,8 @@ const thirdPageAwards: Award[] = [
                   ) : (
                     <a 
                       href={award.link} 
+                      target="_blank"  
+                       rel="noopener noreferrer"
                       class="hover:underline"
                     >
                       {award.description}
