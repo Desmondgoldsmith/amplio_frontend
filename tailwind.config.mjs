@@ -8,7 +8,7 @@ export default {
 			  'primary-hover': '#ff4a33',
 			},
 			fontFamily: {
-			  inter: ['Inter', 'sans-serif'],
+				'arial': ['Arial', 'sans-serif', 'Inte'],
 			},
 		}
 	},
