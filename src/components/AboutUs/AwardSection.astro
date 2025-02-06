@@ -1,0 +1,233 @@
+---
+interface Award {
+  logo: string;
+  title: string;
+  description: string;
+  link: string;
+  linkTarget?: {
+    text: string;
+    isBlue?: boolean;
+  };
+}
+
+
+const topRowAwards: Award[] = [
+  {
+    logo: "/assets/aboutUsPageAssets/arm.png",
+    title: "arm",
+    description: "Selected by Arm as a technology solution to close the digital divide.",
+    link: "#",
+    linkTarget: {
+      text: "close the digital divide",
+      isBlue: true
+    }
+  },
+  {
+    logo: "/assets/aboutUsPageAssets/candid.png",
+    title: "Platinum Transparency 2023",
+    description: "2023 Candid Platinum Seal of Transparency for impact. See our Guidestar profile.",
+    link: "#",
+    linkTarget: {
+      text: "See our Guidestar profile",
+      isBlue: true
+    }
+  },
+  {
+    logo: "/assets/aboutUsPageAssets/charity.png",
+    title: "Charity Navigator",
+    description: "Achieved Charity Navigator's top rating for best practices, so you can give with confidence.",
+    link: "#",
+    linkTarget: {
+      text: "top rating",
+      isBlue: true
+    }
+  }
+];
+
+const bottomRowAwards: Award[] = [
+  {
+    logo: "/assets/aboutUsPageAssets/principe.png",
+    title: "Principles for Digital Development",
+    description: "Featured as a Principles for Digital Development case study.",
+    link: "#",
+    linkTarget: {
+      text: "case study",
+      isBlue: true
+    }
+  },
+  {
+    logo: "/assets/aboutUsPageAssets/gold.png",
+    title: "Anthem Award",
+    description: "Won gold Anthem Award for Responsible Technology and Community Outreach.",
+    link: "#",
+    linkTarget: {
+      text: "for Responsible Technology",
+      isBlue: true
+    }
+  },
+  {
+    logo: "/assets/aboutUsPageAssets/Clinton.png",
+    title: "Clinton Foundation",
+    description: "Joined Clinton Global Initiative, promoting solutions for the world's most pressing challenges.",
+    link: "#",
+    linkTarget: {
+      text: "",
+      isBlue: false
+    }
+  }
+];
+
+const secondPageAwards: Award[] = [
+  {
+    logo: "/assets/aboutUsPageAssets/pearson.png",
+    title: "UNESCO and Pearson",
+    description: "Recognized by UNESCO as an inclusive digital solution for people with low literacy.",
+    link: "#",
+    linkTarget: {
+      text: "an inclusive digital solution",
+      isBlue: true
+    }
+  },
+  {
+    logo: "/assets/aboutUsPageAssets/wise.png",
+    title: "WISE Awards 2015",
+    description: "2015 WISE Award for Ghana Talking Book program — Qatar Foundation.",
+    link: "#",
+    linkTarget: {
+      text: "Ghana Talking Book program",
+      isBlue: true
+    }
+  },
+  {
+    logo: "/assets/aboutUsPageAssets/Microsoft.png",
+    title: "Microsoft Alumni Network",
+    description: "Our founder Cliff Schmidt was awarded Microsoft Integral Fellows awards n 2010 and 2014.",
+    link: "#",
+    linkTarget: {
+      text: "",
+      isBlue: false
+    }
+  }
+];
+
+const thirdPageAwards: Award[] = [
+  {
+    logo: "/assets/aboutUsPageAssets/tech.png",
+    title: "The Tech Awards",
+    description: "Our founder was selected as the 2012 education laureate for using tech to improve lives.",
+    link: "#",
+    linkTarget: {
+      text: "",
+      isBlue: false
+    }
+  },
+  {
+    logo: "/assets/aboutUsPageAssets/computer.png",
+    title: "Computerworld",
+    description: "Received 2013 Computerworld Honors Award for delivering life-changing lessons via a mobile audio device.",
+    link: "#",
+    linkTarget: {
+      text: "",
+      isBlue: false
+    }
+  },
+  {
+    logo: "/assets/aboutUsPageAssets/pbs.png",
+    title: "PBS NewsHour",
+    description: "Featured as an Agent for Social Change in 2013 for efforts to fix poverty and injustice.",
+    link: "#",
+    linkTarget: {
+      text: "",
+      isBlue: false
+    }
+  }
+];
+---
+
+<section class="w-full bg-white py-10">
+    <div class="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-56">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold  mb-6">
+          Awards and Recognition
+        </h2>
+      </div>
+  
+      {[topRowAwards, bottomRowAwards, secondPageAwards, thirdPageAwards].map((awards, rowIndex) => (
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 awards-grid">
+          {awards.map((award, index) => (
+            <div 
+              class="award-card opacity-0 transform translate-y-10 transition-all duration-700 ease-out"
+              data-index={rowIndex * 3 + index}
+            >
+              <div class="bg-white rounded-2xl p-8 text-center border border-gray-100 hover:shadow-lg transition-shadow h-full flex flex-col items-center">
+                <img 
+                  src={award.logo} 
+                  alt={award.title} 
+                  class="mb-6 max-h-28 object-contain"
+                />
+                <p class="text-gray-700 mb-4 flex-grow">
+                  {award.linkTarget?.text ? (
+                    <>
+                      {award.description.split(award.linkTarget.text).map((part, i) => (
+                        <>
+                          {part}
+                          {i < award.description.split(award?.linkTarget.text).length - 1 && (
+                            <a 
+                              href={award.link} 
+                              class={`${award?.linkTarget.isBlue ? 'text-blue-600 hover:text-blue-800' : 'text-inherit'} font-semibold transition-colors`}
+                            >
+                              {award?.linkTarget.text}
+                            </a>
+                          )}
+                        </>
+                      ))}
+                    </>
+                  ) : (
+                    <a 
+                      href={award.link} 
+                      class="hover:underline"
+                    >
+                      {award.description}
+                    </a>
+                  )}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </section>
+  
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const awardCards = document.querySelectorAll('.award-card');
+      
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+  
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.remove('opacity-0', 'translate-y-10');
+              entry.target.classList.add('opacity-100', 'translate-y-0');
+            }, entry.target.dataset.index * 200);
+          }
+        });
+      }, observerOptions);
+  
+      awardCards.forEach(card => observer.observe(card));
+    });
+  </script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  
+    :root {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
