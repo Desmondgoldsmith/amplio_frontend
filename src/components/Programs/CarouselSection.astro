@@ -70,10 +70,11 @@ import { carouselItems } from '../../constants';
             )}
             
             {index === 2 && (
-              <div class="text-white">
+              <div class="mt-32 ml-20">
                 <div class="mb-4 text-cyan-400 ">
-                  <span class=" font-bold text-5xl">{item.title}</span>
-                  <span class=" font-bold text-5xl">Communities</span>
+                  <span class="text-6xl mb-4">{item.title}</span>
+                  <br/>
+                  <span class="text-6xl mb-4">Communities</span>
                   <br />
                   <span class="font-extrabold text-5xl">{item.subtitle}</span>
                 </div>
@@ -110,6 +111,76 @@ import { carouselItems } from '../../constants';
     </button>
   </div>
   </div>
+
+  <div class="max-w-7xl mx-auto px-4 py-16">
+        {/* Main Title Section */}
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4">
+                Partnering on Locally-Led Solutions
+                <br />
+                for Sustainable Development
+            </h1>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed">
+                Amplio Ghana partners with government agencies, local NGOs, and
+                international development organizations to plan and deliver programs in the
+                hardest-to-reach rural communities. We use the Amplio Talking Book —
+                <br />
+                a battery-powered audio device designed for low-literate users.
+            </p>
+        </div>
+
+       <div class="flex justify-center mb-5">
+      <div class="relative w-full max-w-3xl text-center">
+        <div class="flex justify-center gap-4">
+              <img 
+                src="/assets/programs/talking-book.png"
+                alt={`Amplio Talking Book`}
+                class="w-[400px] object-contain"
+              />
+            </div>
+        <div class="flex justify-center mt-4">
+          <a 
+            href="#" 
+            class="bg-[#FF5C35] text-white px-8 py-3 rounded-md hover:bg-[#FF7C35] transition-colors"
+          >
+            SEE OUR TECHNOLOGY
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+        {/* Annual Report Section */}
+        <div class="flex flex-col md:flex-row items-center justify-center gap-12 mt-16">
+            <div class="md:w-1/3">
+                <img 
+                    src="/assets/programs/annual-report.jpg" 
+                    alt="2023 Annual Report" 
+                    class="w-full h-auto rounded-lg shadow-lg"
+                />
+            </div>
+            <div class="md:w-1/2">
+                <h2 class="text-4xl font-bold mb-6">2023 Annual Report</h2>
+                <p class="text-lg mb-8 leading-relaxed">
+                    In 2023, we partnered to deliver Social
+                    and Behavior Change (SBCC)
+                    interventions in 20 Districts across four
+                    regions in Ghana. We also utilized Talking
+                    Books to support health education and
+                    peacebuilding programs. Thank you to
+                    our partners and donors for their
+                    collaboration and support!
+                </p>
+                <a 
+                    href="#" 
+                    class="inline-block border-2 border-[#1B365D] text-[#1B365D] px-8 py-3 hover:bg-[#1B365D] hover:text-white transition-colors"
+                >
+                    READ OUR ANNUAL REPORT - 2023
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 <script>
