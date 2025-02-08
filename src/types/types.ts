@@ -18,3 +18,9 @@ export interface CarouselItem {
   buttonText?: string;
   buttonLink?: string;
 }
+
+export interface Service {
+  title: string;
+  imagePath: string;
+  description?: string;
+}

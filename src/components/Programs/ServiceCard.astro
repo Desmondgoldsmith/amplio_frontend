@@ -1,0 +1,23 @@
+---
+import type { Service } from '../../types/types';
+
+
+interface Props {
+    service: Service;
+}
+
+const { service } = Astro.props;
+---
+
+<div class="flex flex-col items-center p-6 bg-white rounded-lg">
+    <div class="w-full h-48 mb-4 overflow-hidden rounded-lg">
+        <img 
+            src={service.imagePath} 
+            alt={service.title}
+            class="w-full h-full object-cover"
+        />
+    </div>
+    <h3 class="text-center text-lg font-medium text-gray-900">
+        {service.title}
+    </h3>
+</div>

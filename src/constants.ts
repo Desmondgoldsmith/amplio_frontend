@@ -1,4 +1,9 @@
-import type { TeamMember, BoardMember, CarouselItem } from "./types/types";
+import type {
+  TeamMember,
+  BoardMember,
+  CarouselItem,
+  Service,
+} from "./types/types";
 
 export const teamMembers: TeamMember[] = [
   {
@@ -105,5 +110,32 @@ export const carouselItems: CarouselItem[] = [
     subtitle: "a voice",
     buttonText: "Read a case study",
     buttonLink: "#",
+  },
+];
+
+export const services: Service[] = [
+  {
+    title: "Program Planning and Field Implementation",
+    imagePath: "/assets/programs/illustration1.png",
+  },
+  {
+    title: "Technology Training and Technical Support",
+    imagePath: "/assets/programs/illustration2.png",
+  },
+  {
+    title: "Social and Behavior Change Communication (SBCC)",
+    imagePath: "/assets/programs/illustration3.png",
+  },
+  {
+    title: "Content Design and Audio Production",
+    imagePath: "/assets/programs/illustration4.png",
+  },
+  {
+    title: "Monitoring and Evaluation *including field surveys",
+    imagePath: "/assets/programs/illustration5.png",
+  },
+  {
+    title: "Community Dialogue and Group Facilitation",
+    imagePath: "/assets/programs/illustration6.png",
   },
 ];
