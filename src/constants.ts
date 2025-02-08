@@ -101,7 +101,7 @@ export const carouselItems: CarouselItem[] = [
   },
   {
     image: "/assets/programs/carousel3.jpg",
-    title: "Giving communities",
+    title: "Giving",
     subtitle: "a voice",
     buttonText: "Read a case study",
     buttonLink: "#",
