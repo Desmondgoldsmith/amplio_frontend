@@ -4,7 +4,7 @@ interface Props {
 }
 
 const { 
-  videoUrl = "https://www.youtube.com/embed/your-video-id"
+  videoUrl = "https://www.youtube.com/embed/nDDfqJK5NK8?si=1fCD7M9Mw3IahAaD"
 } = Astro.props;
 ---
 
@@ -46,13 +46,16 @@ const {
     {/* Call to Action Box */}
     <div class="max-w-3xl mx-auto">
       <div class="bg-[#475CAA] rounded-lg text-center px-8 py-12">
-        <h2 class="text-2xl font-bold text-white mb-4">
+        <h2 class="text-3xl font-bold text-white mb-4">
           Ready to learn more?
         </h2>
-        <p class="text-lg text-white mb-8">
-          Tell us about your project! We're happy to set up 
-          a free consultation or Talking Book demo.
-        </p>
+        <div class="w-[450px] text-center mx-auto flex justify-center">
+            <p class="text-xl text-white text-center mb-8">
+              Tell us about your project! We're happy to set up 
+              a free consultation or Talking Book demo.
+            </p>
+          </div>
+          
         <a 
           href="#contact" 
           class="inline-block bg-[#EC704E] p-3 hover:bg-[#e3603c] text-white font-semibold px-8 py-3 rounded-md transition-colors duration-200"
