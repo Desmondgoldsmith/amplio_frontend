@@ -1,4 +1,4 @@
-import type { TeamMember } from "./types/types";
+import type { TeamMember, BoardMember, CarouselItem } from "./types/types";
 
 export const teamMembers: TeamMember[] = [
   {
@@ -48,5 +48,62 @@ export const teamMembers: TeamMember[] = [
     role: "Business Development Manager",
     image: "/assets/team/Simon.jpg",
     bio: "Simon joined Amplio in 2016. Early on, he was the Talking Book program officer for MEDA's Greater Rural Opportunities for Women (GROW) project, which economically empowered 23,000 women to improve food security and nutrition for their families by growing and selling soybean. Today, he leads and works on business development, manages Talking Book programs, and supports partner relationships. He has expertise in audio content creation and management, survey design and implementation, and community mobilization. Prior to joining Amplio, Simon was officer-in-charge for the implementation of the live drama phase of UNICEF’s Communication for Development program. He also served as a cultural officer for the National Commission on Culture in the Upper East Region. He holds a BA in Integrated Development Studies from the University for Development Studies, Ghana.",
+  },
+];
+
+export const boardMember: BoardMember[] = [
+  {
+    name: "Tawiah Agyarko-Kwarteng - Board Chair",
+    image: "/assets/board/Tawiah.jpg",
+    bio: "Tawiah is a development consultant for the both non-profit and private sectors in West Africa. She currently serves as Technical Manager at the Côte d'Ivoire-Ghana Cocoa Initiative, a joint body set up by the world's two largest producers of cocoa to enhance cooperation. A dynamic leader, Tawiah has led programs on literacy, workplace, health, HIV education, corporate social responsibility, and cocoa sustainability for The Hershey Company and World Education. She also has her consulting firm, Heritage Flow2 Company, in Accra, Ghana. As the Country Advisor for Empowered to Educate, Tawiah provides leadership training and mentors women educators. She holds an MPA in international development from the Harvard Kennedy School.",
+  },
+  {
+    name: "Tiah Gumah Aloysius - Secretary",
+    image: "/assets/board/Tiah.jpg",
+    bio: "Tiah Gumah Aloysius holds BA and MPhil degrees in Integrated Development Studies and Development Management respectively. Over the past 17 years, Tiah has rose through the ranks from Field Officer to Executive Director role within the non-profit sector. Tiah's expertise include; program development and quality management, project cycle management, social and behaviour change communication, organizational management, results based management and research. Since August 2019, Tiah has been leading Amplio Ghana as Executive Director during which period the organization has witnessed its biggest growth. Prior to joining Amplio Ghana, Tiah worked in other countries including Sierra Leone, Liberia, South Sudan and Kenya.",
+  },
+  {
+    name: "Mutala Abdul-Mumin",
+    image: "/assets/board/Mutala.jpg",
+    bio: "Mutala Abdul-Mumin brings over 15 years of extensive experience in project management, development planning, WASH (Water, Sanitation, and Hygiene),investment appraisal, and monitoring and evaluation (M&amp;E). Currently serving as the WASH Monitoring and Financing Senior Advisor at WaterAid UK, Mutala is a seasoned expert in WASH data and monitoring, with a keen interest in government-led WASH monitoring and innovative financing solutions for WASH. His professional journey includes significant roles such as Chief Planning and Investment Analyst at Ghana’s Community Water and Sanitation Agency (CWSA) and Project Officer at Habitat for Humanity Ghana (HFG). Mutala holds a Master’s Degree in Planning, Monitoring and Evaluation, a Commonwealth Executive MBA from Kwame Nkrumah University of Science and Technology, and a Degree in Integrated Development Studies from the University for Development Studies. He is also a proud member of the Ghana Institute of Planning (GIP). Mutala played a pivotal role in developing Ghana’s national WASH ‘Golden Indicators’ for measuring the performance of WASH, contributing to the country’s progress towards achieving SDG 6. Throughout his career, he has collaborated with esteemed organizations such as the World Bank, IRC, WSUP, AMCOW, GAC, and UNICEF, among others.",
+  },
+  {
+    name: "Tyhra Carolyn Kumasi",
+    image: "/assets/board/Tyhra.jpg",
+    bio: "Tyhra Carolyn Kumasi is an accomplished researcher, strategic program leader, and certified Project and Program Management Professional with over 14 years of experience leading multidisciplinary projects in Ghana and Ethiopia. Specializing in water resource management, climate adaptation, sustainable agriculture, and food security, Tyhra has a proven track record in managing large-scale donor-funded initiatives, securing high-value funding, and delivering impactful, community-centered solutions. Currently serving as the Executive Director of Pemcoa Consult, Tyhra oversees a wide range of impactful projects, driving innovative solutions for sustainable development. She has successfully led initiatives with budgets of up to $23 million individually and over $40 million cumulatively, supported by renowned organizations such as the Canadian International Development Agency, the Bill & Melinda Gates Foundation, USAID, and the Conrad N. Hilton Foundation. Beyond her technical expertise, Tyhra is deeply passionate about inspiring, mentoring, and empowering the next generation of female leaders. She is committed to creating spaces where young women can thrive and lead in science, agriculture, and development. With a Ph.D. in Biological Sciences and a strong focus on inclusive leadership, Tyhra continues to champion gender equality, diversity, and inclusion, ensuring that these principles are embedded in program design and implementation.",
+  },
+  {
+    name: "Isaac Kundakogo Kunko, LL.M.",
+    image: "/assets/board/Isaac.jpg",
+    bio: "Isaac Kundakogo Kunko is a lawyer and pharmacist with 15+ years of experience in law, pharmaceuticals, and healthcare innovation. He holds an LL.M. in Intellectual Property and Competition Law (with distinction) from the Munich Intellectual Property Law Center, a Bachelor of Laws from the University of Ghana, and a Bachelor of Pharmacy from KNUST. He's a barrister and solicitor of the Supreme Court of Ghana, providing legal counsel to various companies. He also serves as legal counsel to TU eMpower Africa e.V. and helped establish its Ghana branch. Known for his innovative approach, he was among the first Ghanaian lawyers to use social media for court processes. His experience includes leading pharmacy operations at Lawra District Hospital, managing pharmaceutical companies, and currently leading the Law and Africa Initiative at Max Planck Law. He lectures at several universities and tutors at MIPLC. His research focuses on competition law in the pharmaceutical industry. He is a member of the Ghana Bar Association and the Pharmaceutical Society of Ghana.",
+  },
+  {
+    name: "Phoebe Balagumyetime",
+    image: "/assets/board/Phoebe.jpg",
+    bio: "Phoebe Balagumyetime is a public health leader dedicated to improving maternal and child health in Ghana's marginalized communities. As District Director of Health Services (Nadowli/Kaleo), she brings extensive experience in epidemiology, disease control, and health administration. Her qualifications include an MPhil in Epidemiology (University of Ghana) and a Master's in Public Health (Leeds University), along with certificates in Applied Epidemiology (Emory University) and Global Health and Sustainable Development. Phoebe has served as District Director in various districts, contributing significantly to national programs like the National Tuberculosis Control Programme. As a recognized facilitator and mentor, Phoebe shares her expertise with other healthcare professionals, including through the Ghana Field Epidemiology and Laboratory Training Programme (FELTP). Her contributions have earned her several awards, including Regional Best Nurse of the Year (1999). She is a Fellow of the Civilian Institute of Democratic Administration (FCIDA) and the Ghana College of Nurses and Midwives. Her commitment to community health is reflected in her publications and presentations.",
+  },
+];
+
+export const carouselItems: CarouselItem[] = [
+  {
+    image: "/assets/programs/carousel1.jpg",
+    title: "Award-winning",
+    subtitle: "public health",
+    buttonText: "LEARN MORE >",
+    buttonLink: "#",
+  },
+  {
+    image: "/assets/programs/carousel2.jpg",
+    title: "Ensuring gender",
+    subtitle: "digital inclusion",
+    buttonText: "Why Talking Books? >>",
+    buttonLink: "#",
+  },
+  {
+    image: "/assets/programs/carousel3.jpg",
+    title: "Giving communities",
+    subtitle: "a voice",
+    buttonText: "Read a case study",
+    buttonLink: "#",
   },
 ];

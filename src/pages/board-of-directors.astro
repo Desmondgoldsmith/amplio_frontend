@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BoardMemberCard from '../components/Board/BoardMemberCard.astro';
+import { boardMember } from '../constants';
+---
+
+<Layout title="Our Team | Amplio Ghana">
+  <main class="w-full bg-[#F2FAFE] mt-20 py-12">
+    <div class="max-w-4xl mx-auto space-y-12 px-4 sm:px-6 lg:px-8">
+      <div class="text-center space-y-4">
+        <h1 class="text-4xl font-bold text-gray-900 mt-4">Board of Directors</h1>
+        <p class="text-gray-600 max-w-3xl w-[550px] mx-auto">
+            Amplio’s board includes leaders and innovators who work on 
+            cross-cutting issues in technology and international development, 
+            including sustainable agriculture, climate impact, civil society, 
+            education, health, law, and women's empowerment.
+        </p>
+      </div>
+
+      <div class="space-y-8">
+        {boardMember.map(member => (
+          <BoardMemberCard
+            name={member.name}
+            image={member.image}
+            bio={member.bio}
+          />
+        ))}
+      </div>
+    </div>
+  </main>
+</Layout>
