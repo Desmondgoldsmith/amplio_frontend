@@ -32,3 +32,8 @@ export interface Partner {
 export interface Topic {
   name: string;
 }
+
+export interface GlobalPartner {
+  logo: string;
+  name: string;
+}

@@ -5,6 +5,7 @@ import type {
   Service,
   Topic,
   Partner,
+  GlobalPartner,
 } from "./types/types";
 
 export const teamMembers: TeamMember[] = [
@@ -184,3 +185,45 @@ export const topicColumns: Topic[][] = [
     { name: "Youth Empowerment" },
   ],
 ];
+
+export const GlobalPartnersData: GlobalPartner[] = [
+  { logo: "/assets/partners/care.png", name: "CARE" },
+  { logo: "/assets/partners/vso.jpg", name: "VSO" },
+  { logo: "/assets/partners/unicef.png", name: "UNICEF" },
+  { logo: "/assets/partners/meda.png", name: "MEDA" },
+  { logo: "/assets/partners/agra.png", name: "AGRA" },
+  { logo: "/assets/partners/itu.png", name: "ITU" },
+  { logo: "/assets/partners/ansi.png", name: "ANSI" },
+  { logo: "/assets/partners/mofa.png", name: "Ministry of Food & Agriculture" },
+  { logo: "/assets/partners/cbcc.png", name: "CBCC" },
+  { logo: "/assets/partners/savana.jpeg", name: "Savana Signatures" },
+  { logo: "/assets/partners/ghdf.jpeg", name: "ghdf" },
+  { logo: "/assets/partners/wcf.png", name: "World Cocoa Foundation" },
+  { logo: "/assets/partners/landsea.png", name: "Landesa" },
+  { logo: "/assets/partners/saa.png", name: "Sasawka Africa Association" },
+  { logo: "/assets/partners/techn.png", name: "TechnoServe" },
+  { logo: "/assets/partners/arm.png", name: "ARM" },
+  { logo: "/assets/partners/tostan.png", name: "Tostan" },
+  { logo: "/assets/partners/volo.png", name: "volo" },
+  { logo: "/assets/partners/MercyCorps logo.png", name: "Mercy Corps" },
+  { logo: "/assets/partners/ifad.png", name: "IFDC" },
+  { logo: "/assets/partners/miller.png", name: "miller" },
+  { logo: "/assets/partners/principles.png", name: "principles" },
+  { logo: "/assets/partners/connect.png", name: "connective" },
+  { logo: "/assets/partners/esoko.png", name: "esoko" },
+  { logo: "/assets/partners/usaid.jpg", name: "usaid" },
+  { logo: "/assets/partners/creative.jpeg", name: "creative" },
+  { logo: "/assets/partners/BMGF.png", name: "BillG" },
+  { logo: "/assets/partners/Star.png", name: "star" },
+  { logo: "/assets/partners/giz.png", name: "giz" },
+  { logo: "/assets/partners/ifad.png", name: "ifad" },
+  { logo: "/assets/partners/crs.png", name: "catholic" },
+  { logo: "/assets/partners/ghs.jpeg", name: "ghs" },
+];
+
+export const testimonial = {
+  quote:
+    "With Talking Books, community health volunteers are delivering consistent and quality health education. We have had a more than 100% increase in mothers attending antenatal care visits.",
+  author: "Catherine Mesianto Lengewe",
+  role: "Technical and Strategy Director, Centre for Behaviour Change and Communication",
+};
