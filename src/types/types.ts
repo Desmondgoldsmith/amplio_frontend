@@ -24,3 +24,11 @@ export interface Service {
   imagePath: string;
   description?: string;
 }
+
+export interface Partner {
+  name: string;
+}
+
+export interface Topic {
+  name: string;
+}

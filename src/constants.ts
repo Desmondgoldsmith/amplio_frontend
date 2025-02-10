@@ -3,6 +3,8 @@ import type {
   BoardMember,
   CarouselItem,
   Service,
+  Topic,
+  Partner,
 } from "./types/types";
 
 export const teamMembers: TeamMember[] = [
@@ -138,4 +140,47 @@ export const services: Service[] = [
     title: "Community Dialogue and Group Facilitation",
     imagePath: "/assets/programs/illustration6.png",
   },
+];
+
+export const partners: Partner[] = [
+  { name: "Ghana Health Service" },
+  { name: "Ministry of Food and Agriculture" },
+  { name: "UNICEF" },
+  { name: "CARE" },
+  { name: "VSO" },
+  { name: "Esoko" },
+  { name: "Savana Signatures" },
+  { name: "AGRA" },
+  { name: "MEDA" },
+  { name: "World Cocoa Foundation" },
+];
+
+export const topicColumns: Topic[][] = [
+  [
+    { name: "Sustainable Agriculture" },
+    { name: "Animal Husbandry" },
+    { name: "Climate Change Adaption and Resilience" },
+    { name: "Food Security" },
+    { name: "Nutrition" },
+    { name: "Maternal, Newborn, and Child Health (MNCH)" },
+    { name: "Breastfeeding" },
+  ],
+  [
+    { name: "Birth Registration" },
+    { name: "Girls Education" },
+    { name: `Gender Equality and Women's Empowerment` },
+    { name: "Child Marriage" },
+    { name: "Adolescent Sexual and Reproductive Health" },
+    { name: "COVID-19" },
+    { name: "Financial Literacy" },
+  ],
+  [
+    { name: "Mental Health" },
+    { name: "Negotiation" },
+    { name: "Shared Household Decision Making" },
+    { name: "Value Chains" },
+    { name: "VSLAs" },
+    { name: "Water, Sanitation, and Hygiene (WASH)" },
+    { name: "Youth Empowerment" },
+  ],
 ];
