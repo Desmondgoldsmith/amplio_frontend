@@ -71,7 +71,7 @@ const videoConfig = {
     <section class="w-full max-w-6xl mx-auto px-4 mb-16">
         <div class="relative w-full" style="padding-top: 56.25%">
           <iframe
-            class="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
+            class="absolute top-0 left-0 w-full h-full  shadow-lg"
             src={`https://www.youtube.com/embed/${videoConfig.youtubeId}`}
             title={videoConfig.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -90,7 +90,7 @@ const videoConfig = {
         <blockquote class="max-w-3xl w-[550px] text-2xl text-center mx-auto mb-4">
           "The Talking Book builds up so much trust. Community members now have access to clear health messages in their own language, and they are learning and sharing that information with others."
         </blockquote>
-        <p class="max-w-3xl w-[750px] text-center mx-auto">
+        <p class="max-w-3xl w-[850px] text-center mx-auto">
           Florence Angsomwine, Jirapa Municipal Health Director, Ghana Health Service
         </p>
         <div class="text-center mt-8">
@@ -107,7 +107,7 @@ const videoConfig = {
           <img 
             src="/assets/programs/sdg.png" 
             alt="Multi-sector solution illustration" 
-            class="w-full h-full object-cover rounded-lg shadow-lg"
+            class="w-full h-full object-cover  shadow-lg"
           />
         </div>
         <div class = "bg-blue-50 w-full h-full p-8 text-center">
@@ -131,12 +131,11 @@ const videoConfig = {
       </div>
   </section>
 
-  <section class="w-full py-16 bg-white">
-    <div class="container mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div>
+  <section class="w-full pt-16 bg-white">
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <div class = "p-8 text-center mt-16">
           <h2 class="text-3xl font-bold mb-6">Culturally-Relevant Content</h2>
-          <p class="text-gray-700 mb-8">
+          <p class="text-gray-700 mb-8 max-w-3xl w-[550px] text-center mx-auto">
             We work with subject experts, musicians, and theater groups to create messages, including songs, dramas, and interviews. Our team has produced Talking Book audio content in more than a dozen languages.
           </p>
           <button class="bg-white border-2 border-black px-6 py-2 font-medium hover:bg-gray-100 transition-colors">
@@ -147,33 +146,30 @@ const videoConfig = {
           <img 
             src="/assets/programs/talk.jpeg" 
             alt="Recording an interview" 
-            class="w-full h-80 object-cover rounded-lg"
+            class="w-full h-[500px] object-cover "
           />
         </div>
-      </div>
     </div>
   </section>
 
-  <section class="w-full bg-gray-100 py-16">
-    <div class="container mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+  <section class="w-full">
+      <div class="grid grid-cols-1 md:grid-cols-2">
         <div class="relative">
           <img 
             src="/assets/programs/woman.jpg" 
             alt="Community facilitation session" 
-            class="w-full h-80 object-cover rounded-lg"
+            class="w-full h-[500px] object-cover "
           />
         </div>
-        <div>
+        <div class = "p-8 text-center mt-16">
           <h2 class="text-3xl font-bold mb-6">Community Facilitation</h2>
-          <p class="text-gray-700 mb-8">
+          <p class="text-gray-700 mb-8 max-w-3xl w-[550px] text-center mx-auto">
             We partner with communities to improve learning, engagement, and impact. We want to see the hard work of smallholder farmers and rural families lead to better health, income, equity, and education.
           </p>
           <button class="bg-white border-2 border-black px-6 py-2 font-medium hover:bg-gray-100 transition-colors">
             MEET OUR TEAM
           </button>
         </div>
-      </div>
     </div>
   </section>
 </div>
