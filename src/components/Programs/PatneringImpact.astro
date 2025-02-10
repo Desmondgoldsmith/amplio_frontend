@@ -3,7 +3,7 @@ import { partners, topicColumns } from '../../constants';
 
 const videoConfig = {
   title: "Communication During a Public Health Crisis: Using Talking Books",
-  youtubeId: "YOUR_YOUTUBE_VIDEO_ID"
+  youtubeId: "2P_XiIqyTIo?si=1qWB2ei-3SSIiiPu"
 };
 ---
 
@@ -11,7 +11,7 @@ const videoConfig = {
     <section class="w-full max-w-6xl mx-auto  px-4 py-16">
         <h2 class="text-4xl font-bold text-center mb-8">Partnering for Impact</h2>
         <p class="max-w-3xl w-[550px] text-center mx-auto">
-        Some of the <span class="text-blue-500">partners</span> we work with include {partners.map((partner, index) => (
+        Some of the <a href="/partners" class="text-blue-500 font-bold hover:underline">partners</a> we work with include {partners.map((partner, index) => (
           <>
             {partner.name}{index < partners.length - 1 ? ', ' : ''}
           </>
@@ -19,10 +19,10 @@ const videoConfig = {
       </p>
     </section>
   
-    <section class="w-full max-w-6xl mx-auto px-4 mb-16">
+    <section class="w-full max-w-6xl mx-auto px-4 mb-4">
         <div class="relative w-full" style="padding-top: 56.25%">
           <iframe
-            class="absolute top-0 left-0 w-full h-full  shadow-lg"
+            class="absolute top-0 left-0 w-full h-[500px]  shadow-lg"
             src={`https://www.youtube.com/embed/${videoConfig.youtubeId}`}
             title={videoConfig.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -31,12 +31,12 @@ const videoConfig = {
         </div>
       </section>
   
-    <section class="w-full max-w-6xl mx-auto px-4 py-8 bg-white">
+    <section class="w-full max-w-6xl mx-auto px-4 pb-4 bg-white">
       <div class="flex flex-col items-center">
         <img 
           src="/assets/programs/ghs.jpeg" 
           alt="Ghana Health Service Logo" 
-          class="w-24 h-24 mb-8"
+          class="w-32 h-32 mb-8"
         />
         <blockquote class="max-w-3xl w-[550px] text-2xl text-center mx-auto mb-4">
           "The Talking Book builds up so much trust. Community members now have access to clear health messages in their own language, and they are learning and sharing that information with others."
@@ -45,7 +45,7 @@ const videoConfig = {
           Florence Angsomwine, Jirapa Municipal Health Director, Ghana Health Service
         </p>
         <div class="text-center mt-8">
-          <a href="#" class="text-blue-500 hover:underline">
+          <a href="https://studio.youtube.com/video/bfBIPhkxlV8/edit" class="text-blue-500 hover:underline">
             Watch our COVID-19 Response partnership documentary &gt;
           </a>
         </div>
@@ -118,9 +118,59 @@ const videoConfig = {
             We partner with communities to improve learning, engagement, and impact. We want to see the hard work of smallholder farmers and rural families lead to better health, income, equity, and education.
           </p>
           <button class="bg-white border-2 border-black px-6 py-2 font-medium hover:bg-gray-100 transition-colors">
-            MEET OUR TEAM
+            <a href = "/team">
+                 MEET OUR TEAM
+            </a>
           </button>
         </div>
     </div>
   </section>
+
+    <section class="max-w-xl mt-16 mx-auto p-4">
+      <div class="bg-white p-6 ">
+        <div class="flex justify-center gap-4 mb-4">
+          <img 
+            src="/assets/programs/ghana.png"
+            alt="Amplio Talking Book"
+            class="w-[300px] object-contain"
+          />
+        </div>
+        <h2 class="text-2xl font-bold mb-4 text-center">Contact Amplio Ghana</h2>
+        <p class="mb-4 text-center">Curious about Talking Books? Contact us! We're happy to discuss your project and do a demo. We have offices in Wa and Tamale.</p>
+        
+        <div class="space-y-2 mb-4 text-center">
+          <p>
+            <strong>Email:</strong>{' '}
+            <a 
+              href="mailto:ghana@amplio.org" 
+              class="text-blue-500 hover:text-blue-700 hover:underline"
+            >
+              ghana@amplio.org
+            </a>
+          </p>
+          <p>
+            <strong>Phone:</strong>{' '}
+            <a 
+              href="tel:+233242834803" 
+              class="text-blue-500 hover:text-blue-700 hover:underline"
+            >
+              +233 24 283 4803
+            </a>
+          </p>
+          <p>
+            <strong>Phone:</strong>{' '}
+            <a 
+              href="tel:+233555294412" 
+              class="text-blue-500 hover:text-blue-700 hover:underline"
+            >
+              +233 55 529 4412
+            </a>
+          </p>
+        </div>
+        
+        <div class="mt-4 text-md text-gray-600 text-center">
+          <p>Amplio Ghana is registered with the Registrar General's Department (No: CG059762020) and the Department of Social Welfare (No: 9582) to operate as a non-profit organization in Ghana. TIN: C0049446894</p>
+        </div>
+      </div>
+    </section>
 </div>

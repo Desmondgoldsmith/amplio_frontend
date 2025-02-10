@@ -1,0 +1,155 @@
+---
+interface Partner {
+  logo: string;
+  name: string;
+}
+
+const partners: Partner[] = [
+  { logo: '/assets/partners/care.png', name: 'CARE' },
+  { logo: '/assets/partners/vso.jpg', name: 'VSO' },
+  { logo: '/assets/partners/unicef.png', name: 'UNICEF' },
+  { logo: '/assets/partners/meda.png', name: 'MEDA' },
+  { logo: '/assets/partners/agra.png', name: 'AGRA' },
+  { logo: '/assets/partners/itu.png', name: 'ITU' },
+  { logo: '/assets/partners/ansi.png', name: 'ANSI' },
+  { logo: '/assets/partners/mofa.png', name: 'Ministry of Food & Agriculture' },
+  { logo: '/assets/partners/cbcc.png', name: 'CBCC' },
+  { logo: '/assets/partners/savana.jpeg', name: 'Savana Signatures' },
+  { logo: '/assets/partners/ghdf.jpeg', name: 'ghdf' },
+  { logo: '/assets/partners/wcf.png', name: 'World Cocoa Foundation' },
+  { logo: '/assets/partners/landsea.png', name: 'Landesa' },
+  { logo: '/assets/partners/saa.png', name: 'Sasawka Africa Association' },
+  { logo: '/assets/partners/techn.png', name: 'TechnoServe' },
+  { logo: '/assets/partners/arm.png', name: 'ARM' },
+  { logo: '/assets/partners/tostan.png', name: 'Tostan' },
+  { logo: '/assets/partners/volo.png', name: 'volo' },
+  { logo: '/assets/partners/MercyCorps logo.png', name: 'Mercy Corps' },
+  { logo: '/assets/partners/ifad.png', name: 'IFDC' },
+  { logo: '/assets/partners/miller.png', name: 'miller' },
+  { logo: '/assets/partners/principles.png', name: 'principles' },
+  { logo: '/assets/partners/connect.png', name: 'connective' },
+  { logo: '/assets/partners/esoko.png', name: 'esoko' },
+  { logo: '/assets/partners/usaid.jpg', name: 'usaid' },
+  { logo: '/assets/partners/creative.jpeg', name: 'creative' },
+  { logo: '/assets/partners/BMGF.png', name: 'BillG' },
+  { logo: '/assets/partners/Star.png', name: 'star' },
+  { logo: '/assets/partners/giz.png', name: 'giz' },
+  { logo: '/assets/partners/ifad.png', name: 'ifad' },
+  { logo: '/assets/partners/crs.png', name: 'catholic' },
+  { logo: '/assets/partners/ghs.jpeg', name: 'ghs' },
+];
+
+const testimonial = {
+  quote: "With Talking Books, community health volunteers are delivering consistent and quality health education. We have had a more than 100% increase in mothers attending antenatal care visits.",
+  author: "Catherine Mesianto Lengewe",
+  role: "Technical and Strategy Director, Centre for Behaviour Change and Communication"
+};
+---
+
+<!-- <section class="bg-white mt-20 py-16">
+  <div class="container mx-auto px-4"> -->
+    {/* Global Partners Section */}
+    <section class="bg-white mt-20 py-20">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold mb-4">Global Partners</h2>
+          <p class="max-w-2xl mx-auto text-gray-600 mb-12">
+            We partner with international organizations, governments, NGOs, and funders to bridge the digital divide and deliver programs that transform lives.
+          </p>
+        </div>
+      
+        <div class="mt-12 relative w-screen left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]">
+          <div class="w-full h-[400px] md:h-[500px] relative">
+            <img 
+              src="/assets/partners/amplio-connect.jpg" 
+              alt="People sharing knowledge with Amplio device" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+        <p class = "font-medium text-center mt-6 mb-10">Here are some of the partners we have worked with over the years. </p>
+      
+        <div class=" max-w-screen-lg mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center mt-12">
+            {partners.map(partner => (
+                <div class="w-40 h-40 flex items-center justify-center">
+                  <img 
+                    src={partner.logo} 
+                    alt={partner.name} 
+                    class="max-w-full max-h-full object-contain hover:grayscale cursor-pointer transition-all duration-300"
+                  />
+                </div>
+              ))}
+        </div>
+      </section>
+      
+
+      <section class="bg-blue-50 py-16">
+        <div class="container mx-auto px-4 text-center">
+          <h2 class="text-3xl font-bold mb-4">Social and Behavior Change Experts</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto mb-8">
+            Technical and strategy director Catherine Lengewe leads the Centre for Behaviour Change and Communication's initiatives in Kenya and beyond. Her team integrates Talking Books with other innovative SBC solutions.
+          </p>
+          
+          <div class="max-w-3xl mx-auto">
+            <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
+              <iframe 
+                src="https://www.youtube.com/embed/LsP3o1rcO_0?si=Q18qZj3dW1OUMWP-" 
+                title="Project Video" 
+                class="w-full h-full"
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+
+    <section class="bg-white pt-10">
+          <div class="mb-8">
+            <img 
+              src="/assets/partners/cbcc.png" 
+              alt="CBCC Logo" 
+              class="mx-auto mb-6 h-48 w-48"
+            />
+          </div>
+      
+          <div class="max-w-3xl mx-auto mb-20 text-center">
+            <p class="text-3xl font-semibold mb-4">
+              "With Talking Books, community health volunteers are delivering consistent and quality health education. We have had a more than 100% increase in mothers attending antenatal care visits."
+            </p>
+            <p class="text-gray-600">
+              Catherine Mesianto Lengewa, Technical and Strategy Director<br>
+              Centre for Behaviour Change and Communication
+            </p>
+          </div>
+        <div class = "bg-blue-50">
+          <div class="flex justify-center p-10 mb-4">
+            <img 
+              src="/assets/partners/illustration4.png" 
+              alt="Amplio Digital Solution" 
+              class="max-w-md w-full"
+            />
+          </div>
+      
+          <div class="max-w-3xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-4">
+              Partner with Amplio to bridge the digital divide, amplify your reach, and empower rural communities.
+            </h2>
+            <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
+              Tell us about your project! We'd love to meet you and discuss how we could partner to help share knowledge and transform lives.
+            </p>
+      
+            <a 
+              href="#contact" 
+              class="inline-block bg-[#475CAA] text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors mb-10"
+            >
+              Contact Us
+            </a>
+          </div>
+          </div>
+      </section>
+      
+  <!-- </div>
+</section> -->
