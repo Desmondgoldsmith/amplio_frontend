@@ -105,7 +105,7 @@ export const carouselItems: CarouselItem[] = [
     title: "Ensuring gender",
     subtitle: "digital inclusion",
     buttonText: "Why Talking Books? >>",
-    buttonLink: "#",
+    buttonLink: "/why-talking-books",
   },
   {
     image: "/assets/programs/carousel3.jpg",

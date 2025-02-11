@@ -1,0 +1,84 @@
+---
+interface Statistic {
+  imageSrc: string;
+  value: string;
+  description: string;
+}
+
+const statistics: Statistic[] = [
+  {
+    imageSrc: "/assets/why-amplio/book.svg",  
+    value: "773 million",
+    description: "adults and youth lack basic literacy skills"
+  },
+  {
+    imageSrc: "/assets/why-amplio/bulb.svg",
+    value: "750 million",
+    description: "people live without electricity"
+  },
+  {
+    imageSrc: "/assets/why-amplio/phone.svg",
+    value: "635+ million",
+    description: "adults in low and middle-income countries don't have mobile phones—including 400 million women"
+  },
+  {
+    imageSrc: "/assets/why-amplio/connect.svg",
+    value: "1B+ women",
+    description: "don't use mobile internet because of cost, illiteracy, safety and security, and other barriers"
+  }
+];
+---
+
+<section>
+    <section class="bg-white mt-20 py-20">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold mb-4">Why Talking Books?</h2>
+          <p class="max-w-2xl mx-auto text-lg mb-9">
+            For people in developing countries, access to knowledge can transform lives.
+          </p>
+        </div>
+      
+        <div class="mt-12 relative w-screen left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]">
+          <div class="w-full h-[470px] md:h-[560px] relative">
+            <img 
+              src="/assets/why-amplio/why-amplio.jpg" 
+              alt="Girl listening to the Amplio Device with Family" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="max-w-6xl mx-auto px-4 py-4">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl font-bold mb-6 max-w-3xl mx-auto">
+            Development agencies face barriers to sharing knowledge with the most vulnerable and underserved communities.
+          </h2>
+          <p class="text-gray-700 mb-4">
+            They also lack an adequate understanding of each community's specific needs. There are too many villages, too far apart — and too many barriers. Challenges include poor road conditions, illiteracy, gender inequities, unreliable electricity and internet, and expensive mobile data.
+          </p>
+          <p class="text-gray-700">
+            But access to knowledge can impact food security, health, income, and more.
+          </p>
+        </div>
+      
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-40">
+          {statistics.map((stat) => (
+            <div class="flex flex-col items-center text-center">
+              <div class="mb-4">
+                <img 
+                  src={stat.imageSrc} 
+                  alt="" 
+                  class="w-16 h-16 object-contain "
+                />
+              </div>
+              
+              <div class="text-2xl font-bold mb-2">{stat.value}</div>
+              
+              <p class="text-gray-600 text-sm">{stat.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+          
+    </section>
