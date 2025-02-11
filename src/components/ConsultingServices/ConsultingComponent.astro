@@ -11,6 +11,12 @@ interface ProgramService {
   subDesc: string;
 }
 
+interface TrainingService {
+  title: string;
+  description: string;
+  link?: string;
+}
+
 
 const services: ProgramService[] = [
   {
@@ -40,6 +46,50 @@ const services: ProgramService[] = [
     
   }
 ];
+
+const monitoring: ProgramService[] = [
+  {
+    title: "Custom Monitoring",
+    description: "Amplio will design a monitoring plan to help you meet your organizational or grant reporting requirements, with up to 10 custom indicators. This includes the development of custom monitoring tools, training, and quarterly reports.",
+    imageSrc: "/assets/consulting/security.png",
+    imageAlt: "Monitoring",
+    subTitle: "Operational Research",
+    subDesc: "Amplio will design a study and data collection tools to assess your Talking Book program implementation. We will analyze the data and create a narrative report and a visual presentation to inform your programming."
+  },
+  {
+    title: "Impact Evaluation",
+    description: "Amplio will design an impact study, including data collection tools, tailored to your needs and budget. Once the study is completed, we will analyze the data and create both a narrative report and a visual presentation of its findings.",
+    imageSrc: "/assets/consulting/analysis.png",
+    imageAlt: "Impact Evaluation",
+    subTitle: "Custom Dashboard",
+    subDesc: "Amplio will create custom queries and visualizations based on your program’s desired indicators. We will integrate the visualizations into your dashboard.",
+    
+  },
+  {
+    title: "User Feedback Analysis",
+    description: "In certain countries, we can provide local language speakers to help you manage the qualitative analysis of your program's Talking Book user feedback.",
+    imageSrc: "/assets/consulting/woman-amplio.png",
+    imageAlt: "User Feedback Analysis",
+    subTitle: "",
+    subDesc: "The analysis process includes listening to, coding, transcribing, and translating the recorded messages. We can provide a full narrative analysis of key findings from user feedback and make recommendations for your program strategy moving forward.",
+    
+  }
+];
+
+const trainingServices: TrainingService[] = [
+  {
+    title: "Training and Skills Development",
+    description: "Our Basic Service Package includes remote training to onboard your staff with Talking Book program technology and processes. If your team needs more support over the course of your project, we can design and deliver a custom training package, online or in-person.",
+  },
+  {
+    title: "Participatory Engagement",
+    description: "Our team has years of experience designing and facilitating participatory community engagement processes. We can work with you to identify your needs, and design and deliver training and services to suit your situation.",
+  },
+  {
+    title: "Behavior Change Communication",
+    description: "There are some high-quality, open-source materials to support behavior change communications skills development. If your team wants a hands-on, personalized training approach, we can work with you to design and deliver a curriculum at a scale and pace that suits your learning needs.",
+  }
+];
 ---
 
 
@@ -63,17 +113,14 @@ const services: ProgramService[] = [
       </section>
 
       <section class="py-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
-        {/* Header */}
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-bold mb-4">Program Design and Management</h2>
           <p class="text-gray-600 text-lg">Amplio can provide support across your project cycle.</p>
         </div>
       
-        {/* Services Grid */}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map(service => (
             <div class="flex flex-col bg-gray-100 rounded-md p-5 space-y-4">
-              {/* Image Container */}
               <div class="mb-6 flex justify-center">
                 <Image
                   src={service.imageSrc}
@@ -84,7 +131,6 @@ const services: ProgramService[] = [
                 />
               </div>
               
-              {/* Content */}
               <div class = "text-center mx-auto">
                 <h3 class="text-xl font-semibold mb-3">{service.title}</h3>
                 <p class="text-gray-600 leading-relaxed">{service.description}</p>
@@ -95,6 +141,112 @@ const services: ProgramService[] = [
               </div>
             </div>
           ))}
+        </div>
+      </section>
+      
+      <section class="py-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">Monitoring and Evaluation</h2>
+          <p class="text-gray-600 text-lg max-w-lg mx-auto">Amplio offers customized monitoring and evaluation plans, tools, and reports. We can also provide enumerator training. </p>
+        </div>
+      
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {monitoring.map(monitor => (
+            <div class="flex flex-col bg-gray-100 rounded-md p-5 space-y-4">
+              <div class="mb-6 flex justify-center">
+                <Image
+                  src={monitor.imageSrc}
+                  alt={monitor.imageAlt}
+                  width={250}
+                  height={200}
+                  class="w-full max-w-[250px] h-auto"
+                />
+              </div>
+              
+              <div class = "text-center mx-auto">
+                <h3 class="text-xl font-semibold mb-3">{monitor.title}</h3>
+                <p class="text-gray-600 leading-relaxed">{monitor.description}</p>
+                <div class = "mt-4">
+                  <h3 class = "text-xl font-semibold mb-3">{monitor.subTitle}</h4>
+                <p class = "text-gray-600 leading-relaxed">{monitor.subDesc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-16">
+        <div class="text-center mb-16">
+          <div class="flex justify-center mb-6">
+            <Image
+              src="/assets/consulting/green-amplio.png"
+              alt="Talking Book Device"
+              width={120}
+              height={120}
+              class="w-auto h-auto"
+            />
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">Training and Capacity Building</h2>
+          <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+            If your team needs more support, let us know. We can point you to some high-quality resources or design a customized training package.
+          </p>
+        </div>
+      
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+          {trainingServices.map(service => (
+            <div class="space-y-4 bg-gray-100 rounded-md mx-auto text-center p-4">
+              <h3 class="text-xl font-semibold">{service.title}</h3>
+              <p class="text-gray-600 leading-relaxed">
+                {service.title === "Training and Skills Development" && (
+                  <span>Our <a href="/basic-service-package" class="text-blue-600 hover:underline">Basic Service Package</a>{" "}</span>
+                )}
+                {service.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      
+        {/* Let's Connect Section */}
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">Let's connect!</h2>
+          <p class="text-gray-600 text-lg max-w-3xl mx-auto mb-8">
+            If you have questions about our consulting services, please ask. We are happy to set up a free consultation to discuss your needs.
+          </p>
+          <a
+            href="#"
+            class="inline-block bg-[#00D2FF] text-white px-8 py-3 rounded-md font-medium hover:bg-[#00bfe8] transition-colors"
+          >
+            CONTACT US
+          </a>
+        </div>
+      
+        {/* Newsletter Signup */}
+        <div class="max-w-4xl mx-auto bg-gray-50 p-8 rounded-lg">
+          <h3 class="text-center text-xl mb-6">Sign up for Amplio email news and stories</h3>
+          <form class="flex flex-col md:flex-row gap-4">
+            <input
+              type="text"
+              placeholder="First name"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              type="text"
+              placeholder="Last name"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="submit"
+              class="bg-[#464FA0] text-white px-8 py-2 rounded-md font-medium hover:bg-[#363d80] transition-colors whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
         </div>
       </section>
 </section>
