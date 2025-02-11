@@ -1,0 +1,157 @@
+---
+import { Image } from 'astro:assets';
+import type { FinancialData, TransparencyBadge, Quote } from '../../types/types';
+
+const financialData: FinancialData = {
+  year: 2022,
+  description: "In 2022, we partnered to deliver Talking Book programs in 11 countries. Our team shared best practices for audio content, health promotion, and women's empowerment. We also developed a digital platform for Social and Behavior Change programs. Thank you to our partners and donors for their collaboration and support!",
+  imageSrc: "/assets/financial-reports/2022-report.png",
+  buttonText: "LAUNCH OUR YEAR IN REVIEW",
+  buttonLink: "#"
+};
+
+const badges: TransparencyBadge[] = [
+  {
+    year: 2024,
+    type: "Gold Transparency",
+    imageSrc: "/assets/financial-reports/gold.svg"
+  },
+  {
+    year: 2024,
+    type: "Four-Star Charity Navigator",
+    imageSrc: "/assets/financial-reports/Four-Star.png"
+  }
+];
+
+const quote: Quote = {
+  text: "The Talking Book is an effective tool to help the world's poorest people. That's why my wife Cathy and I provided funding to expand Amplio's programs beyond Africa to Haiti and Bangladesh.",
+  author: "PAUL COTTON",
+  title: "Convenor, ISO/IEC JTC 1/SC 42 Artificial Intelligence"
+};
+---
+
+<section class="w-full mt-28">
+  <div class="bg-[#464FA0] py-8">
+    <h1 class="text-white text-4xl font-semibold text-center">Financials</h1>
+  </div>
+
+  <div class="mx-auto ">
+    <div class="max-w-7xl py-12 px-4 md:px-56">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="relative">
+          <Image
+            src={financialData.imageSrc}
+            alt={`Year in review ${financialData.year}`}
+            width={600}
+            height={400}
+            class="rounded-lg shadow-lg w-full h-auto"
+          />
+        </div>
+        <div class="space-y-6">
+          <h2 class="text-3xl font-semibold">Year in review—{financialData.year}</h2>
+          <p class="text-gray-700 leading-relaxed">
+            {financialData.description}
+          </p>
+          <a
+            href={financialData.buttonLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block bg-[#464FA0] text-white px-8 py-3 rounded-md font-medium hover:bg-[#363d80] transition-colors"
+          >
+            {financialData.buttonText}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-blue-50 py-6 px-4 p-5 text-center text-lg text-gray-700">
+        <p class="max-w-4xl mx-auto">
+          Amplio Ghana is registered with the Registrar General's Department (No: CG059762020) and 
+          the Department of Social Welfare (No: 9582) to operate as a non-profit organization in 
+          Ghana. TIN: C0049446894. If you have questions about making a donation, contact us at 
+          communications@amplio.org or call (+233) 55-529-4412.
+        </p>
+      </div>
+
+    <div class="bg-white py-12 border-t px-4 md:px-56 border-gray-200">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+          <div class="flex gap-8">
+            {badges.map(badge => (
+              <div class="w-32">
+                <Image
+                  src={badge.imageSrc}
+                  alt={`${badge.type} ${badge.year}`}
+                  width={128}
+                  height={128}
+                  class="w-full h-auto"
+                />
+              </div>
+            ))}
+          </div>
+          <div class="md:max-w-xl">
+            <p class="text-lg font-medium text-gray-800">
+              Amplio has earned the Platinum Seal of Transparency on Candid (GuideStar) and Charity Navigator's Four-Star rating, the highest possible ratings.
+            </p>
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[#00A3E0] hover:underline mt-2 inline-block"
+            >
+              See our GuideStar profile &gt;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white py-16">
+      <div class="max-w-3xl mx-auto px-4 text-center">
+        <div class="mb-8">
+          <Image
+            src="/assets/financial-reports/green-amplio.png"
+            alt="Talking Book Icon"
+            width={160}
+            height={160}
+            class="mx-auto"
+          />
+        </div>
+        <blockquote class="text-xl leading-relaxed mb-8 text-gray-800">
+          "{quote.text}"
+        </blockquote>
+        <div class="text-sm font-medium">
+          <p class="uppercase mb-1">{quote.author}</p>
+          <p class="text-gray-600">{quote.title}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative h-[400px] overflow-hidden">
+    <Image
+      src="/assets/financial-reports/girl-amplio.jpg"
+      alt="Donation Background"
+      width={1920}
+      height={400}
+      class="object-cover w-full h-full"
+    />
+    <div class="absolute inset-0 bg-[#464FA0]/80 flex items-center justify-center">
+      <div class="text-center text-white max-w-xl px-4">
+        <h2 class="text-3xl font-semibold mb-4">Amplify learning</h2>
+        <p class="mb-8 text-lg">
+          Engage, inform, and empower people in underserved communities.
+        </p>
+        <a
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block bg-[#FF6B4A] text-white px-8 py-3 rounded-md font-medium hover:bg-[#ff5331] transition-colors"
+        >
+          DONATE NOW
+        </a>
+      </div>
+    </div>
+  </div>
+  
+</section>

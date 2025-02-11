@@ -43,3 +43,23 @@ export interface Statistic {
   value: string;
   description: string;
 }
+
+export type FinancialData = {
+  year: number;
+  description: string;
+  imageSrc: string;
+  buttonText: string;
+  buttonLink: string;
+};
+
+export type TransparencyBadge = {
+  year: number;
+  type: string;
+  imageSrc: string;
+};
+
+export type Quote = {
+  text: string;
+  author: string;
+  title: string;
+};

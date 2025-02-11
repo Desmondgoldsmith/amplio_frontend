@@ -2,14 +2,14 @@
 const navItems = [
   { 
     label: "ABOUT",
-    href: "/about",
     hasDropdown: true,
     dropdownItems: [
       { label: "About Us", href: "/about-us" },
       { label: "Our Team", href: "/team" },
       { label: "Board of Directors", href: "/board-of-directors" },
       { label: "Programs", href: "/amplio-ghana" },
-      { label: "Our Impact", href: "/about/impact" }
+      { label: "Global Partners", href: "/partners" },
+      { label: "Financials", href: "/financial-and-990s"}
     ]
   },
   { 
@@ -52,7 +52,6 @@ const navItems = [
           navItems.map((item) => (
             <div class="relative group">
               <a
-                href={item.href}
                 class="text-gray-700 hover:text-emerald-600 text-[14px] transition-colors font-semibold flex items-center"
               >
                 {item.label}
