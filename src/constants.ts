@@ -6,6 +6,7 @@ import type {
   Topic,
   Partner,
   GlobalPartner,
+  Statistic,
 } from "./types/types";
 
 export const teamMembers: TeamMember[] = [
@@ -227,3 +228,28 @@ export const testimonial = {
   author: "Catherine Mesianto Lengewe",
   role: "Technical and Strategy Director, Centre for Behaviour Change and Communication",
 };
+
+export const statistics: Statistic[] = [
+  {
+    imageSrc: "/assets/why-amplio/book.svg",
+    value: "773 million",
+    description: "adults and youth lack basic literacy skills",
+  },
+  {
+    imageSrc: "/assets/why-amplio/bulb.svg",
+    value: "750 million",
+    description: "people live without electricity",
+  },
+  {
+    imageSrc: "/assets/why-amplio/phone.svg",
+    value: "635+ million",
+    description:
+      "adults in low and middle-income countries don't have mobile phones—including 400 million women",
+  },
+  {
+    imageSrc: "/assets/why-amplio/connect.svg",
+    value: "1B+ women",
+    description:
+      "don't use mobile internet because of cost, illiteracy, safety and security, and other barriers",
+  },
+];

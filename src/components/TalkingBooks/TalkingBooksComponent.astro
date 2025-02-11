@@ -1,32 +1,5 @@
 ---
-interface Statistic {
-  imageSrc: string;
-  value: string;
-  description: string;
-}
-
-const statistics: Statistic[] = [
-  {
-    imageSrc: "/assets/why-amplio/book.svg",  
-    value: "773 million",
-    description: "adults and youth lack basic literacy skills"
-  },
-  {
-    imageSrc: "/assets/why-amplio/bulb.svg",
-    value: "750 million",
-    description: "people live without electricity"
-  },
-  {
-    imageSrc: "/assets/why-amplio/phone.svg",
-    value: "635+ million",
-    description: "adults in low and middle-income countries don't have mobile phones—including 400 million women"
-  },
-  {
-    imageSrc: "/assets/why-amplio/connect.svg",
-    value: "1B+ women",
-    description: "don't use mobile internet because of cost, illiteracy, safety and security, and other barriers"
-  }
-];
+import { statistics } from '../../constants';
 
 interface BenefitList {
   title: string;

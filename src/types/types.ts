@@ -37,3 +37,9 @@ export interface GlobalPartner {
   logo: string;
   name: string;
 }
+
+export interface Statistic {
+  imageSrc: string;
+  value: string;
+  description: string;
+}
