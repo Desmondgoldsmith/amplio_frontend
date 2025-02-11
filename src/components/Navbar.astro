@@ -14,12 +14,14 @@ const navItems = [
   },
   { 
     label: "SOLUTIONS", 
-    href: "/solutions",
     hasDropdown: true,
     dropdownItems: [
-      { label: "Talking Book", href: "/solutions/talking-book" },
-      { label: "Content Creation", href: "/solutions/content" },
-      { label: "Implementation", href: "/solutions/implementation" }
+      { label: "Why Talking Book", href: "/why-talking-books" },
+      { label: "Our Technology", href: "/technology" },
+      { label: "Basic Service Package", href: "/basic-service-package" },
+      { label: "Consulting Services", href: "/consulting-services" },
+      { label: "SBC Impact Designer", href: "/sbc" },
+      { label: "Ways To Listen", href: "/ways-to-listen" },
     ]
   },
   { label: "IMPACT", href: "/impact" },
@@ -52,6 +54,7 @@ const navItems = [
           navItems.map((item) => (
             <div class="relative group">
               <a
+               href={item.href}
                 class="text-gray-700 hover:text-emerald-600 text-[14px] transition-colors font-semibold flex items-center"
               >
                 {item.label}

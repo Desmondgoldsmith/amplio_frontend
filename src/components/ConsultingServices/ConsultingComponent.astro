@@ -1,0 +1,100 @@
+---
+import { Image } from 'astro:assets';
+
+
+interface ProgramService {
+  title: string;
+  description: string;
+  imageSrc: string;
+  imageAlt: string;
+  subTitle: string;
+  subDesc: string;
+}
+
+
+const services: ProgramService[] = [
+  {
+    title: "Situational Assessment",
+    description: "Our team can work with you to conduct a situational assessment to understand and segment your target audience, identify behavioral barriers and drivers, and develop clear program objectives.",
+    imageSrc: "/assets/consulting/setup-amplio.jpg",
+    imageAlt: "Team working together on assessment",
+    subTitle: "Strategy Design",
+    subDesc: "Based on your program goals and target audience analysis, we will design the best strategy to deploy and manage Talking Books, alongside other communications and engagement strategies as needed."
+  },
+  {
+    title: "Content and Message Design",
+    description: "We can develop key messages and creative briefs to support the production of Talking Book audio content. We can also work with creative agencies to develop content and field test messaging.",
+    imageSrc: "/assets/consulting/app.png",
+    imageAlt: "Content and message design illustration",
+    subTitle: "Implementation Plans",
+    subDesc: "Our team can create a detailed roadmap (with defined activities, tasks, inputs, timelines, and outputs) to support the implementation of your program and communications strategy.",
+    
+  },
+  {
+    title: "Implementation Plans",
+    description: "Our team can create a detailed roadmap (with defined activities, tasks, inputs, timelines, and outputs) to support the implementation of your program and communications strategy.",
+    imageSrc: "/assets/consulting/woman-amplio.png",
+    imageAlt: "Implementation planning",
+    subTitle: "Field Logistics",
+    subDesc: "Depending on the geographic location, Amplio can manage the field logistics for your Talking Book program, including device distribution, content updates, and data collection activities.",
+    
+  }
+];
+---
+
+
+<section>
+    <section class="bg-white mt-24 pt-10  pb-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold mb-4">Consulting Services</h2>
+          <p class="max-w-2xl mx-auto text-lg mb-9">
+            Our <a href = "/basic-service-package" class = "hover:underline text-blue-500 font-semibold cursor-pointer">Basic Service Package</a> will get you up to speed with Talking Book technology. If you need more help, let us know! Explore our consulting services below.          </p>
+        </div>
+      
+        <div class="mt-12 relative w-screen left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]">
+          <div class="w-full h-[470px] md:h-[560px] relative">
+            <img 
+              src="/assets/consulting/banner.jpg" 
+              alt="Girl listening to the Amplio Device with Family" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="py-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+        {/* Header */}
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">Program Design and Management</h2>
+          <p class="text-gray-600 text-lg">Amplio can provide support across your project cycle.</p>
+        </div>
+      
+        {/* Services Grid */}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map(service => (
+            <div class="flex flex-col bg-gray-100 rounded-md p-5 space-y-4">
+              {/* Image Container */}
+              <div class="mb-6 flex justify-center">
+                <Image
+                  src={service.imageSrc}
+                  alt={service.imageAlt}
+                  width={250}
+                  height={200}
+                  class="w-full max-w-[250px] h-auto"
+                />
+              </div>
+              
+              {/* Content */}
+              <div class = "text-center mx-auto">
+                <h3 class="text-xl font-semibold mb-3">{service.title}</h3>
+                <p class="text-gray-600 leading-relaxed">{service.description}</p>
+                <div class = "mt-4">
+                  <h3 class = "text-xl font-semibold mb-3">{service.subTitle}</h4>
+                <p class = "text-gray-600 leading-relaxed">{service.subDesc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+</section>
