@@ -1,10 +1,38 @@
 ---
+import { Image } from 'astro:assets';
+
+// Slide data
+const slides = [
+  {
+    title: "USAGE",
+    subtitle: "scenarios",
+    description: "(explore a few examples)",
+    image: "/assets/partners/amplio-connect.jpg",
+    credit: "© UNICEF Ghana/Joseph Mills"
+  },
+  {
+    title: "Keep communities in the loop",
+    description: "Include representatives of participating communities. After providing their contact information, you can rely on SBC Impact Designer to automatically alert stakeholders about updates or requested feedback for all relevant program decisions and milestones – whether or not they have a login account on this platform."
+  },
+  {
+    title: "Create your MEL plan",
+    description: "Develop your monitoring, evaluation, and learning (MEL) plan with questions to guide your process — along with recommended indicators, participatory tools, and data collection strategies."
+  },
+  {
+    title: "Access data collection tools",
+    description: "Access field-tested data collection tools that allow you to dig deeper in order to answer any remaining questions that remain to complete your formative assessment."
+  },
+  {
+    title: "Identify behavioral drivers",
+    description: "Identify the relevant behavior drivers for your intended outcomes and formative research. Then, document the research, identify any gaps, and review potential interventions to address key drivers."
+  }
+];
 ---
 
-<main class="max-w-4xl mx-auto px-4 py-8 mt-24">
-    <section class="text-center mb-12">
+<main class="py-8 mt-28">
+    <section class=" max-w-4xl mx-auto text-center px-4 mb-12">
       <h1 class="text-4xl font-bold mb-4">SBC Impact Designer</h1>
-      <p class="text-gray-700 mb-6 max-w-2xl mx-auto">
+      <p class="text-gray-700 mb-6 max-w-xl mx-auto">
         Amplio is creating an open-source, social and behavior change (SBC) 
         digital platform — co-designed with and for SBC practitioners.
       </p>
@@ -47,7 +75,7 @@
 
     <section class="mb-12">
       <h2 class="text-3xl font-bold text-center mb-6">The Problem</h2>
-      <p class="text-gray-700 text-center max-w-3xl mx-auto">
+      <p class="text-gray-700 text-center max-w-2xl mx-auto">
         Development organizations recognize the benefit of SBC programming 
         but they often don't know where to start. There's a lot to consider when 
         integrating SBC approaches into program design, implementation, 
@@ -59,15 +87,144 @@
 
     <section class="text-center">
       <h2 class="text-3xl font-bold mb-6">Our Solution</h2>
-      <p class="text-gray-700 mb-6 max-w-3xl mx-auto">
+      <p class="text-gray-700 mb-6 max-w-2xl mx-auto">
         SBC Impact Designer offers guidance to help you design, plan, 
         manage, and evaluate each step of your social and behavior change 
         program. It integrates SBC best practices, intuitive project 
         management, and human-centered design.
       </p>
-      <p class="text-gray-700 max-w-3xl mx-auto">
+      <p class="text-gray-700 max-w-2xl mx-auto">
         Most importantly, SBC Impact Designer supports collaboration with 
         communities and all stakeholders for learning and success.
       </p>
     </section>
+
+    <section class="relative mt-10 w-full h-[600px] bg-[#2A8B9D] overflow-hidden">
+        <!-- Previous/Next buttons -->
+        <button class="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 text-white hover:text-gray-200 transition-colors" id="prevBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button class="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 text-white hover:text-gray-200 transition-colors" id="nextBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      
+        <!-- Slides container -->
+        <div class="slides-container relative w-full h-full">
+          {slides.map((slide, index) => (
+            <div class={`slide absolute w-full h-full transition-opacity duration-500 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+                 data-index={index}>
+              <div class="flex flex-col md:flex-row h-full">
+                {index === 0 ? (
+                  <>
+                    <!-- First slide layout -->
+                    <div class="w-full md:w-1/2 p-12 flex flex-col justify-center">
+                      <div class="slide-content">
+                        <h2 class="text-white text-6xl font-bold mb-2">{slide.title}</h2>
+                        <p class="text-white text-4xl italic mb-4">{slide.subtitle}</p>
+                        <p class="text-white text-xl">{slide.description}</p>
+                      </div>
+                    </div>
+                    <div class="w-full md:w-1/2 relative">
+                      <img 
+                        src={slide.image} 
+                        alt="Usage scenarios" 
+                        class="w-full h-full object-cover"
+                      />
+                      <p class="absolute bottom-4 right-4 text-white text-sm">{slide.credit}</p>
+                    </div>
+                  </>
+                ) : (
+                  <!-- Other slides layout -->
+                  <div class="w-full p-12 flex flex-col justify-center items-center text-center">
+                    <div class="max-w-2xl slide-content">
+                      <h2 class="text-white text-4xl font-bold mb-8">{slide.title}</h2>
+                      <p class="text-white text-xl leading-relaxed">{slide.description}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </section>
+      </div>
   </main>
+
+  <script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  let slideInterval: number;
+
+  // Function to show a specific slide
+  function showSlide(index: number) {
+    slides.forEach((slide) => {
+      (slide as HTMLElement).style.opacity = '0';
+      (slide as HTMLElement).style.pointerEvents = 'none';
+    });
+    
+    (slides[index] as HTMLElement).style.opacity = '1';
+    (slides[index] as HTMLElement).style.pointerEvents = 'auto';
+    
+    // Add entrance animation for text
+    const content = slides[index].querySelector('.slide-content');
+    content?.classList.add('animate-slideIn');
+  }
+
+  // Function to advance to next slide
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    showSlide(currentSlide);
+  }
+
+  // Function to go to previous slide
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    showSlide(currentSlide);
+  }
+
+  // Initialize automatic sliding
+  function startSlideShow() {
+    slideInterval = setInterval(nextSlide, 6000);
+  }
+
+  // Event listeners
+  document.getElementById('nextBtn')?.addEventListener('click', () => {
+    clearInterval(slideInterval);
+    nextSlide();
+    startSlideShow();
+  });
+
+  document.getElementById('prevBtn')?.addEventListener('click', () => {
+    clearInterval(slideInterval);
+    prevSlide();
+    startSlideShow();
+  });
+
+  // Start the slideshow
+  startSlideShow();
+</script>
+
+<style>
+  @keyframes slideIn {
+    from {
+      transform: translateX(100px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slideIn {
+    animation: slideIn 0.5s ease-out forwards;
+  }
+
+  .slide {
+    transition: opacity 0.5s ease-in-out;
+  }
+</style>
