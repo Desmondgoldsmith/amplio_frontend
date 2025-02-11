@@ -1,11 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 
-// Slide data
 const slides = [
   {
-    title: "USAGE",
-    subtitle: "scenarios",
+    titleMain: "USAGE",
+    titleSub: "scenarios",
     description: "(explore a few examples)",
     image: "/assets/partners/amplio-connect.jpg",
     credit: "© UNICEF Ghana/Joseph Mills"
@@ -25,7 +24,19 @@ const slides = [
   {
     title: "Identify behavioral drivers",
     description: "Identify the relevant behavior drivers for your intended outcomes and formative research. Then, document the research, identify any gaps, and review potential interventions to address key drivers."
-  }
+  },
+  {
+    title: "Develop your ToC",
+    description: "Develop your social and behavior change Theory of Change (ToC), including intermediate outcomes, best platforms for engagement, risks to be mitigated, and assumptions in the model that must be confirmed before each activity."
+  },
+  {
+    title: "Plan and manage your program",
+    description: "Easily set and update the schedule. For each activity, list the participants and assign the responsible staff members. Then, track upcoming activities, assumptions to verify, and monitoring of activities and outputs."
+  },
+  {
+    title: "See your program through their eyes",
+    description: "Each activity lists the relevant participants, so you can now preview your program from beginning to end, with activities filtered to each participant type (or persona). Are you expecting too much from this participant? Have you left something out?"
+  },
 ];
 ---
 
@@ -99,112 +110,131 @@ const slides = [
       </p>
     </section>
 
-    <section class="relative mt-10 w-full h-[600px] bg-[#2A8B9D] overflow-hidden">
-        <!-- Previous/Next buttons -->
-        <button class="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 text-white hover:text-gray-200 transition-colors" id="prevBtn">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        <button class="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 text-white hover:text-gray-200 transition-colors" id="nextBtn">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      
-        <!-- Slides container -->
-        <div class="slides-container relative w-full h-full">
-          {slides.map((slide, index) => (
-            <div class={`slide absolute w-full h-full transition-opacity duration-500 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
-                 data-index={index}>
-              <div class="flex flex-col md:flex-row h-full">
-                {index === 0 ? (
-                  <>
-                    <!-- First slide layout -->
-                    <div class="w-full md:w-1/2 p-12 flex flex-col justify-center">
-                      <div class="slide-content">
-                        <h2 class="text-white text-6xl font-bold mb-2">{slide.title}</h2>
-                        <p class="text-white text-4xl italic mb-4">{slide.subtitle}</p>
-                        <p class="text-white text-xl">{slide.description}</p>
-                      </div>
-                    </div>
-                    <div class="w-full md:w-1/2 relative">
-                      <img 
-                        src={slide.image} 
-                        alt="Usage scenarios" 
-                        class="w-full h-full object-cover"
-                      />
-                      <p class="absolute bottom-4 right-4 text-white text-sm">{slide.credit}</p>
-                    </div>
-                  </>
-                ) : (
-                  <!-- Other slides layout -->
-                  <div class="w-full p-12 flex flex-col justify-center items-center text-center">
-                    <div class="max-w-2xl slide-content">
-                      <h2 class="text-white text-4xl font-bold mb-8">{slide.title}</h2>
-                      <p class="text-white text-xl leading-relaxed">{slide.description}</p>
-                    </div>
-                  </div>
-                )}
+  <section class="relative w-full mt-10 h-[600px] bg-[#2A8B9D] overflow-hidden">
+  <button 
+    class="absolute left-8 top-1/2 -translate-y-1/2 z-20 text-white hover:text-gray-200 transition-colors" 
+    id="prevBtn"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-12 h-12">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+  <button 
+    class="absolute right-8 top-1/2 -translate-y-1/2 z-20 text-white hover:text-gray-200 transition-colors" 
+    id="nextBtn"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-12 h-12">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  <!-- Slides Container -->
+  <div class="slides-container relative w-full h-full">
+    {slides.map((slide, index) => (
+      <div 
+        class={`slide absolute w-full h-full transition-opacity duration-500 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+        data-index={index}
+      >
+        {index === 0 ? (
+          <!-- First slide layout - Centered content -->
+          <div class="flex items-center justify-center h-full">
+            <div class="flex items-center gap-8 max-w-6xl mx-auto px-8">
+              <div class="slide-content">
+                <h2 class="text-white text-7xl font-bold tracking-wide mb-2">
+                  {slide.titleMain}
+                </h2>
+                <p class="text-white text-5xl italic mb-4">
+                  {slide.titleSub}
+                </p>
+                <p class="text-white text-xl">
+                  {slide.description}
+                </p>
+              </div>
+              <div class="relative">
+                <img 
+                  src={slide.image}
+                  alt="Usage scenarios"
+                  class="w-[500px] h-[300px] object-cover rounded"
+                />
+                <p class="absolute bottom-2 right-2 text-white text-sm">
+                  {slide.credit}
+                </p>
               </div>
             </div>
-          ))}
-        </section>
+          </div>
+        ) : (
+          <!-- Other slides layout -->
+          <div class="flex items-center justify-center h-full px-16">
+            <div class="max-w-3xl text-center">
+              <h2 class="text-white text-4xl font-bold mb-8">
+                {slide.title}
+              </h2>
+              <p class="text-white text-xl leading-relaxed">
+                {slide.description}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
-  </main>
+    ))}
+  </div>
+</section>
+</div>
+</main>
 
-  <script>
+<script>
+  type SlideElement = HTMLElement;
+  type ButtonElement = HTMLElement | null;
+  
   let currentSlide = 0;
-  const slides = document.querySelectorAll('.slide');
-  const totalSlides = slides.length;
+  const slides: NodeListOf<SlideElement> = document.querySelectorAll('.slide');
+  const totalSlides: number = slides.length;
   let slideInterval: number;
 
-  // Function to show a specific slide
-  function showSlide(index: number) {
-    slides.forEach((slide) => {
-      (slide as HTMLElement).style.opacity = '0';
-      (slide as HTMLElement).style.pointerEvents = 'none';
+  function showSlide(index: number): void {
+    slides.forEach((slide: SlideElement) => {
+      slide.style.opacity = '0';
+      slide.style.pointerEvents = 'none';
     });
     
-    (slides[index] as HTMLElement).style.opacity = '1';
-    (slides[index] as HTMLElement).style.pointerEvents = 'auto';
+    slides[index].style.opacity = '1';
+    slides[index].style.pointerEvents = 'auto';
     
-    // Add entrance animation for text
     const content = slides[index].querySelector('.slide-content');
-    content?.classList.add('animate-slideIn');
+    if (content) {
+      content.classList.add('animate-slideIn');
+    }
   }
 
-  // Function to advance to next slide
-  function nextSlide() {
+  function nextSlide(): void {
     currentSlide = (currentSlide + 1) % totalSlides;
     showSlide(currentSlide);
   }
 
-  // Function to go to previous slide
-  function prevSlide() {
+  function prevSlide(): void {
     currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
     showSlide(currentSlide);
   }
 
-  // Initialize automatic sliding
-  function startSlideShow() {
-    slideInterval = setInterval(nextSlide, 6000);
+  function startSlideShow(): void {
+    slideInterval = window.setInterval(nextSlide, 6000);
   }
 
-  // Event listeners
-  document.getElementById('nextBtn')?.addEventListener('click', () => {
-    clearInterval(slideInterval);
+  const nextButton: ButtonElement = document.getElementById('nextBtn');
+  const prevButton: ButtonElement = document.getElementById('prevBtn');
+
+  nextButton?.addEventListener('click', () => {
+    window.clearInterval(slideInterval);
     nextSlide();
     startSlideShow();
   });
 
-  document.getElementById('prevBtn')?.addEventListener('click', () => {
-    clearInterval(slideInterval);
+  prevButton?.addEventListener('click', () => {
+    window.clearInterval(slideInterval);
     prevSlide();
     startSlideShow();
   });
 
-  // Start the slideshow
   startSlideShow();
 </script>
 
