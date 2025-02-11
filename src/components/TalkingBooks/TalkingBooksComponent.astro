@@ -27,6 +27,41 @@ const statistics: Statistic[] = [
     description: "don't use mobile internet because of cost, illiteracy, safety and security, and other barriers"
   }
 ];
+
+interface BenefitList {
+  title: string;
+  benefits: string[];
+}
+
+const communityBenefits: BenefitList = {
+  title: "For communities:",
+  benefits: [
+    "Offers more equitable access to information",
+    "Promotes group listening and engagement, social discussion, and message retention",
+    "Allows listeners to learn at their own pace",
+    "Builds trust and community agency",
+    "Devices can be rotated among households or shared and played in group settings",
+    "There's no cost to the end user"
+  ]
+};
+
+const implementerBenefits: BenefitList = {
+  title: "For implementers:",
+  benefits: [
+    "Amplifies message reach in rural remote areas",
+    "Ensures delivery of consistent and accurate messages",
+    "Supports training and capacity building",
+    "Elevates community voices through user feedback",
+    "Collects usage data for monitoring and evaluation",
+    "Delivers content in a community's local language",
+    "Devices can be reprogrammed and deployed again"
+  ]
+};
+
+const testimonial = {
+  quote: "The best technologies meet women where they are, and the Amplio Talking Book is at the top of my list. It addresses all the constraints that women face, be it literacy, cost, safety, security, or relevance.",
+  logoSrc: "/assets/why-amplio/usaid.jpg" 
+};
 ---
 
 <section>
@@ -96,7 +131,7 @@ const statistics: Statistic[] = [
       <section class="bg-blue-50 py-16">
         <div class="container mx-auto px-4 text-center">
           <h2 class="text-3xl font-bold mb-4">An inclusive digital solution</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto mb-8">
+          <p class="text-gray-600 max-w-2xl text-lg mx-auto mb-8">
             Amplio's Talking Book program is recognized by UNESCO as an inclusive digital solution that low-literate adults and youth can use to gain new skills and knowledge to improve their lives. Our technology overcomes barriers in hard-to-reach communities — so knowledge sharing goes both ways.
           </p>
           
@@ -114,5 +149,63 @@ const statistics: Statistic[] = [
           </div>
         </div>
       </section>
-          
+      <section class="max-w-7xl mx-auto px-52 py-16">
+        <h2 class="text-4xl font-bold text-center mb-16">Why Amplio Talking Books?</h2>
+      
+        <div class="flex flex-col md:flex-row gap-8 mb-16">
+          <div class="md:w-1/2">
+            <h3 class="text-2xl text-[#4052AB] font-medium mb-6">{communityBenefits.title}</h3>
+            <ul class="space-y-4">
+              {communityBenefits.benefits.map(benefit => (
+                <li class="flex gap-2">
+                  <span class="text-black">•</span>
+                  <span>{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="md:w-1/2">
+            <img 
+              src="/assets/why-amplio/women-clapping.jpg" 
+              alt="People engaging with Talking Books" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      
+        <div class="flex flex-col md:flex-row gap-8 mb-10">
+          <div class="md:w-1/2">
+            <img 
+              src="/assets/why-amplio/woman-amplio.jpg" 
+              alt="Implementer demonstrating Talking Book usage" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="md:w-1/2">
+            <h3 class="text-2xl text-[#4052AB] font-medium mb-6">{implementerBenefits.title}</h3>
+            <ul class="space-y-4">
+              {implementerBenefits.benefits.map(benefit => (
+                <li class="flex gap-2">
+                  <span class="text-black">•</span>
+                  <span>{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      
+        <div class="border-t pt-12 ">
+          <div class="max-w-4xl space-y-10 mx-auto text-center">
+            <img 
+            src={testimonial.logoSrc} 
+            alt="USAID logo" 
+            class="h-20 mx-auto"
+          />
+            <blockquote class="text-xl text-gray-700 italic max-w-3xl mx-auto mb-8">
+              "{testimonial.quote}"
+            </blockquote>
+           
+          </div>
+        </div>
+      </section>
     </section>
