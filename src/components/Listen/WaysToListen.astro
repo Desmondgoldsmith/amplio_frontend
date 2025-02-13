@@ -1,0 +1,148 @@
+---
+interface Listen{
+  title: string;
+  description: string;
+  deviceCapacity?: string;
+  rotationTitle?: string;
+  rotationDescription?: string;
+  imageSrc: string;
+  imageAlt: string;
+}
+
+const waysToListen:Listen = {
+  title : "Ways to Listen",
+  description : "How you distribute and use Talking Books will depend on your program objectives, the local context, and the target audience(s) you want to reach. Amplio can work with you to design a listening model to suit your project's needs.",
+  deviceCapacity : "One device can easily serve up to 100 listeners or more.",
+  rotationTitle : "Household Rotation",
+  rotationDescription : "Talking Books can be shared and rotated among households over a period of time, such as on a weekly or monthly basis. This allows families and individuals to listen when it's convenient. They can select and replay messages as often as they want.",
+  imageSrc : "/assets/waystolisten/man.jpg",
+  imageAlt : "People using Talking Books device"
+} 
+
+const GroupListening:Listen = {
+  title : "Group Listening",
+  description : "Talking Books can also be used effectively for group listening and discussion. The device has a built-in speaker, which allows for about 20 people to easily listen and learn together. This model is often used with mother-to-mother groups, Village Savings and Loan Associations, and agriculture collectives. ",
+  imageSrc : "/assets/waystolisten/group.jpg",
+  imageAlt : "Group Listening"
+} 
+
+const CommunityAgents:Listen = {
+  title : "Community Agents",
+  description : "Talking Books can be used to train and support community facilitators such as community health volunteers and agriculture extension agents. With the Talking Book, they can share consistent and accurate messages more efficiently and effectively. ",
+  imageSrc : "/assets/waystolisten/giving-amplio.jpg",
+  imageAlt : "Group Agent"
+} 
+
+const TalkingBooks:Listen = {
+  title : "Place-Based Talking Books",
+  description : "Talking Books can be housed at a centralized location for community members to engage with. Examples of place-based settings include health centers, schools, and early childhood development centers. ",
+  imageSrc : "/assets/waystolisten/gathering.jpg",
+  imageAlt : "Place-Based Talking Books"
+} 
+---
+
+<section class="w-full bg-white mt-24">
+    <div class="max-w-7xl px-44 mx-auto  lg:px-20 py-16">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-900 mb-6">
+          {waysToListen.title}
+        </h2>
+        <p class="max-w-2xl mx-auto text-lg text-gray-600">
+          {waysToListen.description}
+        </p>
+        <p class="mt-4 text-lg text-gray-600">
+          {waysToListen.deviceCapacity}
+        </p>
+      </div>
+  
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="relative">
+          <img
+            src={waysToListen.imageSrc}
+            alt={waysToListen.imageAlt}
+            class="w-full rounded-lg shadow-lg object-cover"
+            style="aspect-ratio: 4/3;"
+          />
+        </div>
+        
+        <div class="space-y-6 md:pl-8">
+          <h3 class="text-3xl font-bold text-gray-900">
+            {waysToListen.rotationTitle}
+          </h3>
+          <p class="text-lg text-gray-600">
+            {waysToListen.rotationDescription}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <section class="w-full bg-white mt-10">
+    <div class="max-w-7xl px-44 mx-auto  lg:px-20 py-5">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="relative">
+          <img
+            src={GroupListening.imageSrc}
+            alt={GroupListening.imageAlt}
+            class="w-full rounded-lg shadow-lg object-cover"
+            style="aspect-ratio: 4/3;"
+          />
+        </div>
+        
+        <div class="space-y-6 md:pl-8">
+          <h3 class="text-3xl font-bold text-gray-900">
+            {GroupListening.title}
+          </h3>
+          <p class="text-lg text-gray-600">
+            {GroupListening.description}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="w-full bg-white mt-10">
+    <div class="max-w-7xl px-44 mx-auto  lg:px-20 py-5">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="relative">
+          <img
+            src={CommunityAgents.imageSrc}
+            alt={CommunityAgents.imageAlt}
+            class="w-full rounded-lg shadow-lg object-cover"
+            style="aspect-ratio: 4/3;"
+          />
+        </div>
+        
+        <div class="space-y-6 md:pl-8">
+          <h3 class="text-3xl font-bold text-gray-900">
+            {CommunityAgents.title}
+          </h3>
+          <p class="text-lg text-gray-600">
+            {CommunityAgents.description}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="w-full bg-white mt-10">
+    <div class="max-w-7xl px-44 mx-auto  lg:px-20 py-5">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="relative">
+          <img
+            src={TalkingBooks.imageSrc}
+            alt={TalkingBooks.imageAlt}
+            class="w-full rounded-lg shadow-lg object-cover"
+            style="aspect-ratio: 4/3;"
+          />
+        </div>
+        
+        <div class="space-y-6 md:pl-8">
+          <h3 class="text-3xl font-bold text-gray-900">
+            {TalkingBooks.title}
+          </h3>
+          <p class="text-lg text-gray-600">
+            {TalkingBooks.description}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
