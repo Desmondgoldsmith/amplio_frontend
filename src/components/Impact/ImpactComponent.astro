@@ -1,0 +1,155 @@
+---
+const stats = [
+  {
+    number: "99",
+    label: "Projects",
+    icon: "/assets/homepageAssets/projects.png"
+  },
+  {
+    number: "2,066,428",
+    label: "People reached",
+    icon: "/public/assets/homepageAssets/peopleReached.png"
+  },
+  {
+    number: "15",
+    label: "Countries",
+    icon: "/public/assets/homepageAssets/countries.png"
+  }
+];
+
+---
+
+<section class="mt-32 pb-10">
+ <section>
+  <div class="max-w-[2000px] mx-auto px-52">
+    <h1 class="text-4xl font-bold mb-4 text-center">Our Impact</h1>
+
+     <p class = "max-w-xl mb-4 mx-auto text-center">Millions of people lack access to knowledge because of poverty, low literacy, and gender inequalities. We amplify program reach and knowledge sharing through audio technology. See our program map below.</p>
+
+    <div class="grid grid-cols-3 gap-8  px-24">
+      {stats.map(stat => (
+        <div class="flex flex-col items-center">
+          <div class="w-48 h-48 mb-6">
+            <img 
+              src={stat.icon} 
+              alt={stat.label} 
+              class="w-full h-full object-contain p-6 rounded-full overflow-hidden" 
+            />
+          </div>
+          <div class="text-center">
+            <p class="text-[#FF5843] text-5xl font-bold mb-2">{stat.number}</p>
+            <p class="text-gray-700">{stat.label}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto py-16 px-4 mt-10 text-center md:px-8 bg-white">
+    <div>
+      <div id="loading-spinner" class="flex justify-center items-center py-8">
+        <div class="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-blue-600"></div>
+      </div>
+      <div class='tableauPlaceholder' id='viz1739537606973' style='position: relative'>
+        <noscript>
+          <a href='https://www-amplio-org.filesusr.com/'>
+            <img 
+              alt='Dashboard 1' 
+              src='https://public.tableau.com/static/images/Ta/TalkingBookPrograms4/Dashboard1/1_rss.png' 
+              style='border: none' 
+            />
+          </a>
+        </noscript>
+        <object class='tableauViz' style='display:none;'>
+          <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> 
+          <param name='embed_code_version' value='3' /> 
+          <param name='site_root' value='' />
+          <param name='name' value='TalkingBookPrograms4/Dashboard1' />
+          <param name='tabs' value='no' />
+          <param name='toolbar' value='yes' />
+          <param name='static_image' value='https://public.tableau.com/static/images/Ta/TalkingBookPrograms4/Dashboard1/1.png' /> 
+          <param name='animate_transition' value='yes' />
+          <param name='display_static_image' value='yes' />
+          <param name='display_spinner' value='yes' />
+          <param name='display_overlay' value='yes' />
+          <param name='display_count' value='yes' />
+          <param name='language' value='en-US' />
+          <param name='increment_view_count' value='no' />
+        </object>
+      </div>
+    </div>
+  </section>
+</section>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const divElement = document.getElementById('viz1739537606973');
+    
+    try {
+      const vizElement = divElement.getElementsByTagName('object')[0];
+
+      function setVizSize() {
+        if (divElement.offsetWidth > 800) {
+          vizElement.style.width = '1150px';
+          vizElement.style.height = '527px';
+        } else if (divElement.offsetWidth > 500) {
+          vizElement.style.width = '1150px';
+          vizElement.style.height = '527px';
+        } else {
+          vizElement.style.width = '100%';
+          vizElement.style.height = '727px';
+        }
+      }
+
+      const scriptElement = document.createElement('script');
+      scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+      
+      scriptElement.onload = function() {
+        setVizSize();
+        if (loadingSpinner) {
+          loadingSpinner.style.display = 'none';
+        }
+        vizElement.style.display = 'block';
+      };
+
+      scriptElement.onerror = function() {
+        console.error('Failed to load Tableau script');
+        if (loadingSpinner) {
+          loadingSpinner.innerHTML = '<p class="text-red-500">Failed to load visualization. Please refresh the page.</p>';
+        }
+      };
+
+      vizElement.parentNode.insertBefore(scriptElement, vizElement);
+
+      // Handle window resize
+      window.addEventListener('resize', setVizSize);
+
+      setTimeout(() => {
+        if (loadingSpinner && loadingSpinner.style.display !== 'none') {
+          loadingSpinner.style.display = 'none';
+        }
+      }, 10000);
+
+    } catch (error) {
+      console.error('Error initializing visualization:', error);
+      if (loadingSpinner) {
+        loadingSpinner.innerHTML = '<p class="text-red-500">Error loading visualization. Please refresh the page.</p>';
+      }
+    }
+  });
+</script>
+
+<style>
+  .tableauPlaceholder {
+    width: 100%;
+    max-width: 1150px;
+    margin: 0 auto;
+  }
+
+  .tableauViz {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+</style>
