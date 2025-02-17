@@ -11,35 +11,35 @@ const caseStudies: CaseStudy[] = [
   {
     title: "CARE'S WOMEN FOR CHANGE PROGRAM: A CASE STUDY",
     description: "Women in Ghana's cocoa communities have made strides in overcoming gender inequality and financial illiteracy. Through their active participation in CARE'S expanded village savings and loans program and targeted training initiatives supported by Amplio, they have enhanced their financial knowledge and developed robust income-generating capabilities.",
-    imageUrl: "/path/to/care-women-image.jpg",
+    imageUrl: "/assets/case-study/case_study01.jpg",
     mainUrl: "https://www.amplio.org/_files/ugd/525bae_3eb4fe67cc7f455d8600b169a0cb5043.pdf",
     readMoreLink: "Read CARE's Women for Change Talking Book Case Study"
   },
   {
     title: "TOSTAN CASE STUDY: INCREASED ADOPTION OF VROOM TIPS VIA TALKING BOOKS",
     description: "Tostan faced challenges in delivering Early Childhood Development knowledge to rural communities with low literacy levels and limited access to technology. By collaborating with Vroom and utilizing Amplio Talking Books, Tostan successfully reached thousands of engaged caregivers with Vroom's content.",
-    imageUrl: "/path/to/tostan-image.jpg",
+    imageUrl: "/assets/case-study/case_study02.jpg",
     mainUrl: "https://www.amplio.org/_files/ugd/525bae_3234a529da2846b5b875c00329bedad7.pdf",
     readMoreLink: "Read TOSTAN's Talking Book Case Study"
   },
   {
     title: "EMPOWERING WOMEN FARMERS: GROW CASE STUDY",
     description: "MEDA's Greater Rural Opportunities for Women (GROW) project used Talking Books to economically empower women farmers in Ghana to improve food security and nutrition for their families by growing and selling soy.",
-    imageUrl: "/path/to/tostan-image.jpg",
+    imageUrl: "/assets/case-study/case_study03.png",
     mainUrl:"https://www.amplio.org/_files/ugd/b4c77e_b922985628b64c1c98b1e5f32701833b.pdf",
     readMoreLink: "Empowering Women Farmers: GROW Case Study "
   },
   {
     title: "USAID AFYA TIMIZA PROJECT: A CASE STUDY",
     description: "In Kenya, community health volunteers used the Amplio Talking Book to improve access to quality health information and services for semi-nomadic pastoralists in Samburu and Turkana, doubling the number of ANC visits.",
-    imageUrl: "/path/to/tostan-image.jpg",
+    imageUrl: "/assets/case-study/case_study04.png",
     mainUrl: "https://www.amplio.org/_files/ugd/5e68ac_30f1e661802043ddb8f448ce392aa2f0.pdf",
     readMoreLink: "USAID Afya Timiza Project: A Case Study "
   },
   {
     title: "USAID AFYA TIMIZA PROJECT: A CASE STUDY",
     description: "In Kenya, community health volunteers used the Amplio Talking Book to improve access to quality health information and services for semi-nomadic pastoralists in Samburu and Turkana, doubling the number of ANC visits.",
-    imageUrl: "/path/to/tostan-image.jpg",
+    imageUrl: "/assets/case-study/case_study05.png",
     mainUrl: "https://www.amplio.org/_files/ugd/b4c77e_d2d7f96ac828420f874e64378ca87bf3.pdf",
     readMoreLink: "USAID Afya Timiza Project: A Case Study "
   },
@@ -74,21 +74,21 @@ const caseStudies: CaseStudy[] = [
   {
     title: "VSO ZAMBIA: TALK II PROJECT EVALUATION AND LEARNING REPORT",
     description: "VSO used Talking Books to engage and inform adolescents about sexual and reproductive health and rights in the remote islands of Zambia's Samfya District. An external evaluation showed a positive impact. ",
-    imageUrl: "/path/to/tostan-image.jpg",
+    imageUrl: "/assets/case-study/case_study10.jpg",
     mainUrl:"https://www.amplio.org/_files/ugd/5e68ac_e68644ef94654107b1bd0e6f61576ac0.pdf",
     readMoreLink: "TALK II Project Evaluation and Learning Report"
   },
   {
     title: "Participatory Design of an Icon-Based User Interface (UI) for Rural People with Low Literacy",
     description: `Bayor, et al. "The Talking Book: Participatory Design of an Icon-Based User Interface (UI) for Rural People with Low Literacy." Proceedings of the Second African Conference for Human Computer Interaction: Thriving Communities. Association for Computing Machinery, USA, pp. 24-33.`,
-    imageUrl: "/path/to/tostan-image.jpg",
+    imageUrl: "/assets/case-study/case_study11.jpg",
     mainUrl: "https://www.amplio.org/_files/ugd/5e68ac_342364da0760481e8443c7ece9365f28.pdf",
     readMoreLink: "Talking Book: Participatory Design of Icon-Based User Interface"
   },
   {
     title: "Impact of Low-Cost, On-demand, Information Access in a Remote Ghanaian Village",
     description: `Schmidt, Cliff, et al. "Impact of low-cost, on-demand information access in a remote Ghanaian Village." Information Technologies & International Development, vol. 8, no. 2, summer 2012, pp. 85+.`,
-    imageUrl: "/path/to/tostan-image.jpg",
+    imageUrl: "/assets/case-study/case_study12.png",
     mainUrl: "https://www.amplio.org/_files/ugd/5e68ac_41a3cff711464742b4cf8a34fd1668f2.pdf",
     readMoreLink: "Impact of Low-Cost, On-Demand, Information Access"
   },
@@ -139,18 +139,18 @@ const caseStudies: CaseStudy[] = [
     <div class = "mt-10 px-52 mx-auto">
     <div class="grid  gap-8 md:gap-12">
       {caseStudies.map((study) => (
-        <div class="bg-white rounded-lg overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300">
-          <div class="flex flex-col md:flex-row">
-            <div class="md:w-1/3 relative">
+        <div class="overflow-hidden border-b border-b-cyan-400">
+          <div class="flex flex-col items-center md:flex-row">
+            <div class="relative p-8">
               <img
                 src={study.imageUrl}
                 alt={study.title}
-                class="w-full h-full object-cover aspect-video md:aspect-square"
+                class="w-36 object-fill"
               />
             </div>
 
             <div class="md:w-2/3 p-6 md:p-8">
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">
+              <h3 class="text-xl font-bold text-gray-900 mb-4">
                 {study.title}
               </h3>
               <p class="text-gray-600 mb-6 leading-relaxed">
