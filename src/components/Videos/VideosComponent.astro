@@ -1,5 +1,4 @@
 ---
-// Type definitions for our data structures
 interface Media {
   id: string;
   alt: string;
@@ -7,8 +6,8 @@ interface Media {
   filename: string;
   mimeType: string;
   filesize: number;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 interface Publisher {
@@ -26,7 +25,21 @@ interface Category {
 interface ApiVideo {
   id: string;
   title: string;
-  description: string;
+  description: {
+    root: {
+      children: Array<{
+        children: Array<{
+          children?: Array<{
+            children?: Array<{
+              text: string;
+            }>;
+            text?: string;
+          }>;
+          text?: string;
+        }>;
+      }>;
+    };
+  };
   coverImage: Media;
   publisher: Publisher;
   categories: Category[];
@@ -53,24 +66,44 @@ interface TransformedVideo {
   createdAt: string;
 }
 
-interface ApiResponse {
-  docs: ApiVideo[];
-  totalDocs: number;
-  limit: number;
-  totalPages: number;
-  page: number;
-  pagingCounter: number;
-  hasPrevPage: boolean;
-  hasNextPage: boolean;
-  prevPage: number | null;
-  nextPage: number | null;
-}
-
-// Environment and utility configurations
 const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
 
+interface DescriptionText {
+  text?: string;
+  children?: DescriptionNode[];
+  type?: string;
+  [key: string]: any;  
+}
 
-// Fetch and transform videos
+interface DescriptionNode {
+  children?: DescriptionNode[];
+  text?: string;
+  type?: string;
+  [key: string]: any;  
+}
+
+function extractDescriptionText(description: DescriptionText | DescriptionNode | null | undefined): string {
+  if (!description || typeof description !== 'object') {
+    return '';
+  }
+  
+  if (description.text) {
+    return description.text;
+  }
+  
+  if (Array.isArray(description.children)) {
+    return description.children
+      .map((child: DescriptionNode) => extractDescriptionText(child))
+      .filter(Boolean)
+      .join(' ');
+  }
+  
+  return Object.values(description)
+    .map((value: any) => extractDescriptionText(value))
+    .filter(Boolean)
+    .join(' ');
+}
+
 async function fetchVideos(): Promise<TransformedVideo[]> {
   try {
     const response = await fetch(`${PAYLOAD_URL}/api/videos?depth=2`, {
@@ -79,12 +112,14 @@ async function fetchVideos(): Promise<TransformedVideo[]> {
       },
     });
     
-    const data: ApiResponse = await response.json();
+    const data = await response.json();
     
     const transformedVideos: TransformedVideo[] = data.docs
-      .filter((video): video is ApiVideo => video.status === 'published')
+      .filter((video: ApiVideo) => video.status === 'published')
       .map((video: ApiVideo): TransformedVideo => ({
-        ...video,
+        id: video.id,
+        title: video.title,
+        description: extractDescriptionText(video.description),
         coverImage: {
           ...video.coverImage,
           url: `${PAYLOAD_URL}${video.coverImage.url}`,
@@ -96,11 +131,15 @@ async function fetchVideos(): Promise<TransformedVideo[]> {
             url: `${PAYLOAD_URL}${video.publisher.profileImage.url}`,
           } : undefined,
         },
+        categories: video.categories,
+        videoType: video.videoType,
         videoUrl: video.videoType === 'youtube' 
           ? video.youtubeUrl || ''
           : video.videoFile 
             ? `${PAYLOAD_URL}${video.videoFile.url}`
             : '',
+        duration: video.duration,
+        createdAt: video.createdAt,
       }));
 
     return transformedVideos
@@ -112,15 +151,6 @@ async function fetchVideos(): Promise<TransformedVideo[]> {
   }
 }
 
-
-
-// Utility function to convert YouTube URL to embed URL
-function getYouTubeEmbedUrl(url: string): string {
-  const videoId = url.match(/(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([^"&?\/\s]{11})/)?.[1];
-  return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
-}
-
-// Existing utility functions
 function formatDuration(seconds: number): string {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = Math.floor(seconds % 60);
@@ -135,168 +165,200 @@ function formatDate(dateString: string): string {
   });
 }
 
-// Fetch and transform videos function remains the same...
+// Fetch videos
 const videos = await fetchVideos();
+const categories = [...new Set(videos.flatMap(video => video.categories.map(cat => cat.name)))];
 ---
 
-
-
 <section class="bg-white mt-12 py-20">
-    <div class="max-w-[2000px] mx-auto px-4 md:px-8 lg:px-44">
-      <!-- Header Section -->
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4">Videos</h2>
-        <p class="text-gray-600 mb-8">
-          Explore Amplio videos, news, and webinars. Visit our YouTube channel to see more videos.
-        </p>
-        <a 
-          href="https://www.youtube.com" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="inline-flex items-center justify-center px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition-colors duration-300"
+  <div class="max-w-[2000px] mx-auto px-4 md:px-8 lg:px-44">
+    <!-- Header Section -->
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold mb-4">Videos</h2>
+      <p class="text-gray-600 mb-8">
+        Explore Amplio videos, news, and webinars. Visit our YouTube channel to see more videos.
+      </p>
+      <a 
+        href="https://www.youtube.com" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="inline-flex items-center justify-center px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition-colors duration-300"
+      >
+        YOUTUBE CHANNEL →
+      </a>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="flex justify-between items-center mb-8">
+      <button 
+        class="text-gray-600 hover:text-blue-600 transition-colors cursor-pointer" 
+        data-filter="all"
+      >
+        All Videos
+      </button>
+      <div class="relative">
+        <select 
+          class="appearance-none bg-white border border-gray-300 rounded-md px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          id="categoryFilter"
         >
-          YOUTUBE CHANNEL →
-        </a>
-      </div>
-  
-      <!-- Filter Section -->
-      <div class="flex justify-between items-center mb-8">
-        <div class="text-gray-600">All Videos</div>
-        <div class="relative">
-          <select class="appearance-none bg-white border border-gray-300 rounded-md px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option>All Categories</option>
-            {[...new Set(videos.flatMap(video => video.categories.map(cat => cat.name)))].map(category => (
-              <option>{category}</option>
-            ))}
-          </select>
-          <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-            </svg>
-          </div>
+          <option value="">All Categories</option>
+          {categories.map(category => (
+            <option value={category}>{category}</option>
+          ))}
+        </select>
+        <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
         </div>
       </div>
-  
-      <!-- Videos Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {videos.map((video) => (
-          <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-            <div class="video-container">
-              <!-- Thumbnail container -->
-              <div 
-                class="thumbnail-container relative aspect-video cursor-pointer"
-                data-video-url={video.videoUrl}
-                data-video-type={video.videoType}
-              >
-                <img 
-                  src={video.coverImage.url} 
-                  alt={video.coverImage.alt}
-                  width={video.coverImage.width}
-                  height={video.coverImage.height}
-                  class="w-full h-full object-cover"
-                />
-                <!-- Play Button Overlay -->
-                <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                  <div class="w-16 h-16 rounded-full bg-white bg-opacity-90 flex items-center justify-center">
-                    <svg class="w-8 h-8 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                    </svg>
-                  </div>
-                </div>
-                <!-- Duration Badge -->
-                <div class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
-                  {formatDuration(video.duration)}
+    </div>
+
+    <!-- Videos Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="videosGrid">
+      {videos.map((video) => (
+        <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300" data-categories={video.categories.map(cat => cat.name).join(',')}>
+          <div class="video-container">
+            <div 
+              class="thumbnail-container relative aspect-video cursor-pointer"
+              data-video-url={video.videoUrl}
+              data-video-type={video.videoType}
+            >
+              <img 
+                src={video.coverImage.url} 
+                alt={video.coverImage.alt}
+                width={video.coverImage.width}
+                height={video.coverImage.height}
+                class="w-full h-full object-cover"
+              />
+              <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                <div class="w-16 h-16 rounded-full bg-white bg-opacity-90 flex items-center justify-center">
+                  <svg class="w-8 h-8 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                  </svg>
                 </div>
               </div>
-              <!-- Video Player container (initially hidden) -->
-              <div class="video-player-container hidden aspect-video">
-                <!-- Video player will be inserted here -->
+              <div class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
+                {formatDuration(video.duration)}
+              </div>
+            </div>
+            <div class="video-player-container hidden aspect-video">
+              <!-- Video inserted here -->
+            </div>
+          </div>
+          
+          <div class="p-6">
+            <div class="flex items-center mb-4">
+              <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                <img 
+                  src={video.publisher.profileImage?.url} 
+                  alt={`${video.publisher.name}'s profile picture`}
+                  width="40"
+                  height="40"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <p class="font-medium text-gray-900">{video.publisher.name}</p>
+                <time datetime={video.createdAt} class="text-sm text-gray-500">
+                  {formatDate(video.createdAt)}
+                </time>
               </div>
             </div>
             
-            <div class="p-6">
-              <div class="flex items-center mb-4">
-                <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
-                  <img 
-                    src={video.publisher.profileImage?.url} 
-                    alt={`${video.publisher.name}'s profile picture`}
-                    width="40"
-                    height="40"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <div>
-                  <p class="font-medium text-gray-900">{video.publisher.name}</p>
-                  <time datetime={video.createdAt} class="text-sm text-gray-500">
-                    {formatDate(video.createdAt)}
-                  </time>
-                </div>
-              </div>
-              
-              <h3 class="font-bold text-gray-900 text-lg mb-2 line-clamp-2 hover:text-blue-600 transition-colors">
-                {video.title}
-              </h3>
-              <p class="text-gray-600 text-sm line-clamp-2">{video.description}</p>
-            </div>
-          </article>
-        ))}
-      </div>
+            <h3 class="font-bold text-gray-900 text-lg mb-2  hover:text-blue-600 transition-colors">
+              {video.title}
+            </h3>
+            <p class="text-gray-600 text-sm line-clamp-2 mb-4">
+              {video.description}
+            </p>
+          </div>
+        </article>
+      ))}
     </div>
-  </section>
-  
-  <script>
+  </div>
+</section>
 
-   function getYouTubeEmbedUrl(url: string): string {
+<script>
+  function getYouTubeEmbedUrl(url: string): string {
     const videoId = url.match(/(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([^"&?\/\s]{11})/)?.[1];
     return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
-   }
+  }
 
+  function setupVideoPlayers() {
+    const thumbnailContainers = document.querySelectorAll('.thumbnail-container');
+    
+    thumbnailContainers.forEach(container => {
+      container.addEventListener('click', () => {
+        const videoUrl = container.getAttribute('data-video-url');
+        const videoType = container.getAttribute('data-video-type');
+        const videoContainer = container.parentElement;
+        
+        if (!videoUrl || !videoContainer) return;
+        
+        const thumbnailContainer = container;
+        const playerContainer = videoContainer.querySelector('.video-player-container');
+        
+        if (!playerContainer) return;
+        
+        thumbnailContainer.classList.add('hidden');
+        playerContainer.classList.remove('hidden');
+        
+        if (videoType === 'youtube') {
+          const embedUrl = getYouTubeEmbedUrl(videoUrl);
+          playerContainer.innerHTML = `
+            <iframe
+              src="${embedUrl}"
+              class="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          `;
+        } else {
+          playerContainer.innerHTML = `
+            <video
+              src="${videoUrl}"
+              class="w-full h-full"
+              controls
+              autoplay
+            ></video>
+          `;
+        }
+      });
+    });
+  }
 
-    function setupVideoPlayers() {
-      const thumbnailContainers = document.querySelectorAll('.thumbnail-container');
-      
-      thumbnailContainers.forEach(container => {
-        container.addEventListener('click', () => {
-          const videoUrl = container.getAttribute('data-video-url');
-          const videoType = container.getAttribute('data-video-type');
-          const videoContainer = container.parentElement;
-          
-          if (!videoUrl || !videoContainer) return;
-          
-          const thumbnailContainer = container;
-          const playerContainer = videoContainer.querySelector('.video-player-container');
-          
-          if (!playerContainer) return;
-          
-          // Show video player and hide thumbnail
-          thumbnailContainer.classList.add('hidden');
-          playerContainer.classList.remove('hidden');
-          
-          // Create and insert appropriate video player
-          if (videoType === 'youtube') {
-            const embedUrl = getYouTubeEmbedUrl(videoUrl);
-            playerContainer.innerHTML = `
-              <iframe
-                src="${embedUrl}"
-                class="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              ></iframe>
-            `;
-          } else {
-            playerContainer.innerHTML = `
-              <video
-                src="${videoUrl}"
-                class="w-full h-full"
-                controls
-                autoplay
-              ></video>
-            `;
-          }
-        });
+  function setupFiltering() {
+    const categoryFilter = document.getElementById('categoryFilter') as HTMLSelectElement;
+    const allVideosButton = document.querySelector('[data-filter="all"]') as HTMLButtonElement;
+    const videosGrid = document.getElementById('videosGrid');
+    const articles = videosGrid?.querySelectorAll('article');
+
+    function filterVideos(category: string) {
+      articles?.forEach(article => {
+        const articleCategories = article.getAttribute('data-categories')?.split(',') || [];
+        if (!category || category === '' || articleCategories.includes(category)) {
+          article.classList.remove('hidden');
+        } else {
+          article.classList.add('hidden');
+        }
       });
     }
-  
-    // Initialize video players when the page loads
-    document.addEventListener('DOMContentLoaded', setupVideoPlayers);
-  </script>
+
+    categoryFilter?.addEventListener('change', (e) => {
+      const category = (e.target as HTMLSelectElement).value;
+      filterVideos(category);
+    });
+
+    allVideosButton?.addEventListener('click', () => {
+      categoryFilter.value = '';
+      filterVideos('');
+    });
+  }
+
+  // Initialize functionality when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    setupVideoPlayers();
+    setupFiltering();
+  });
+</script>
