@@ -1,0 +1,215 @@
+---
+interface Media {
+  id: string;
+  alt: string;
+  url: string;
+  filename: string;
+  mimeType: string;
+  filesize: number;
+  width: number;
+  height: number;
+}
+
+interface Publisher {
+  id: string;
+  username: string;
+  name: string;
+  profileImage: Media;
+}
+
+interface Category {
+  id: string;
+  name: string;
+}
+
+interface ApiVideo {
+  id: string;
+  title: string;
+  description: string;
+  coverImage: Media;
+  publisher: Publisher;
+  categories: Category[];
+  videoType: 'upload' | 'youtube';
+  videoFile?: Media;
+  youtubeUrl?: string;
+  status: 'draft' | 'published';
+  duration: number;
+  createdAt: string;
+}
+
+interface TransformedVideo {
+  id: string;
+  title: string;
+  description: string;
+  coverImage: Media & { url: string };
+  publisher: Omit<Publisher, 'profileImage'> & {
+    profileImage?: Media & { url: string };
+  };
+  categories: Category[];
+  videoType: 'upload' | 'youtube';
+  videoUrl: string;
+  duration: number;
+  createdAt: string;
+}
+
+interface ApiResponse {
+  docs: ApiVideo[];
+  totalDocs: number;
+  limit: number;
+  totalPages: number;
+  page: number;
+  pagingCounter: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
+  prevPage: number | null;
+  nextPage: number | null;
+}
+
+const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
+
+function formatDuration(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+// Function to format date
+function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+// Fetch and transform videos
+async function fetchVideos(): Promise<TransformedVideo[]> {
+  try {
+    const response = await fetch(`${PAYLOAD_URL}/api/videos?depth=2`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    const data: ApiResponse = await response.json();
+    
+    const transformedVideos: TransformedVideo[] = data.docs
+      .filter((video): video is ApiVideo => video.status === 'published')
+      .map((video: ApiVideo): TransformedVideo => ({
+        ...video,
+        coverImage: {
+          ...video.coverImage,
+          url: `${PAYLOAD_URL}${video.coverImage.url}`,
+        },
+        publisher: {
+          ...video.publisher,
+          profileImage: video.publisher.profileImage ? {
+            ...video.publisher.profileImage,
+            url: `${PAYLOAD_URL}${video.publisher.profileImage.url}`,
+          } : undefined,
+        },
+        videoUrl: video.videoType === 'youtube' 
+          ? video.youtubeUrl || ''
+          : video.videoFile 
+            ? `${PAYLOAD_URL}${video.videoFile.url}`
+            : '',
+      }));
+
+    return transformedVideos
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    
+  } catch (error) {
+    console.error('Error fetching videos:', error);
+    return [];
+  }
+}
+
+// Fetch the videos
+const videos = await fetchVideos();
+---
+
+<section class="bg-white py-20">
+  <div class="max-w-[2000px] mx-auto px-4 md:px-8 lg:px-44">
+    <!-- Header Section -->
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold mb-4">Videos</h2>
+      <p class="text-gray-600 mb-8">
+        Explore Amplio videos, news, and webinars. Visit our YouTube channel to see more videos.
+      </p>
+      <a 
+        href="https://www.youtube.com" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="inline-flex items-center justify-center px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition-colors duration-300"
+      >
+        YOUTUBE CHANNEL →
+      </a>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="flex justify-between items-center mb-8">
+      <div class="text-gray-600">All Videos</div>
+      <div class="relative">
+        <select class="appearance-none bg-white border border-gray-300 rounded-md px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option>All Categories</option>
+          {[...new Set(videos.flatMap(video => video.categories.map(cat => cat.name)))].map(category => (
+            <option>{category}</option>
+          ))}
+        </select>
+        <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Videos Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {videos.map((video) => (
+        <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+          <a href={video.videoUrl} class="block">
+            <div class="relative aspect-video overflow-hidden">
+              <img 
+                src={video.coverImage.url} 
+                alt={video.coverImage.alt}
+                width={video.coverImage.width}
+                height={video.coverImage.height}
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+              />
+              <!-- Duration Badge -->
+              <div class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
+                {formatDuration(video.duration)}
+              </div>
+            </div>
+            
+            <div class="p-6">
+              <div class="flex items-center mb-4">
+                <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                  <img 
+                    src={video.publisher.profileImage?.url} 
+                    alt={`${video.publisher.name}'s profile picture`}
+                    width="40"
+                    height="40"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900">{video.publisher.name}</p>
+                  <time datetime={video.createdAt} class="text-sm text-gray-500">
+                    {formatDate(video.createdAt)}
+                  </time>
+                </div>
+              </div>
+              
+              <h3 class="font-bold text-gray-900 text-lg mb-2 line-clamp-2 hover:text-blue-600 transition-colors">
+                {video.title}
+              </h3>
+              <p class="text-gray-600 text-sm line-clamp-2">{video.description}</p>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
