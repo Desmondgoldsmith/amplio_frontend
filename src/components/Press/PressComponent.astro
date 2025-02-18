@@ -252,7 +252,7 @@ const rows = Array.from({ length: Math.ceil(mediaItems.length / itemsPerRow) }, 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
                 {row.map((item) => (
                     <div class="flex flex-col gap-4">
-                        <a href={item.link} target="_blank" rel="noopener noreferrer">
+                        <a href={item.link} target="_blank" rel="noopener noreferrer" class="flex justify-center">
                             <img 
                                 src={item.logo} 
                                 alt={item.logoAlt} 
@@ -275,7 +275,7 @@ const rows = Array.from({ length: Math.ceil(mediaItems.length / itemsPerRow) }, 
                 ))}
             </div>
         ))}
-    </div>
+    </div>    
 </section>
 
 <style>
