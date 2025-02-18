@@ -1,0 +1,293 @@
+---
+interface MediaItem {
+    logo: string;
+    logoAlt: string;
+    title: string;
+    date: string;
+    description: string;
+    link: string;  
+}
+
+const mediaItems: MediaItem[] = [
+    {
+        logo: "/all-children-reading-logo.png",
+        logoAlt: "All Children Reading Logo",
+        title: "All Children Reading: A Grand Challenge for Development celebrates impact on increasing literacy for children worldwide",
+        date: "March 23, 2023",
+        description: "The Grand Challenge is concluding 12 years of funding innovative EdTech solutions and approaches to increase reading outcomes for marginalized children in low-resource contexts.",
+        link: "https://allchildrenreading.org"
+    },
+    {
+        logo: "/designboom-logo.png",
+        logoAlt: "Designboom Logo",
+        title: "Solar-powered crop storage to educational apps: 10 iF Social Impact Prize 2022 Winners",
+        date: "March 26, 2023",
+        description: "iF Design spotlights significant social initiatives from around the globe through its annual iF Social Impact Prize. Landesa was recognized for their innovative use of Talking Books to advance women's land rights in Liberia.",
+        link: "https://www.designboom.com"
+    },
+    {
+        logo: "/fao-logo.png",
+        logoAlt: "FAO Logo",
+        title: "Talking Books provide an innovative solution to reach rural communities in Uganda",
+        date: "September 15, 2022",
+        description: "Dramatic dialogue, music and poetry are not the usual ways that the UN Food and Agriculture Organization (FAO) raises awareness of and sensitizes rural communities on women's land rights...",
+        link: "https://www.fao.org"
+    },
+    {
+        logo: "/unicef-logo.png",
+        logoAlt: "UNICEF Logo",
+        title: "Changing and influencing behaviors through innovation: The Amplio Talking Book",
+        date: "January 9, 2022",
+        description: "UNICEF works with local partners in Ghana to deliver key messages and important information in hard-to-reach areas through a digital development tool - the Amplio Talking Book.",
+        link: "https://www.unicef.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "GlobalWA Logo",
+        title: "Communication During a Public Health Crisis — Reaching Last-Mile Communities",
+        date: "August 19, 2021",
+        description: "Communication is the first and most important thing to think about when a health crisis emerges. But how do you get your message to remote communities where there's no infrastructure, electricity, or internet?",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Microsoft alumi Logo",
+        title: "Network helps put Amplio Talking Books into hands around the world",
+        date: "June, 2021",
+        description: "Cliff Schmidt, founder and executive director at Amplio, first met Revi Sterling at a conference in 2007 in India.  They discovered that they were both Microsoft alumni and within them burned the same fiery passion for having a big impact. ",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "drums Logo",
+        title: "Talking Books to Facilitate Behaviour Change in Rural Communities in Ghana",
+        date: "March 19, 2021",
+        description: "Anastasiya Nurzhynska shares how a UNICEF Ghana pilot project has found that Talking Book technology is a maybe a solution to help Ghana Health Service deliver health information more effectively to underserved rural communities.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Landsea Logo",
+        title: "Spreading the Word: Landesa and Amplio leverage technology for legal empowerment",
+        date: "November 19, 2020",
+        description: "Landesa and Amplio hosted a panel of land rights experts and social entrepreneurs to discuss our new partnership that is leveraging technology for land rights in Liberia.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Pulse Logo",
+        title: "S2 E3: Remote Access: Delivering Education to Rural Communities",
+        date: "october 22, 2020",
+        description: "Delivering education to remote communities is a challenge that has become more pronounced during COVID-19. Allana Nelson chats with Amplio’s Toffic Dapilaah and Lisa Zook about initiatives that provide educational information to rural communities — and how they’re doing it in safe, socially distanced ways.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "International Food Logo",
+        title: "How to ensure effective government responses as COVID-19 spreads to rural areas",
+        date: "June 22, 2020",
+        description: "Policy makers and researchers tracking the impacts of COVID-19 and control measures have thus far focused mostly on urban areas, where the disease can spread rapidly. In this post, Katrina Kosec and Catherine Ragasa point out the need to pay attention to rural areas, which face a distinct set of pandemic challenges.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Forbes Logo",
+        title: "Lessons In Design And Scale For Social Impact Organizations",
+        date: "June 2, 2020",
+        description: "Forbes Nonprofit Council member James da Costa writes about the importance of user-centered design and scale—and the lessons learned—as social impact organizations build solutions and programs in today’s COVID-19 crisis.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Forbes Logo",
+        title: "Lessons In Design And Scale For Social Impact Organizations",
+        date: "June 2, 2020",
+        description: "Forbes Nonprofit Council member James da Costa writes about the importance of user-centered design and scale—and the lessons learned—as social impact organizations build solutions and programs in today’s COVID-19 crisis.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Citi Logo",
+        title: "Preventing CSM & COVID-19",
+        date: "April 21, 2020",
+        description: "As part of the effort to control the increase in numbers of COVID-19 and meningitis cases, In the Upper West Region a non-governmental organization has deployed a digital technology to help educate rural communities.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "world bank Logo",
+        title: "Inclusive disruption: harnessing the social power of technology",
+        date: "March 26, 2020",
+        description: "In this article, the World Banks’ Social Development Global Practice team shares their findings about the use of disruptive technologies to reach and help the world’s poorest and most marginalized people.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "devel Logo",
+        title: "Cliff Schmidt – Developer to CEO of Tech Nonprofit in Education ",
+        date: "January 20, 2020",
+        description: "Grant Ingersoll interviews founder and executive director Cliff Schmidt about his inspiration for starting Amplio, why he joined the navy, what he loves about open source technology, and how to get funding when you’re a tech nonprofit.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "ktn news Logo",
+        title: "Rangers to the Rescue: Kalama WIldlife Rangers education women on benefits of delivering in hospitals",
+        date: "November 16, 2019",
+        description: "In Kenya, Kalama Community Conservancy rangers are working with Afya Timiza Project-Samburu Afya Timiza, a USAID-funded project to help women access proper antenatal care and ensure that expectant mothers deliver in hospitals to avoid maternal death.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Miller Logo",
+        title: "Talking Book, A New Voice for Isolated Communities",
+        date: "October 9, 2019",
+        description: "In today’s internet-connected, mobilized world, it is easy to forget that over 750 million adults remain illiterate, and 800 million live on less than a dollar a day. The Miller Center profiles the Talking Book and Amplio founder, Cliff Schmidt, who participates in the GSBI accelerator program for social entrepreneurship.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Forbes Logo",
+        title: "Little Bits For Big Challenges: Digital Technologies For Social Good",
+        date: "september 23, 2018",
+        description: "Arm is the world’s leading semiconductor and software design company. Lorin Fries interviews Dominic Vergine, Head of Sustainability and Corporate Responsibility, about Arm’s 2030 Vision to create technology partnerships for the Sustainable Development Goals—and how Talking Books fit in.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Meda Logo",
+        title: "Teaching With Talking Books ",
+        date: "July, 2018",
+        description: "In Ghana, MEDA’s Greater Rural Opportunities for Women (GROW) project has made great use of Talking Books. Devices were distributed to over 1,000 lead women farmers to share with the village savings and loan associations.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "ITU Logo",
+        title: "Interview with Cliff Schmidt, Amplio founder and executive director ",
+        date: "June 14, 2017",
+        description: "Journalist Charlotte Kan interviews Cliff Schmidt, Amplio’s executive director, during the World Summit on the Information Society (WSIS) Forum in Geneva. Cliff explains how the Talking Book supports the UN Global Goals and is used for sharing knowledge with people in world’s hardest-to-reach communities.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Pearson Logo",
+        title: "UNESCO-Pearson initiative for literacy announces finalists for case studies on inclusive digital solutions ",
+        date: "May 22, 2017",
+        description: "UNESCO announced that 14 case study finalists will be part of the UNESCO-Pearson Initiative for Literacy: Improved Livelihoods in a Digital World — including the Amplio Talking Book.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Human Logo",
+        title: "How one organization is adapting technology to help world’s poorest ",
+        date: "April 18, 2016",
+        description: "Technology tends to create divides. It doesn’t actually lift up the poorest of the poor. And the reason is because the wealthier, and the more educated, have the most access to technology. Amplio uses clever technology and user feedback to maintain a genuine understanding of its target population’s needs.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Forbes Logo",
+        title: "Ghana: Simple Technology Offers Rural Communities A Route Out Of Fragility ",
+        date: "August 12, 2015",
+        description: "Peter Grant writes about how the challenges of distance and infrastructure in Ghana’s Upper West region mean that many people remain economically isolated, making a living through smallholder agriculture and small-scale trading. The Talking Book aims to fill the gap left by the absence of government services.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Independent Logo",
+        title: "A soap opera is changing women's lives in Ghana with information about family planning",
+        date: "August 2, 2015",
+        description: "Alistair Dawber writes about how Talking Books lessons on health and farming have helped to unite the village of Suke in western Ghana, providing access to knowledge women are using to keep their children healthy, grow more food, and earn income.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Biztec Logo",
+        title: "Literacy Bridge, UNICEF, ARM Unite on Talking Books project in Ghana",
+        date: "November 24, 2014",
+        description: "As the United Nations marks the 25th anniversary of the adoption of the Convention on the Rights of the Child, a humanitarian technology company has announced a new multi-year partnership with UNICEF and ARM to deliver health education to 40,000 vulnerable people in Ghana, using Talking Book devices.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "Geek Logo",
+        title: "Literacy Bridge partners with UN to provide talking audiobooks for farmers, mothers in Ghana",
+        date: "November 20, 2014",
+        description: "Every year in Ghana, the Ministry of Food and Agriculture celebrates Farmers Day. The idea is to honor and celebrate those that have applied innovative methods to grow more food. Last year, a group of winners shared something in common —  a helping hand from a Seattle non-profit.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "BBC Logo",
+        title: "Talking Book trial to help the “poorest of the poor” in Ghana ",
+        date: "November 20, 2014",
+        description: "Hundreds of handheld audio computers are to be given to some of Ghana's poorest communities to help spread potentially life-saving information. The Talking Books will let families play audio files as well as make their own recordings, which can be shared with others or used to give feedback.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "PBS Logo",
+        title: "Literacy Bridge Uses Talking Books to Spread the Word in Ghana",
+        date: "July 23, 2013",
+        description: "Inspired by the One Laptop Per Child, software consultant Cliff Schmidt wondered if there was a need for an even more low-cost, low-tech device to spread knowledge in poor areas of the world. In Ghana, he met agricultural and health official who said they needed a better way to communicate with villagers in remote areas.",
+        link: "https://globalwa.org"
+    },
+    {
+        logo: "/globalwa-logo.png",
+        logoAlt: "PI Logo",
+        title: "Ex-Microsoft worker creates Talking Book to teach literacy",
+        date: "September 7, 2008",
+        description: "Most of the world's billion or so poorest, unhealthiest and disenfranchised people are also illiterate, Cliff Schmidt noticed a few years ago, a chronic global deficit that he believes seriously hamstrings any other humanitarian or assistance efforts under way in the developing world.",
+        link: "https://globalwa.org"
+    },
+];
+
+const itemsPerRow = 4;
+const rows = Array.from({ length: Math.ceil(mediaItems.length / itemsPerRow) }, (_, i) =>
+    mediaItems.slice(i * itemsPerRow, (i + 1) * itemsPerRow)
+);
+---
+
+<section class="bg-white mt-12 py-16">
+    <div class="bg-[#475CAA] text-center text-white mx-auto py-8">
+        <h1 class="text-4xl font-bold text-white mb-4">Press & Media</h1>
+        <p class="text-xl text-white">For press inquiries, contact communications@amplio.org.</p>
+    </div>
+
+    <div class="mt-10 container mx-auto px-4 lg:px-52">
+        {rows.map((row, rowIndex) => (
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                {row.map((item) => (
+                    <div class="flex flex-col gap-4">
+                        <a href={item.link} target="_blank" rel="noopener noreferrer">
+                            <img 
+                                src={item.logo} 
+                                alt={item.logoAlt} 
+                                class="h-12 object-contain hover:opacity-80 transition-opacity"
+                            />
+                        </a>
+                        <a 
+                            href={item.link} 
+                            class="text-lg font-semibold text-gray-900 hover:text-blue-600 underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {item.title}
+                        </a>
+                        <p class="text-gray-600">{item.date}</p>
+                        <p class="text-gray-700 leading-relaxed">
+                            {item.description}
+                        </p>
+                    </div>
+                ))}
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    .container {
+        max-width: 1440px;
+    }
+</style>
