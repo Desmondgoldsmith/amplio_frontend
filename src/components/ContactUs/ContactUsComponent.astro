@@ -1,0 +1,254 @@
+---
+import { z } from 'zod';
+
+// Form validation schema for strong typing and validation
+const contactSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(1, "Phone number is required"),
+  organizationName: z.string().min(1, "Organization name is required"),
+  countryOfProgram: z.string().min(1, "Country is required"),
+  interestedInTalkingBooks: z.enum(["yes", "no"]),
+  message: z.string().min(1, "Message is required"),
+});
+
+// Type inference from our schema
+type ContactFormData = z.infer<typeof contactSchema>;
+---
+
+<div class="max-w-4xl mx-auto">
+  <!-- Header Section -->
+  <h1 class="text-[40px] font-bold text-center mb-6">Contact Us</h1>
+  <p class="text-center mb-4">
+    Hello! If you'd like to purchase Talking Books or discuss partnering with Amplio on a project, use the contact form below.
+  </p>
+  <p class="text-center mb-12">
+    For general inquiries, email <a href="mailto:info@amplio.org" class="text-[#00BCD4] hover:underline">info@amplio.org</a>.
+  </p>
+
+  <!-- Form Container -->
+  <div class="w-full bg-white rounded-lg border border-[#E6E6E6] p-12">
+    <form id="contactForm" class="space-y-6">
+      <!-- Two-column grid for form inputs -->
+      <div class="grid grid-cols-2 gap-6">
+        <!-- First Name Input -->
+        <div>
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First name"
+            required
+            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+          />
+        </div>
+        
+        <!-- Last Name Input -->
+        <div>
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last name"
+            required
+            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+          />
+        </div>
+
+        <!-- Email Input -->
+        <div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+          />
+        </div>
+
+        <!-- Phone Input -->
+        <div>
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Phone"
+            required
+            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+          />
+        </div>
+
+        <!-- Organization Name Input -->
+        <div>
+          <input
+            type="text"
+            name="organizationName"
+            placeholder="Organization name"
+            required
+            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+          />
+        </div>
+
+        <!-- Country Input -->
+        <div>
+          <input
+            type="text"
+            name="countryOfProgram"
+            placeholder="Country of program"
+            required
+            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+          />
+        </div>
+      </div>
+
+      <!-- Radio Button Section -->
+      <div class="mt-8">
+        <p class="text-[#333333] mb-4">Are you interested in purchasing Talking Books?</p>
+        <div class="flex gap-6">
+          <label class="flex items-center gap-2">
+            <input
+              type="radio"
+              name="interestedInTalkingBooks"
+              value="yes"
+              required
+              class="w-4 h-4 text-[#6366F1] border-[#E6E6E6]"
+            />
+            <span class="text-[#333333]">Yes</span>
+          </label>
+          <label class="flex items-center gap-2">
+            <input
+              type="radio"
+              name="interestedInTalkingBooks"
+              value="no"
+              required
+              class="w-4 h-4 text-[#6366F1] border-[#E6E6E6]"
+            />
+            <span class="text-[#333333]">No</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Message Textarea -->
+      <div class="mt-8">
+        <textarea
+          name="message"
+          placeholder="Type your message here..."
+          rows="6"
+          required
+          class="w-full px-4 py-3 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4] resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end mt-8">
+        <button
+          type="submit"
+          class="px-8 py-3 bg-[#6366F1] text-white rounded hover:bg-[#5457E5] transition-colors duration-200"
+        >
+          SUBMIT
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+      <div class="text-center">
+        <div class="mb-4 text-green-500">
+          <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">Submission Successful!</h3>
+        <p class="text-gray-600 mb-6">Thank you for contacting us. We'll get back to you soon.</p>
+        <button id="closeModal" class="bg-[#6366F1] text-white px-6 py-2 rounded hover:bg-[#5457E5] transition-colors">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Modal -->
+  <div id="errorModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+      <div class="text-center">
+        <div class="mb-4 text-red-500">
+          <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">Submission Failed</h3>
+        <p class="text-gray-600 mb-6">Sorry, there was an error submitting your form. Please try again.</p>
+        <button class="closeErrorModal bg-[#6366F1] text-white px-6 py-2 rounded hover:bg-[#5457E5] transition-colors">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Page Background Style -->
+<style>
+  :global(body) {
+    background-color: #F8FAFC;
+  }
+</style>
+
+<script>
+  // Type-safe form handling with validation
+  const form = document.getElementById('contactForm') as HTMLFormElement;
+  const successModal = document.getElementById('successModal');
+  const errorModal = document.getElementById('errorModal');
+  const closeModalBtn = document.getElementById('closeModal');
+  const closeErrorModalBtn = document.querySelector('.closeErrorModal');
+
+  // Handle form submission
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      // Send data to our API endpoint
+      const response = await fetch('/api/contact-submissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Submission failed');
+      }
+
+      // Show success modal and reset form
+      successModal?.classList.remove('hidden');
+      form.reset();
+
+    } catch (error) {
+      // Show error modal and log error
+      errorModal?.classList.remove('hidden');
+      console.error('Form submission error:', error);
+    }
+  });
+
+  // Modal close handlers
+  closeModalBtn?.addEventListener('click', () => {
+    successModal?.classList.add('hidden');
+  });
+
+  closeErrorModalBtn?.addEventListener('click', () => {
+    errorModal?.classList.add('hidden');
+  });
+
+  // Close modals when clicking outside
+  window.addEventListener('click', (e) => {
+    if (e.target === successModal) {
+      successModal?.classList.add('hidden');
+    }
+    if (e.target === errorModal) {
+      errorModal?.classList.add('hidden');
+    }
+  });
+</script>
