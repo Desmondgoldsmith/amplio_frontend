@@ -20,7 +20,7 @@ type ContactFormData = z.infer<typeof contactSchema>;
 <div class="max-w-4xl mt-28 mb-16 mx-auto">
   <!-- Header Section -->
   <h1 class="text-[40px] font-bold text-center mb-6">Contact Us</h1>
-  <p class="max-w-lg mx-auto text-center mb-4">
+  <p class="max-w-xl text-lg mx-auto text-center mb-4">
     Hello! If you'd like to purchase Talking Books or discuss partnering with Amplio on a project, use the contact form below.
   </p>
   <p class="text-center mb-12">
@@ -28,7 +28,7 @@ type ContactFormData = z.infer<typeof contactSchema>;
   </p>
 
   <!-- Form Container -->
-  <div class="w-full bg-white rounded-lg border border-[#E6E6E6] p-12">
+  <div class="w-full bg-white border border-[#8D99C6] p-12">
     <form id="contactForm" class="space-y-6">
       <!-- Two-column grid for form inputs -->
       <div class="grid grid-cols-2 gap-6">
@@ -186,8 +186,14 @@ type ContactFormData = z.infer<typeof contactSchema>;
   </div>
 </div>
 
+<style>
+  :global(body) {
+    background-color: #F2FAFE;
+  }
+</style>
+
 <script>
-  // validation
+  // Type-safe form handling with validation
   const form = document.getElementById('contactForm') as HTMLFormElement;
   const successModal = document.getElementById('successModal');
   const errorModal = document.getElementById('errorModal');
