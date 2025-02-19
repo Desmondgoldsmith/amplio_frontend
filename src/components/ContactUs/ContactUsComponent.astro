@@ -24,30 +24,26 @@ type ContactFormData = z.infer<typeof contactSchema>;
     For general inquiries, email <a href="mailto:info@amplio.org" class="text-[#00BCD4] hover:underline">info@amplio.org</a>.
   </p>
 
-  <!-- Form Container -->
-  <div class="w-full bg-white border border-[#8D99C6] p-12">
+  <div class="w-full bg-white border-4 border-[#8D99C6] p-12">
     <form id="contactForm" class="space-y-6">
-      <!-- Two-column grid for form inputs -->
       <div class="grid grid-cols-2 gap-6">
-        <!-- First Name Input -->
         <div>
           <input
             type="text"
             name="firstName"
             placeholder="First name"
             required
-            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+            class="w-full h-[60px] px-4 border-2 border-[#00BCD4] placeholder-[#757575] focus:border-[#02e1ff] focus:outline-none focus:ring-1 focus:ring-[#04e2ff]"
           />
         </div>
-        
-        <!-- Last Name Input -->
+
         <div>
           <input
             type="text"
             name="lastName"
             placeholder="Last name"
             required
-            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+            class="w-full h-[60px] px-4  border-2 border-[#00BCD4] placeholder-[#757575] focus:border-[#01cbe6] focus:outline-none focus:ring-1 focus:ring-[#01c2dc]"
           />
         </div>
 
@@ -58,7 +54,7 @@ type ContactFormData = z.infer<typeof contactSchema>;
             name="email"
             placeholder="Email"
             required
-            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+            class="w-full h-[60px] px-4  border-2 border-[#00BCD4] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
           />
         </div>
 
@@ -69,7 +65,7 @@ type ContactFormData = z.infer<typeof contactSchema>;
             name="phone"
             placeholder="Phone"
             required
-            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+            class="w-full h-[60px] px-4  border-2 border-[#00BCD4] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
           />
         </div>
 
@@ -80,7 +76,7 @@ type ContactFormData = z.infer<typeof contactSchema>;
             name="organizationName"
             placeholder="Organization name"
             required
-            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+            class="w-full h-[60px] px-4  border-2 border-[#00BCD4] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
           />
         </div>
 
@@ -91,7 +87,7 @@ type ContactFormData = z.infer<typeof contactSchema>;
             name="countryOfProgram"
             placeholder="Country of program"
             required
-            class="w-full h-[46px] px-4 rounded border border-[#E6E6E6] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
+            class="w-full h-[60px] px-4  border-2 border-[#00BCD4] placeholder-[#757575] focus:border-[#00BCD4] focus:outline-none focus:ring-1 focus:ring-[#00BCD4]"
           />
         </div>
       </div>
