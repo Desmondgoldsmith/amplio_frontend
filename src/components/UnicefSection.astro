@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 interface FormData {
   email: string;
   firstName: string;
@@ -9,49 +11,54 @@ const handleSubmit = async (data: FormData) => {
 };
 ---
 
-<section class="relative w-full">
-  {/* UNICEF Quote Section */}
-  <div class="max-w-[2000px] mx-auto px-44 py-20 text-center">
-    <img 
-      src="/assets/homepageAssets/UNICEF_Logo.png" 
-      alt="UNICEF Logo" 
-      class="mx-auto mb-12 w-48"
-    />
-    
-    <blockquote class="max-w-4xl mx-auto mb-6 text-2xl font-medium text-gray-800">
-      "An innovative technology to influence behaviors that impact the lives and opportunities of the world's most vulnerable children and their families."
-    </blockquote>
-    
-    <div class="text-gray-600">
-      <p>Susan Ngongi Namondo, United Nations Diplomat</p>
-      <p>and former UNICEF Representative to Ghana</p>
-    </div>
-  </div>
-
-  <div class="relative w-full h-[600px]">
-    {/* Background Image */}
-    <div class="absolute inset-0 w-full h-full">
-      <img 
-        src="/assets/homepageAssets/unicef_section.jpg" 
-        alt="Community members" 
-        class="w-full h-full object-cover"
+<client:idle>
+  <section class="relative w-full">
+    <div class="max-w-[2000px] mx-auto px-6 sm:px-12 lg:px-44 py-20 text-center">
+      <Image 
+        src="/assets/homepageAssets/UNICEF_Logo.png" 
+        alt="UNICEF Logo" 
+        width={192} 
+        height={192} 
+        class="mx-auto mb-12 w-48"
+        format="webp"
       />
+      
+      <blockquote class="max-w-4xl mx-auto mb-6 text-xl sm:text-2xl font-medium text-gray-800">
+        "An innovative technology to influence behaviors that impact the lives and opportunities of the world's most vulnerable children and their families."
+      </blockquote>
+      
+      <div class="text-gray-600">
+        <p>Susan Ngongi Namondo, United Nations Diplomat</p>
+        <p>and former UNICEF Representative to Ghana</p>
+      </div>
     </div>
 
-    {/* Form Container */}
-    <div class="absolute left-44 top-1/2 -translate-y-1/2 w-[460px] text-white text-center p-12 bg-[#6a6ebd] bg-opacity-80 backdrop-blur-sm rounded-lg shadow-lg z-10">
-        <h3 class="text-3xl font-bold mb-6">Knowledge is power</h3>
-      <p class=" mb-8">
-        Join us, and help unlock the power of people and communities through knowledge sharing.
-      </p>
+    <div class="relative w-full h-[600px]">
+      <div class="absolute inset-0 w-full h-full">
+        <Image 
+          src="/assets/homepageAssets/unicef_section.jpg" 
+          alt="Community members" 
+          width={2000} 
+          height={600} 
+          class="w-full h-full object-cover"
+          format="webp"
+        />
+      </div>
+
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[460px] text-white text-center p-6 sm:p-12 bg-[#6a6ebd] bg-opacity-80 backdrop-blur-sm rounded-lg shadow-lg z-10
+      lg:left-44 lg:translate-x-0">
+        <h3 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Knowledge is Power</h3>
+        <p class="text-sm sm:text-base leading-relaxed mb-6 sm:mb-8">
+          Join us, and help unlock the power of people and communities through knowledge sharing.
+        </p>
 
         <button 
-          type="submit"
+          type="button"
           class="w-full py-3 px-6 bg-[#FF5C35] hover:bg-[#FF4415] text-white font-medium rounded-md transition-colors duration-200"
         >
           DONATE
         </button>
+      </div>
     </div>
-  </div>
-</section>
-
+  </section>
+</client:idle>
