@@ -1,27 +1,30 @@
 ---
+import { Image } from 'astro:assets';
 ---
 
 <section class="bg-[#F8FBFF] py-20">
-    <div class="max-w-[2000px] mx-auto px-44">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-6">An Inclusive Digital Solution</h2>
-        <p class="text-gray-700 text-lg max-w-3xl mx-auto">
-          The Amplio Talking Book is an easy-to-use audio device designed for people with low literacy skills. It delivers hours of content on-demand, in any language.
-        </p>
-      </div>
-  
-      <div class="flex justify-center mb-12">
-        <img 
-          src="/assets/homepageAssets/amplioTech.png" 
-          alt="Amplio Talking Books" 
-          class="max-w-4xl w-full h-auto"
-        />
-      </div>
-  
-      <div class="text-center">
-        <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-md hover:border-gray-400 transition-colors">
-          SEE OUR TECHNOLOGY
-        </a>
-      </div>
+  <div class="max-w-[2000px] mx-auto px-6 sm:px-12 lg:px-44">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6">An Inclusive Digital Solution</h2>
+      <p class="text-gray-700 text-base sm:text-lg max-w-3xl mx-auto">
+        The Amplio Talking Book is an easy-to-use audio device designed for people with low literacy skills. It delivers hours of content on-demand, in any language.
+      </p>
     </div>
-  </section>
+
+    <div class="flex justify-center mb-12">
+      <Image 
+        src="/assets/homepageAssets/amplioTech.png" 
+        alt="Amplio Talking Books" 
+        class="max-w-4xl w-full h-auto"
+        width={800} height={400} 
+        format="webp"
+      />
+    </div>
+
+    <div class="text-center">
+      <a href="/technology" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-md hover:border-gray-400 transition-colors">
+        SEE OUR TECHNOLOGY
+      </a>
+    </div>
+  </div>
+</section>
