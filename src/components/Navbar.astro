@@ -35,8 +35,8 @@ const navItems = [
     hasDropdown: true,
     dropdownItems: [
       { label: "Case Studies", href: "/case-studies" },
-      { label: "videos", href: "/videos" },
-      { label: "Gudies and Brochures", href: "/guides-and-brochures" },
+      { label: "Videos", href: "/videos" },
+      { label: "Guides and Brochures", href: "/guides-and-brochures" },
       { label: "Press", href: "/press" },
     ]
   },
@@ -44,24 +44,44 @@ const navItems = [
 ];
 ---
 
-<div class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-300">
-   <nav class="transition-shadow duration-200">
-     <div class="max-w-[2000px] mx-auto px-4 lg:px-56">
-    <div class="flex justify-between items-center h-20 lg:h-28">
-      <a href="/" class="flex items-center" aria-label="Go to homepage">
-        <Image 
-          src={logo}
-          alt="Amplio"
-          class="h-12 lg:h-16 w-auto"
-          width={200}
-          height={64}
-          loading="eager"
-        />
-      </a>
+<div class="sticky top-0 left-0 right-0 z-50">
+  <nav class="bg-white border-b border-gray-300 transition-shadow duration-200">
+    <div class="max-w-[2000px] mx-auto px-4 lg:px-56">
+      <!-- Header always visible -->
+      <div class="flex justify-between items-center h-16 lg:h-28">
+        <button 
+          class="p-2 text-gray-700 lg:hidden"
+          id="mobile-menu-button"
+          aria-label="Toggle mobile menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <svg class="menu-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg class="close-icon w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
 
-      <div class="hidden lg:flex items-center space-x-4">
-        {
-          navItems.map((item) => (
+        <a href="/" class="flex items-center mx-auto lg:mx-0" aria-label="Go to homepage">
+          <Image 
+            src={logo}
+            alt="Amplio"
+            class="h-8 lg:h-16 w-auto"
+            width={200}
+            height={64}
+            loading="eager"
+          />
+        </a>
+
+        <a href="/donate" class="lg:hidden bg-[#EE8060] text-white px-4 py-2 text-sm rounded-md hover:bg-[#ff4a33] transition-colors">
+          DONATE
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden lg:flex items-center space-x-4">
+          {navItems.map((item) => (
             <div class="relative group">
               {item.hasDropdown ? (
                 <button 
@@ -113,199 +133,152 @@ const navItems = [
                 </div>
               )}
             </div>
-          ))
-        }
-        
-        <a
-          href="/donate"
-          class="bg-[#EE8060] text-white px-8 py-3 rounded-md hover:bg-[#ff4a33] transition-colors"
-        >
-          DONATE
-        </a>
+          ))}
+          
+          <a
+            href="/donate"
+            class="bg-[#EE8060] text-white px-8 py-3 rounded-md hover:bg-[#ff4a33] transition-colors"
+          >
+            DONATE
+          </a>
+        </div>
       </div>
-
-      <button 
-        class="block lg:hidden p-2 z-50"
-        id="mobile-menu-button"
-        aria-label="Toggle mobile menu"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-      >
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </button>
     </div>
-  </div>
 
-  <div
-    class="lg:hidden hidden absolute top-[80px] left-0 right-0 bg-white shadow-lg border-t border-gray-200"
-    id="mobile-menu"
-    role="menu"
-  >
-    <div class="px-4 py-4 max-h-[calc(100vh-80px)] overflow-y-auto">
-      {
-        navItems.map((item) => (
-          <div class="py-2 border-b border-gray-100 last:border-0">
+    <!-- Mobile Menu Overlay -->
+    <div
+      class="lg:hidden hidden fixed inset-0 bg-white z-50 mt-16"
+      id="mobile-menu"
+      role="menu"
+    >
+      <div class="flex-1 overflow-y-auto p-4">
+        {navItems.map((item) => (
+          <div class="py-3 border-b border-gray-100 last:border-0">
             {item.hasDropdown ? (
-              <button
-                type="button"
-                class="w-full text-left flex items-center justify-between text-gray-700 hover:text-emerald-600 py-2"
-                onclick={`toggleMobileDropdown('${item.label}')`}
-                aria-expanded="false"
-                aria-controls={`mobile-dropdown-${item.label}`}
-              >
-                {item.label}
-                <svg 
-                  class="w-4 h-4 transition-transform duration-200" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
+              <>
+                <button
+                  type="button"
+                  class="w-full text-left flex items-center justify-between text-gray-700 font-medium mobile-dropdown-button"
+                  data-target={`mobile-dropdown-${item.label}`}
+                  aria-expanded="false"
+                  aria-controls={`mobile-dropdown-${item.label}`}
                 >
-                  <path 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round" 
-                    stroke-width="2" 
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
+                  <span>{item.label}</span>
+                  <svg 
+                    class="dropdown-icon w-5 h-5 text-gray-400" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round" 
+                      stroke-width="2" 
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div
+                  class="hidden pl-4 mt-2 space-y-2"
+                  id={`mobile-dropdown-${item.label}`}
+                >
+                  {item.dropdownItems.map((dropdownItem) => (
+                    <a
+                      href={dropdownItem.href}
+                      class="block py-2 text-sm text-gray-600 hover:text-emerald-600"
+                    >
+                      {dropdownItem.label}
+                    </a>
+                  ))}
+                </div>
+              </>
             ) : (
-              <a
-                href={item.href}
-                class="block py-2 text-gray-700 hover:text-emerald-600"
+              <a 
+                href={item.href} 
+                class="block text-gray-700 font-medium"
               >
                 {item.label}
               </a>
             )}
-            
-            {item.hasDropdown && (
-              <div
-                class="hidden pl-4 mt-2 space-y-2"
-                id={`mobile-dropdown-${item.label}`}
-                role="menu"
-              >
-                {item.dropdownItems.map((dropdownItem) => (
-                  <a
-                    href={dropdownItem.href}
-                    class="block py-2 text-sm text-gray-600 hover:text-emerald-600"
-                    role="menuitem"
-                  >
-                    {dropdownItem.label}
-                  </a>
-                ))}
-              </div>
-            )}
           </div>
-        ))
-      }
-      
-      <a
-        href="/donate"
-        class="block mt-4 bg-[#EE8060] text-white px-6 py-3 rounded-md hover:bg-[#ff4a33] text-center"
-      >
-        DONATE
-      </a>
+        ))}
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 </div>
 
-<div class="h-20 lg:h-28"></div>
-
 <script>
+  function toggleMenu(open: boolean) {
+    const menu = document.getElementById('mobile-menu');
+    const menuIcon = document.querySelector('.menu-icon');
+    const closeIcon = document.querySelector('.close-icon');
+    const body = document.body;
+    
+    if (open) {
+      menu?.classList.remove('hidden');
+      menuIcon?.classList.add('hidden');
+      closeIcon?.classList.remove('hidden');
+      body.style.overflow = 'hidden';
+    } else {
+      menu?.classList.add('hidden');
+      menuIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+      body.style.overflow = '';
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    const nav = document.querySelector('nav');
     const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuIcon = mobileMenuButton?.querySelector('svg');
+    const nav = document.querySelector('nav');
+    const dropdownButtons = document.querySelectorAll('.mobile-dropdown-button');
     
-    let lastScrollY = window.scrollY;
-    
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > 0) {
-        nav?.classList.add('shadow-md');
-      } else {
-        nav?.classList.remove('shadow-md');
-      }
-      
-      if (currentScrollY > lastScrollY) {
-        nav?.classList.add('nav-hidden');
-      } else {
-        nav?.classList.remove('nav-hidden');
-      }
-      
-      lastScrollY = currentScrollY;
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    dropdownButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const targetId = button.getAttribute('data-target');
+        const dropdown = document.getElementById(targetId);
+        const icon = button.querySelector('.dropdown-icon');
+        
+        if (dropdown && icon) {
+          const isExpanded = button.getAttribute('aria-expanded') === 'true';
+          button.setAttribute('aria-expanded', (!isExpanded).toString());
+          dropdown.classList.toggle('hidden');
+          icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+      });
+    });
 
     mobileMenuButton?.addEventListener('click', () => {
       const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
       mobileMenuButton.setAttribute('aria-expanded', (!isExpanded).toString());
-      mobileMenu?.classList.toggle('hidden');
-
-      if (menuIcon) {
-        menuIcon.innerHTML = isExpanded 
-          ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>'
-          : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>';
-      }
+      toggleMenu(!isExpanded);
     });
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 0) {
+        nav?.classList.add('shadow-md');
+      } else {
+        nav?.classList.remove('shadow-md');
+      }
+    }, { passive: true });
   });
-
-  function toggleMobileDropdown(label: string) {
-    const dropdown = document.getElementById(`mobile-dropdown-${label}`);
-    const button = dropdown?.previousElementSibling as HTMLButtonElement;
-    const isExpanded = button.getAttribute('aria-expanded') === 'true';
-    
-    button.setAttribute('aria-expanded', (!isExpanded).toString());
-    dropdown?.classList.toggle('hidden');
-    
-    const icon = button.querySelector('svg');
-    if (icon) {
-      icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
-    }
-  }
-
-  window.toggleMobileDropdown = toggleMobileDropdown;
 </script>
 
 <style>
   nav {
-    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-  }
-
-  .nav-hidden {
-    transform: translateY(-100%);
-  }
-
-  .group:hover .absolute {
-    transition: all 0.2s ease-in-out;
+    transition: box-shadow 0.3s ease-in-out;
   }
 
   #mobile-menu {
-    max-height: calc(100vh - 80px);
-    overflow-y: auto;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
   }
 
-  body.menu-open {
-    overflow: hidden;
+  #mobile-menu.hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 
+  /* Scrollbar styles */
   #mobile-menu::-webkit-scrollbar {
     width: 4px;
   }
@@ -317,5 +290,9 @@ const navItems = [
   #mobile-menu::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 2px;
+  }
+
+  .dropdown-icon {
+    transition: transform 0.2s ease-in-out;
   }
 </style>
