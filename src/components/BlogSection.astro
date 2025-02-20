@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Media {
   id: string;
   alt: string;
@@ -60,19 +62,17 @@ interface ApiResponse {
   nextPage: number | null;
 }
 
-const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
+const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL;
 
 async function fetchPosts(): Promise<TransformedPost[]> {
   try {
     const response = await fetch(`${PAYLOAD_URL}/api/posts?depth=2`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     });
-    
+
     const data: ApiResponse = await response.json();
-    
-    const transformedPosts: TransformedPost[] = data.docs
+
+    return data.docs
       .filter((post): post is ApiPost => post.status === 'published')
       .map((post: ApiPost): TransformedPost => ({
         ...post,
@@ -82,17 +82,13 @@ async function fetchPosts(): Promise<TransformedPost[]> {
         },
         author: {
           ...post.author,
-          profileImage: post.author.profileImage ? {
-            ...post.author.profileImage,
-            url: `${PAYLOAD_URL}${post.author.profileImage.url}`,
-          } : undefined,
+          profileImage: post.author.profileImage
+            ? { ...post.author.profileImage, url: `${PAYLOAD_URL}${post.author.profileImage.url}` }
+            : undefined,
         },
-      }));
-
-    return transformedPosts
+      }))
       .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime())
-      .slice(0, 3);
-    
+      .slice(0, 3); // Only get the latest 3 posts
   } catch (error) {
     console.error('Error fetching posts:', error);
     return [];
@@ -103,63 +99,69 @@ function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
-    year: 'numeric'
+    year: 'numeric',
   });
 }
 
 const posts = await fetchPosts();
 ---
 
-<section class="bg-gray-50 py-20">
-  <div class="max-w-[2000px] mx-auto px-44">
-    <h2 class="text-4xl font-bold mb-16 text-center">Latest News</h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-      {posts.map((post) => (
-        <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-          <a href={`/blog/${post.id}`} class="block">
-            <div class="aspect-video overflow-hidden">
-              <img 
-                src={post.featuredImage.url} 
-                alt={post.featuredImage.alt}
-                width={post.featuredImage.width}
-                height={post.featuredImage.height}
-                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-            
-            <div class="p-8">
-              <div class="flex items-center mb-6">
-                <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-gray-100">
-                  <img 
-                    src={post.author.profileImage?.url} 
-                    alt={`${post.author.name}'s profile picture`}
-                    width="40"
-                    height="40"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <div>
-                  <div class="flex items-center gap-2">
-                    <p class="font-medium text-gray-900">{post.author.name}</p>                   
-                  </div>
-                  <div class="flex items-center text-sm text-gray-500 mt-1">
-                    <time datetime={post.publishedDate}>
-                      {formatDate(post.publishedDate)}
-                    </time>
-                    <span class="mx-2">•</span>
-                    <span>{post.estimatedReadTime} min read</span>
-                  </div>
-                </div>
+<client:idle>
+  <section class="bg-gray-50 py-20">
+    <div class="max-w-[2000px] mx-auto px-6 sm:px-12 lg:px-44">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-16 text-center">Latest News</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {posts.map((post) => (
+          <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+            <a href={`/blog/${post.id}`} class="block">
+              <div class="aspect-video overflow-hidden">
+                <Image 
+                  src={post.featuredImage.url} 
+                  alt={post.featuredImage.alt}
+                  width={post.featuredImage.width}
+                  height={post.featuredImage.height}
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  format="webp"
+                />
               </div>
               
-              <h3 class="font-bold text-gray-900 mb-3 line-clamp-3 hover:text-cyan-600 transition-colors">
-                {post.title}
-              </h3>
-            </div>
-          </a>
-        </article>
-      ))}
+              <div class="p-8">
+                <div class="flex items-center mb-6">
+                  <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-gray-100">
+                    {post.author.profileImage?.url && (
+                      <Image 
+                        src={post.author.profileImage.url} 
+                        alt={`${post.author.name}`}
+                        width="40"
+                        height="40"
+                        class="w-full h-full object-cover"
+                        format="webp"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <p class="font-medium text-gray-900">{post.author.name}</p>                   
+                    </div>
+                    <div class="flex items-center text-sm text-gray-500 mt-1">
+                      <time datetime={post.publishedDate}>
+                        {formatDate(post.publishedDate)}
+                      </time>
+                      <span class="mx-2">•</span>
+                      <span>{post.estimatedReadTime} min read</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <h3 class="font-bold text-gray-900 mb-3 line-clamp-3 hover:text-cyan-600 transition-colors">
+                  {post.title}
+                </h3>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+</client:idle>
