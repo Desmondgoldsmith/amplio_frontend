@@ -1,23 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-
-const stats = [
-  {
-    number: "47",
-    label: "Projects",
-    icon: "/assets/homepageAssets/projects.png"
-  },
-  {
-    number: "2,066,428",
-    label: "People reached",
-    icon: "/public/assets/homepageAssets/peopleReached.png"
-  },
-  {
-    number: "14",
-    label: "Countries",
-    icon: "/public/assets/homepageAssets/countries.png"
-  }
-];
+import { stats } from '../constants';
 ---
 
 <section class="lg:py-20 py-8">
@@ -26,7 +9,7 @@ const stats = [
       <div class="text-xl sm:text-lg md:text-3xl font-normal mb-6">
         <span >For people in rural communities, there's a growing</span>
         <br />
-        <span >digital divide. We have a way to reach them.</span>
+        <span>digital divide. We have a way to reach them.</span>
       </div>
       
       <div class="text-gray-700 text-base sm:text-lg mb-8">

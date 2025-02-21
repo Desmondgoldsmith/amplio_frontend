@@ -11,6 +11,11 @@ const {
   title, 
   description = "Share knowledge through audio technology with Amplio's innovative solutions for global communities"
 } = Astro.props;
+
+const canonicalURL = new URL(
+  Astro.url.pathname, 
+  import.meta.env.SITE ?? Astro.url.origin
+).href;
 ---
 
 <!DOCTYPE html>
@@ -21,21 +26,45 @@ const {
     <meta name="description" content={description} />
     <title>{title}</title>
     
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
+    <!-- Critical CSS -->
+    <style is:inline>
+      .relative { position: relative; }
+      .absolute { position: absolute; }
+      .inset-0 { 
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+      .text-white { color: white; }
+      .h-\[400px\] { height: 400px; }
+      @media (min-width: 1024px) {
+        .lg\:h-screen { height: 100vh; }
+      }
+    </style>
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- SEO meta tags -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:site_name" content="Amplio" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="robots" content="index, follow" />
   </head>
   <body class="flex flex-col min-h-screen">
     <Navbar />
-    
-    {/* Main content area */}
     <main class="flex-grow">
       <slot /> 
     </main>
-    
     <Footer />
   </body>
 </html>
