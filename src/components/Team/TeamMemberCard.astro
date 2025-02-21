@@ -1,8 +1,10 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
   name: string;
   role: string;
-  image: string;
+  image: ImageMetadata;
   bio: string;
 }
 
@@ -11,10 +13,12 @@ const { name, role, image, bio } = Astro.props;
 
 <div class="bg-white rounded-lg shadow-sm p-6 space-y-4">
   <div class="flex items-start space-x-6">
-    <img
+    <Image
       src={image}
       alt={name}
-      class="w-44 h-44 rounded-full object-cover"
+      width={176}  
+      height={176}
+      class="rounded-full object-cover"
     />
     <div class="space-y-2">
       <h3 class="text-[#FF5733] text-2xl font-semibold">{name}</h3>

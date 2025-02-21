@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import AmplioTech from "../assets/homepageAssets/amplioTech.png"
 ---
 
 <section class="bg-[#F8FBFF] py-20">
@@ -13,7 +14,7 @@ import { Image } from 'astro:assets';
 
     <div class="flex justify-center mb-12">
       <Image 
-        src="/assets/homepageAssets/amplioTech.png"
+        src={AmplioTech}
         alt={`Amplio Talking Book`}
         class="w-[400px] object-contain"
         width={400} height={400} 

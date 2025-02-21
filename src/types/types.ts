@@ -1,7 +1,9 @@
+import type { ImageMetadata } from "astro";
+
 export interface TeamMember {
   name: string;
   role: string;
-  image: string;
+  image: ImageMetadata;
   bio: string;
 }
 
