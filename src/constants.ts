@@ -20,6 +20,9 @@ import FidelisImage from "./assets/team/Fidelis.jpg";
 import LawrenceImage from "./assets/team/Lawrence.jpg";
 import SimonImage from "./assets/team/Simon.jpg";
 
+import Tawiah from "./assets/board/Tawiah.jpg";
+import Tawiah from "./assets/board/Tawiah.jpg";
+
 export const stats = [
   {
     number: "47",
@@ -92,7 +95,7 @@ export const teamMembers: TeamMember[] = [
 export const boardMember: BoardMember[] = [
   {
     name: "Tawiah Agyarko-Kwarteng - Board Chair",
-    image: "./assets/board/Tawiah.jpg",
+    image: Tawiah,
     bio: "Tawiah is a development consultant for the both non-profit and private sectors in West Africa. She currently serves as Technical Manager at the Côte d'Ivoire-Ghana Cocoa Initiative, a joint body set up by the world's two largest producers of cocoa to enhance cooperation. A dynamic leader, Tawiah has led programs on literacy, workplace, health, HIV education, corporate social responsibility, and cocoa sustainability for The Hershey Company and World Education. She also has her consulting firm, Heritage Flow2 Company, in Accra, Ghana. As the Country Advisor for Empowered to Educate, Tawiah provides leadership training and mentors women educators. She holds an MPA in international development from the Harvard Kennedy School.",
   },
   {

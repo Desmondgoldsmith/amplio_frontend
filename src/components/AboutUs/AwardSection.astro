@@ -1,6 +1,21 @@
 ---
+import { Image } from 'astro:assets';
+
+import Arm from "../../assets/aboutUsPageAssets/arm.png"
+import Candid from "../../assets/aboutUsPageAssets/candid.png"
+import Charity from "../../assets/aboutUsPageAssets/charity.png"
+import Principe from "../../assets/aboutUsPageAssets/principe.png"
+import Gold from "../../assets/aboutUsPageAssets/gold.png"
+import Clinton from "../../assets/aboutUsPageAssets/Clinton.png"
+import Unesco from "../../assets/aboutUsPageAssets/pearson.png"
+import Wise from "../../assets/aboutUsPageAssets/wise.png"
+import Microsoft from "../../assets/aboutUsPageAssets/Microsoft.png"
+import Tech from "../../assets/aboutUsPageAssets/tech.png"
+import ComputerWorld from "../../assets/aboutUsPageAssets/computer.png"
+import PBS from "../../assets/aboutUsPageAssets/pbs.png"
+
 interface Award {
-  logo: string;
+  logo: ImageMetadata;
   title: string;
   description: string;
   link: string;
@@ -13,7 +28,7 @@ interface Award {
 
 const topRowAwards: Award[] = [
   {
-    logo: "/assets/aboutUsPageAssets/arm.png",
+    logo: Arm,
     title: "arm",
     description: "Selected by Arm as a technology solution to close the digital divide.",
     link: "https://www.arm.com/company/sustainability",
@@ -23,7 +38,7 @@ const topRowAwards: Award[] = [
     }
   },
   {
-    logo: "/assets/aboutUsPageAssets/candid.png",
+    logo: Candid,
     title: "Platinum Transparency 2023",
     description: "2023 Candid Platinum Seal of Transparency for impact. See our Guidestar profile.",
     link: "https://www.guidestar.org/profile/26-1335205",
@@ -33,7 +48,7 @@ const topRowAwards: Award[] = [
     }
   },
   {
-    logo: "/assets/aboutUsPageAssets/charity.png",
+    logo: Charity,
     title: "Charity Navigator",
     description: "Achieved Charity Navigator's top rating for best practices, so you can give with confidence.",
     link: "https://www.charitynavigator.org/ein/261335205",
@@ -46,7 +61,7 @@ const topRowAwards: Award[] = [
 
 const bottomRowAwards: Award[] = [
   {
-    logo: "/assets/aboutUsPageAssets/principe.png",
+    logo: Principe,
     title: "Principles for Digital Development",
     description: "Featured as a Principles for Digital Development case study.",
     link: "https://digitalprinciples.org/resource/case-study-amplio-talking-book-reaching-the-worlds-hardest-to-reach-communities",
@@ -56,7 +71,7 @@ const bottomRowAwards: Award[] = [
     }
   },
   {
-    logo: "/assets/aboutUsPageAssets/gold.png",
+    logo: Gold,
     title: "Anthem Award",
     description: "Won gold Anthem Award for Responsible Technology and Community Outreach.",
     link: "#",
@@ -66,7 +81,7 @@ const bottomRowAwards: Award[] = [
     }
   },
   {
-    logo: "/assets/aboutUsPageAssets/Clinton.png",
+    logo: Clinton,
     title: "Clinton Foundation",
     description: "Joined Clinton Global Initiative, promoting solutions for the world's most pressing challenges.",
     link: "https://www.clintonfoundation.org/programs/leadership-public-service/clinton-global-initiative/#impact",
@@ -79,7 +94,7 @@ const bottomRowAwards: Award[] = [
 
 const secondPageAwards: Award[] = [
   {
-    logo: "/assets/aboutUsPageAssets/pearson.png",
+    logo: Unesco,
     title: "UNESCO and Pearson",
     description: "Recognized by UNESCO as an inclusive digital solution for people with low literacy.",
     link: "https://www.unesco.org/en/node/67090",
@@ -89,7 +104,7 @@ const secondPageAwards: Award[] = [
     }
   },
   {
-    logo: "/assets/aboutUsPageAssets/wise.png",
+    logo: Wise,
     title: "WISE Awards 2015",
     description: "2015 WISE Award for Ghana Talking Book program — Qatar Foundation.",
     link: "https://www.youtube.com/watch?v=zvLq5QLc_UE&list=PLEYBWzu122np7ASRJz5cridNq-fxGv60Q",
@@ -99,7 +114,7 @@ const secondPageAwards: Award[] = [
     }
   },
   {
-    logo: "/assets/aboutUsPageAssets/Microsoft.png",
+    logo: Microsoft,
     title: "Microsoft Alumni Network",
     description: "Our founder Cliff Schmidt was awarded Microsoft Integral Fellows awards n 2010 and 2014.",
     link: "https://www.microsoftalumni.com/s/1769/19/interior.aspx?pgid=446&gid=2",
@@ -112,7 +127,7 @@ const secondPageAwards: Award[] = [
 
 const thirdPageAwards: Award[] = [
   {
-    logo: "/assets/aboutUsPageAssets/tech.png",
+    logo: Tech,
     title: "The Tech Awards",
     description: "Our founder was selected as the 2012 education laureate for using tech to improve lives.",
     link: "https://www.pressreader.com/usa/the-mercury-news/20121118/282029029510098",
@@ -122,7 +137,7 @@ const thirdPageAwards: Award[] = [
     }
   },
   {
-    logo: "/assets/aboutUsPageAssets/computer.png",
+    logo: ComputerWorld,
     title: "Computerworld",
     description: "Received 2013 Computerworld Honors Award for delivering life-changing lessons via a mobile audio device.",
     link: "https://www.computerworld.com/article/1405181/computerworld-honors-2013-life-changing-lessons-via-mobile-device.html",
@@ -132,7 +147,7 @@ const thirdPageAwards: Award[] = [
     }
   },
   {
-    logo: "/assets/aboutUsPageAssets/pbs.png",
+    logo: PBS,
     title: "PBS NewsHour",
     description: "Featured as an Agent for Social Change in 2013 for efforts to fix poverty and injustice.",
     link: "https://www.pbs.org/newshour/world/literacy-bridge",
@@ -160,10 +175,13 @@ const thirdPageAwards: Award[] = [
               data-index={rowIndex * 3 + index}
             >
               <div class="bg-white rounded-2xl p-8 text-center border border-gray-100 hover:shadow-lg transition-shadow h-full flex flex-col items-center">
-                <img 
+                <Image 
                   src={award.logo} 
                   alt={award.title} 
                   class="mb-6 max-h-28 object-contain"
+                  width={200}
+                  height={112}
+                  loading="lazy"
                 />
                 <p class="text-gray-700 mb-4 flex-grow">
                   {award.linkTarget?.text ? (
@@ -175,7 +193,7 @@ const thirdPageAwards: Award[] = [
                             <a 
                               href={award.link} 
                               target="_blank" 
-                            rel="noopener noreferrer"
+                              rel="noopener noreferrer"
                               class={`${award?.linkTarget.isBlue ? 'text-blue-600 hover:text-blue-800' : 'text-inherit'} font-semibold transition-colors`}
                             >
                               {award?.linkTarget.text}
@@ -188,7 +206,7 @@ const thirdPageAwards: Award[] = [
                     <a 
                       href={award.link} 
                       target="_blank"  
-                       rel="noopener noreferrer"
+                      rel="noopener noreferrer"
                       class="hover:underline"
                     >
                       {award.description}

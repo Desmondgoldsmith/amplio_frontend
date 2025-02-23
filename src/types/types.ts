@@ -9,7 +9,7 @@ export interface TeamMember {
 
 export interface BoardMember {
   name: string;
-  image: string;
+  image: ImageMetadata;
   bio: string;
 }
 
