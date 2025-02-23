@@ -1,6 +1,6 @@
 ---
 import {Image} from "astro:assets"
-import AboutBanner from "../assets/aboutUsPageAssets/about-section.jpg"
+import AboutBanner from "../../assets/aboutUsPageAssets/about-section.jpg"
 
 interface Stat {
   value: string | number;
@@ -8,44 +8,42 @@ interface Stat {
 }
 
 const stats: Stat[] = [
-  { value: "47", label: "Projects" },
+  { value: "99", label: "Projects" },
   { value: "2,066,428", label: "People Reached" },
-  { value: "14", label: "Countries" }
+  { value: "15", label: "Countries" }
 ];
 ---
 
 <section class="w-full mt-3">
   <div class="relative w-full bg-white">
-    <div class="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-56 pt-2 pb-10">
-      <div class="text-center space-y-6">
-        <h1 class="text-2xl md:text-4xl font-bold ">
+    <div class="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-56 pt-2 pb-2">
+      <div class="text-center space-y-5">
+        <h1 class="text-3xl md:text-4xl font-bold ">
           About Us
         </h1>
-        <p class="text-md max-w-lg mx-auto ">
+        <p class="text-lg lg:max-w-lg max-w-full mx-auto ">
           Amplio Ghana is a nonprofit organization with a mission to empower the world's most vulnerable communities through knowledge sharing.
         </p>
       </div>
       
-      <div class="mt-12 relative w-screen left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]">
-        <div class="w-full h-[400px] md:h-[500px] relative">
-          <Image 
+      <div class="mt-12">
+        <Image 
           src={AboutBanner}
-          alt={`About section Banner`}
-          class="w-full h-full object-cover"
-          width={400} height={400} 
+          alt="About section Banner"
+          class="w-full max-h-[300px] md:max-h-[400px] object-scale-down"
+          width={1920} 
+          height={1080} 
           format="webp"
-         />
-        </div>
+        />
       </div>
     </div>
   </div>
 
-  {/* Knowledge Gap Section */}
-  <div class="w-full bg-white py-20">
+  <div class="w-full bg-white py-3 lg:py-20">
     <div class="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-56">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div class="space-y-6">
-          <h2 class="text-3xl font-bold ">
+        <div class="space-y-2 lg:space-y-6 ">
+          <h2 class="text-2xl lg:text-3xl text-center font-bold ">
             Bridging the knowledge gap
           </h2>
           <p class="text-md text-gray-600">
@@ -63,7 +61,7 @@ const stats: Stat[] = [
           <div class="grid grid-cols-1 gap-5">
             {stats.map((stat) => (
               <div class="text-center">
-                <div class="text-2xl lg:text-3xl font-bold text-[#FF5843]">
+                <div class="text-3xl lg:text-3xl font-bold text-[#FF5843]">
                   {stat.value}
                 </div>
                 <div class="text-gray-600 mt-2">
