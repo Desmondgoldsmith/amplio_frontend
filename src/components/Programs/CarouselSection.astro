@@ -1,188 +1,125 @@
 ---
 import { Image } from 'astro:assets';
 import { carouselItems } from '../../constants';
+import triangleImage from '../../assets/programs/triangle.png';
 
+const CAROUSEL_WIDTH = 1920; 
+const CAROUSEL_HEIGHT = 1080;
 ---
 
 <div>
-    <p class="text-gray-800 mt-40 text-center text-lg">
-      Amplio Ghana delivers Talking Book programs in Ghana and West Africa.
-      <br />
-      We can partner with you and your team every step of the way.
-    </p>
-  <div class=" w-full h-[600px] mt-12 overflow-hidden">
-  <!-- Carousel Container -->
-  <div id="carousel" class="relative w-full h-full">
-    {carouselItems.map((item, index) => (
-      <div class="carousel-slide absolute w-full h-full opacity-0 transition-opacity duration-500 ease-in-out"
-           data-index={index}>
-        <img 
-          src={item.image} 
-          alt={`Slide ${index + 1}`}
-          class="w-full h-full object-cover"
-        />
-        
-        <!-- Content Overlay -->
-        <div class="absolute px-36 inset-0 flex items-center">
-          <div class="container mx-auto px-6">
-            {index === 0 && (
-              <div class="relative mt-48 bg-[#4D5696]/80 text-white p-4 max-w-lg rounded-lg flex flex-col items-center text-center">
-            {/* Award Image */}
-            <div class="absolute mt-8 left-16 w-40">
-              <img 
-                src="/assets/programs/triangle.png" 
-                alt="Anthem Awards 2023 Winner" 
-                class="w-48 h-48"
-              />
-            </div>
+  <p class="text-gray-800 mt-10 text-center text-lg px-4 md:px-0">
+    Amplio Ghana delivers Talking Book programs in Ghana and West Africa.
+    <br class="hidden md:block" />
+    We can partner with you and your team every step of the way.
+  </p>
 
-            <div class="relative">
-              <h2 class="text-4xl font-bold mt-16 leading-tight">
-                <span class="relative z-10 italic ml-32">{item.title}</span>
-                <span class="block font-normal italic ml-20">{item.subtitle}</span>
-                <span class="block font-extrabold ml-20 text-5xl">Outreach</span>
-              </h2>
-              
-              <div class="mt-4 text-right"> 
-                <a 
-                  href={item.buttonLink}
-                  class="inline-block underline text-white hover:text-blue-200 transition-colors text-lg"
-                >
-                  {item.buttonText}
-                </a>
-              </div>
-            </div>
-          </div>
-            )}
-
-            {index === 1 && (
-              <div class="bg-white/80 text-center mt-48 text-blue-800 p-8 max-w-md rounded-lg">
-                <div class="mb-4">
-                  <span class="text-5xl ">{item.title}</span>
-                  <br />
-                  <span class="text-5xl font-bold">{item.subtitle}</span>
-                </div>
-                <a href={item.buttonLink} 
-                   class="inline-block bg-cyan-400 text-white px-6 py-2 rounded-md hover:bg-cyan-500 transition-colors">
-                  {item.buttonText}
-                </a>
-              </div>
-            )}
-            
-            {index === 2 && (
-              <div class="mt-32 ml-20">
-                <div class="mb-4 text-cyan-400 ">
-                  <span class="text-6xl mb-4">{item.title}</span>
-                  <br/>
-                  <span class="text-6xl mb-4">Communities</span>
-                  <br />
-                  <span class="font-extrabold text-5xl">{item.subtitle}</span>
-                </div>
-                <a href={item.buttonLink} 
-                   class="inline-block bg-cyan-400 text-white px-6 py-2 rounded-md hover:bg-cyan-500 transition-colors">
-                  {item.buttonText}
-                </a>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    ))}
-    
-    <!-- Navigation Arrows -->
-    <button 
-      class="absolute ml-16 left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 p-2 rounded-full transition-colors z-20"
-      id="prevButton"
-      aria-label="Previous slide"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
-    </button>
-    
-    <button 
-      class="absolute mr-16 right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 p-2 rounded-full transition-colors z-20"
-      id="nextButton"
-      aria-label="Next slide"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
-  </div>
-  </div>
-
-  <div class="max-w-7xl mx-auto px-4 py-5">
-        {/* Main Title Section */}
-        <div class="text-center mb-5">
-            <h1 class="text-4xl font-bold mb-4">
-                Partnering on Locally-Led Solutions
-                <br />
-                for Sustainable Development
-            </h1>
-            <p class="max-w-4xl mx-auto w-[605px] text-lg leading-relaxed">
-                Amplio Ghana partners with government agencies, local NGOs, and
-                international development organizations to plan and deliver programs in the
-                hardest-to-reach rural communities. We use the Amplio Talking Book —
-                <br />
-                a battery-powered audio device designed for low-literate users.
-            </p>
-        </div>
-
-       <div class="flex justify-center mb-5">
-      <div class="relative w-full max-w-3xl text-center">
-        <div class="flex justify-center gap-4">
-              <img 
-                src="/assets/programs/talking-book.png"
-                alt={`Amplio Talking Book`}
-                class="w-[400px] object-contain"
-              />
-            </div>
-        <div class="flex justify-center mt-4">
-          <a 
-            href="/technology" 
-            class="bg-[#FF5C35] text-white px-8 py-3 rounded-md hover:bg-[#FF7C35] transition-colors"
-          >
-            SEE OUR TECHNOLOGY
-          </a>
-        </div>
-      </div>
-    </div>
-
-
-        {/* Annual Report Section */}
-    <div class="flex items-center justify-center ">
-    <div class="flex flex-col md:flex-row items-center justify-center gap-10 mt-6">
-        <div>
-            <img 
-                src="/assets/programs/annual-report.jpg" 
-                alt="2023 Annual Report" 
-                class="h-[250px] object-contain"
+  {/* Carousel Container */}
+  <div class="relative w-full lg:h-screen h-[400px] mt-8 md:mt-12 overflow-hidden">
+    <div id="carousel" class="relative w-full h-full">
+      {carouselItems.map((item, index) => (
+        <div 
+          class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out"
+          data-index={index}
+        >
+          {/* Image Container */}
+          <div class="absolute inset-0">
+            <Image 
+              src={item.image} 
+              alt={`Slide ${index + 1}`}
+              width={CAROUSEL_WIDTH}
+              height={CAROUSEL_HEIGHT}
+              class="w-full h-full object-cover"
             />
-        </div>
-        <div class="md:w-1/2 text-center md:text-left">
-            <h2 class="text-4xl font-bold mb-6">2023 Annual Report</h2>
-            <p class="text-lg mb-8 leading-relaxed">
-                In 2023, we partnered to deliver Social
-                and Behavior Change (SBCC)
-                interventions in 20 Districts across four
-                regions in Ghana. We also utilized Talking
-                Books to support health education and
-                peacebuilding programs. Thank you to
-                our partners and donors for their
-                collaboration and support!
-            </p>
-            <a 
-                href="https://www.amplio.org/_files/ugd/525bae_c1d5e0b627ad44588234988c55ca8c9c.pdf" 
-                class="inline-block border-2 border-[#1B365D] text-[#1B365D] px-8 py-3 hover:bg-[#1B365D] hover:text-white transition-colors"
-            >
-                READ OUR ANNUAL REPORT - 2023
-            </a>
-        </div>
-    </div>
+            <div class="absolute inset-0 bg-black/10"></div>
+          </div>
+          
+          <div class="absolute inset-0 flex items-center px-4 md:px-36">
+          <div class="container mx-auto px-2 md:px-6">
+            {index === 0 && (
+              <div class="relative mt-24 md:mt-48 bg-[#4D5696]/80 text-white p-4 max-w-lg rounded-lg flex flex-col items-center text-center mx-auto md:mx-0">
+                <div class="absolute mt-4 md:mt-8 left-4 md:left-16 w-24 md:w-40">
+                  <Image 
+                    src={triangleImage}
+                    alt="Anthem Awards 2023 Winner"
+                    width={192}
+                    height={192}
+                    class="w-32 md:w-48 h-32 md:h-48"
+                  />
+                </div>
 
+                  <div class="relative">
+                    <h2 class="text-2xl md:text-4xl font-bold mt-12 leading-tight">
+                      <span class="relative z-10 italic ml-16 md:ml-32">{item.title}</span>
+                      <span class="block font-normal italic ml-12 md:ml-20">{item.subtitle}</span>
+                      <span class="block font-extrabold ml-12 md:ml-20 text-3xl md:text-5xl">Outreach</span>
+                    </h2>
+                    
+                    <div class="mt-4 text-right">
+                      <a href={item.buttonLink} class="inline-block underline text-white hover:text-blue-200 transition-colors">
+                        {item.buttonText}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {index === 1 && (
+                <div class="bg-white/80 text-center mt-24 md:mt-0 text-blue-800 p-4 md:p-8 max-w-md rounded-lg mx-auto md:mx-0">
+                  <div class="mb-4">
+                    <span class="text-2xl md:text-5xl">{item.title}</span>
+                    <br />
+                    <span class="text-2xl md:text-5xl font-bold">{item.subtitle}</span>
+                  </div>
+                  <a href={item.buttonLink} 
+                     class="inline-block bg-cyan-400 text-white px-4 py-2 rounded-md hover:bg-cyan-500 transition-colors">
+                    {item.buttonText}
+                  </a>
+                </div>
+              )}
+              
+              {index === 2 && (
+                <div class="mt-24 md:mt-0 ml-4 md:ml-20">
+                  <div class="mb-4 text-cyan-400">
+                    <span class="text-3xl md:text-6xl">{item.title}</span>
+                    <br/>
+                    <span class="text-3xl md:text-6xl">Communities</span>
+                    <br />
+                    <span class="font-extrabold text-2xl md:text-5xl">{item.subtitle}</span>
+                  </div>
+                  <a href={item.buttonLink} 
+                     class="inline-block bg-cyan-400 text-white px-4 py-2 rounded-md hover:bg-cyan-500 transition-colors">
+                    {item.buttonText}
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+      
+      {/* Navigation Arrows */}
+      <button 
+        class="absolute left-2 md:left-16 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 p-1 md:p-2 rounded-full transition-colors z-20"
+        id="prevButton"
+        aria-label="Previous slide"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 md:h-10 md:w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      
+      <button 
+        class="absolute right-2 md:right-16 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 p-1 md:p-2 rounded-full transition-colors z-20"
+        id="nextButton"
+        aria-label="Next slide"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 md:h-10 md:w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
     </div>
-</div>
+  </div>
 </div>
 
 <script>
@@ -191,10 +128,6 @@ import { carouselItems } from '../../constants';
   const totalSlides = slides.length;
   let autoplayInterval: number;
 
-  // Show initial slide
-  showSlide(0);
-
-  // Function to show a specific slide
   function showSlide(index: number) {
     slides.forEach((slide) => {
       (slide as HTMLElement).style.opacity = '0';
@@ -206,19 +139,18 @@ import { carouselItems } from '../../constants';
     currentSlide = index;
   }
 
-  // Function to show next slide
   function nextSlide() {
-    const next = (currentSlide + 1) % totalSlides;
-    showSlide(next);
+    showSlide((currentSlide + 1) % totalSlides);
   }
 
-  // Function to show previous slide
   function prevSlide() {
-    const prev = (currentSlide - 1 + totalSlides) % totalSlides;
-    showSlide(prev);
+    showSlide((currentSlide - 1 + totalSlides) % totalSlides);
   }
 
-  // Set up event listeners
+  // Initialize carousel
+  showSlide(0);
+
+  // Event listeners
   document.getElementById('nextButton')?.addEventListener('click', () => {
     nextSlide();
     resetAutoplay();
@@ -229,21 +161,19 @@ import { carouselItems } from '../../constants';
     resetAutoplay();
   });
 
-  // Function to start autoplay
   function startAutoplay() {
+    //@ts-ignore
     autoplayInterval = setInterval(nextSlide, 5000);
   }
 
-  // Function to reset autoplay
   function resetAutoplay() {
     clearInterval(autoplayInterval);
     startAutoplay();
   }
 
-  // Start autoplay
   startAutoplay();
 
-  // Clean up on page unload
+  // Cleanup
   document.addEventListener('unload', () => {
     clearInterval(autoplayInterval);
   });

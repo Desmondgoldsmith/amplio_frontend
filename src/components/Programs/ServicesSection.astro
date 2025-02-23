@@ -3,18 +3,18 @@ import { services } from '../../constants';
 import ServiceCard from './ServiceCard.astro';
 ---
 
-<section class="py-16 bg-blue-50">
+<section class="py-8 md:py-16 bg-blue-50">
     <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-bold text-center mb-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">
             Services & Consulting
         </h2>
         
-        <div class="text-center mb-12 w-[550px] max-w-2xl mx-auto">
-            <p class="text-gray-700 ">
+        <div class="text-center mb-8 md:mb-12 mx-auto max-w-2xl px-4">
+            <p class="text-base md:text-lg text-gray-700">
                 Amplio Ghana offers a range of services, from technology setup and 
                 training to Talking Book program design and implementation.
             </p>
-            <p class="text-gray-700 mt-2">
+            <p class="text-base md:text-lg text-gray-700 mt-2">
                 We're here to help! See our 
                 <a 
                     href="/basic-service-package" 
@@ -25,7 +25,7 @@ import ServiceCard from './ServiceCard.astro';
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {services.map(service => (
                 <ServiceCard service={service} />
             ))}

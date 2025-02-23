@@ -14,7 +14,7 @@ export interface BoardMember {
 }
 
 export interface CarouselItem {
-  image: string;
+  image: ImageMetadata;
   title?: string;
   subtitle?: string;
   buttonText?: string;
