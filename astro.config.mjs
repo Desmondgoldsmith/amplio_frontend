@@ -6,24 +6,24 @@ import react from '@astrojs/react';
 export default defineConfig({
   site: 'https://amplio.org',
   output: 'server',
+  vite: {
+    ssr: {
+      noExternal: ['@astrojs/tailwind'],
+    },
+    optimizeDeps: {
+      exclude: ['@astrojs/tailwind'],
+    },
+    build: {
+      rollupOptions: {
+        external: ['sharp']
+      }
+    }
+  },
   integrations: [
     tailwind({
-      config: { 
-        content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}']
-      }
+      config: { path: './tailwind.config.mjs' }
     }),
     alpinejs(),
     react()
   ],
-  vite: {
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            'critical': ['/src/components/BannerSection.astro']
-          }
-        }
-      }
-    }
-  }
 });

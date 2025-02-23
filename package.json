@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "Amplio Ghana",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -8,20 +8,19 @@
     "preview": "astro preview",
     "astro": "astro"
   },
-  "dependencies": {
-    "@alpinejs/collapse": "^3.14.8",
-    "@astrojs/alpinejs": "^0.4.3",
-    "@astrojs/image": "^0.18.0",
-    "@astrojs/react": "^4.2.0",
-    "@astrojs/tailwind": "^5.1.5",
-    "@iconify/vue": "^4.3.0",
-    "astro": "^5.1.7",
-    "astro-compress": "^2.3.6",
-    "lucide-react": "^0.474.0",
-    "sharp": "^0.33.5",
-    "tailwindcss": "^3.4.17",
-    "zod": "^3.24.2"
-  },
+    "dependencies": {
+      "@alpinejs/collapse": "^3.14.8",    
+      "@astrojs/alpinejs": "^0.4.3",      
+      "@astrojs/react": "^4.2.0",         
+      "@astrojs/tailwind": "^5.1.5",      
+      "@iconify/vue": "^4.3.0",           
+      "astro": "^5.1.7",                 
+      "astro-compress": "^2.3.6",         
+      "lucide-react": "^0.474.0",         
+      "sharp": "^0.33.5",                 
+      "tailwindcss": "^3.4.17",           
+      "zod": "^3.24.2"                    
+    },
   "devDependencies": {
     "@iconify/react": "^5.2.0"
   }

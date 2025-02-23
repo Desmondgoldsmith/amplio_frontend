@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import UnicefLogo from "../assets/homepageAssets/UNICEF_Logo.png"
+import UnicefSection from "../assets/homepageAssets/unicef_section.jpg"
 
 interface FormData {
   email: string;
@@ -37,7 +38,7 @@ const handleSubmit = async (data: FormData) => {
     <div class="relative w-full h-[600px]">
       <div class="absolute inset-0 w-full h-full">
         <Image 
-          src="/assets/homepageAssets/unicef_section.jpg" 
+          src={UnicefSection} 
           alt="Community members" 
           width={2000} 
           height={600} 
