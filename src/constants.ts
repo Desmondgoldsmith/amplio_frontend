@@ -65,6 +65,11 @@ import Usaid from "./assets/partners/usaid.jpg";
 import Esoko from "./assets/partners/esoko.png";
 import Bmgf from "./assets/partners/BMGF.png";
 import Creative from "./assets/partners/creative.jpeg";
+import Star from "./assets/partners/Star.png";
+import Giz from "./assets/partners/giz.png";
+import IFAD from "./assets/partners/ifad.png";
+import Crs from "./assets/partners/crs.png";
+import Ghs from "./assets/partners/ghs.jpeg";
 
 export const stats = [
   {
@@ -293,11 +298,11 @@ export const GlobalPartnersData: GlobalPartner[] = [
   { logo: Usaid, name: "usaid" },
   { logo: Creative, name: "creative" },
   { logo: Bmgf, name: "BillG" },
-  { logo: "./assets/partners/Star.png", name: "star" },
-  { logo: "./assets/partners/giz.png", name: "giz" },
-  { logo: "./assets/partners/ifad.png", name: "ifad" },
-  { logo: "./assets/partners/crs.png", name: "catholic" },
-  { logo: "./assets/partners/ghs.jpeg", name: "ghs" },
+  { logo: Star, name: "star" },
+  { logo: Giz, name: "giz" },
+  { logo: IFAD, name: "ifad" },
+  { logo: Crs, name: "catholic" },
+  { logo: Ghs, name: "ghs" },
 ];
 
 export const testimonial = {
