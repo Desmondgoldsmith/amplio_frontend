@@ -49,7 +49,7 @@ export interface Statistic {
 export type FinancialData = {
   year: number;
   description: string;
-  imageSrc: string;
+  imageSrc: ImageMetadata;
   buttonText: string;
   buttonLink: string;
 };
@@ -57,7 +57,7 @@ export type FinancialData = {
 export type TransparencyBadge = {
   year: number;
   type: string;
-  imageSrc: string;
+  imageSrc: ImageMetadata;
 };
 
 export type Quote = {

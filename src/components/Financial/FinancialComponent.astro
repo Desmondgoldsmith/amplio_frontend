@@ -1,11 +1,16 @@
 ---
 import { Image } from 'astro:assets';
 import type { FinancialData, TransparencyBadge, Quote } from '../../types/types';
+import Report from "../../assets/financial-reports/2022-report.png"
+import Gold from "../../assets/financial-reports/gold.svg"
+import FourStar from "../../assets/financial-reports/Four-Star.png"
+import GreenAmplio from "../../assets/financial-reports/green-amplio.png"
+import Donation from "../../assets/financial-reports/girl-amplio.jpg"
 
 const financialData: FinancialData = {
   year: 2022,
   description: "In 2022, we partnered to deliver Talking Book programs in 11 countries. Our team shared best practices for audio content, health promotion, and women's empowerment. We also developed a digital platform for Social and Behavior Change programs. Thank you to our partners and donors for their collaboration and support!",
-  imageSrc: "/assets/financial-reports/2022-report.png",
+  imageSrc: Report,
   buttonText: "LAUNCH OUR YEAR IN REVIEW",
   buttonLink: "https://www.amplio.org/_files/ugd/52afcb_e72b340b9a244623a8061a2aaf8fd5a5.pdf"
 };
@@ -14,12 +19,12 @@ const badges: TransparencyBadge[] = [
   {
     year: 2024,
     type: "Gold Transparency",
-    imageSrc: "/assets/financial-reports/gold.svg"
+    imageSrc: Gold
   },
   {
     year: 2024,
     type: "Four-Star Charity Navigator",
-    imageSrc: "/assets/financial-reports/Four-Star.png"
+    imageSrc: FourStar
   }
 ];
 
@@ -30,15 +35,15 @@ const quote: Quote = {
 };
 ---
 
-<section class="w-full mt-28">
-  <div class="bg-[#475CAA] py-8">
-    <h1 class="text-white text-4xl font-semibold text-center">Financials</h1>
+<section class="w-full">
+  <div class="bg-[#475CAA] py-6 md:py-8">
+    <h1 class="text-white text-3xl md:text-4xl font-semibold text-center px-4">Financials</h1>
   </div>
 
-  <div class="mx-auto ">
-    <div class="max-w-7xl py-12 px-4 md:px-56">
-      <div class="grid md:grid-cols-2 gap-8 items-center">
-        <div class="relative">
+  <div class="mx-auto">
+    <div class="max-w-7xl py-8 md:py-12 px-4 md:px-56">
+      <div class="grid md:grid-cols-2 gap-6 md:gap-8 items-center">
+        <div class="relative order-2 md:order-1">
           <Image
             src={financialData.imageSrc}
             alt={`Year in review ${financialData.year}`}
@@ -47,8 +52,8 @@ const quote: Quote = {
             class="rounded-lg shadow-lg w-full h-auto"
           />
         </div>
-        <div class="space-y-6">
-          <h2 class="text-3xl font-semibold">Year in review—{financialData.year}</h2>
+        <div class="space-y-4 md:space-y-6 order-1 md:order-2">
+          <h2 class="text-2xl md:text-3xl font-semibold">Year in review—{financialData.year}</h2>
           <p class="text-gray-700 leading-relaxed">
             {financialData.description}
           </p>
@@ -56,7 +61,7 @@ const quote: Quote = {
             href={financialData.buttonLink}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-block bg-[#464FA0] text-white px-8 py-3 rounded-md font-medium hover:bg-[#363d80] transition-colors"
+            class="inline-block bg-[#464FA0] text-white px-6 md:px-8 py-3 rounded-md font-medium hover:bg-[#363d80] transition-colors text-sm md:text-base"
           >
             {financialData.buttonText}
           </a>
@@ -64,21 +69,21 @@ const quote: Quote = {
       </div>
     </div>
 
-    <div class="bg-blue-50 py-6 px-4 p-5 text-center text-lg text-gray-700">
-        <p class="max-w-4xl mx-auto">
-          Amplio Ghana is registered with the Registrar General's Department (No: CG059762020) and 
-          the Department of Social Welfare (No: 9582) to operate as a non-profit organization in 
-          Ghana. TIN: C0049446894. If you have questions about making a donation, contact us at 
-          communications@amplio.org or call (+233) 55-529-4412.
-        </p>
-      </div>
+    <div class="bg-blue-50 py-6 px-4 text-center">
+      <p class="max-w-4xl mx-auto text-base md:text-lg text-gray-700">
+        Amplio Ghana is registered with the Registrar General's Department (No: CG059762020) and 
+        the Department of Social Welfare (No: 9582) to operate as a non-profit organization in 
+        Ghana. TIN: C0049446894. If you have questions about making a donation, contact us at 
+        communications@amplio.org or call (+233) 55-529-4412.
+      </p>
+    </div>
 
-    <div class="bg-white py-12 border-t px-4 md:px-56 border-gray-200">
+    <div class="bg-white py-8 md:py-12 border-t px-4 md:px-56 border-gray-200">
       <div class="max-w-6xl mx-auto">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-          <div class="flex gap-8">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
+          <div class="flex gap-4 md:gap-8">
             {badges.map(badge => (
-              <div class="w-32">
+              <div class="w-24 md:w-32">
                 <Image
                   src={badge.imageSrc}
                   alt={`${badge.type} ${badge.year}`}
@@ -89,8 +94,8 @@ const quote: Quote = {
               </div>
             ))}
           </div>
-          <div class="md:max-w-xl">
-            <p class="text-lg font-medium text-gray-800">
+          <div class="md:max-w-xl text-center md:text-left">
+            <p class="text-base md:text-lg font-medium text-gray-800">
               Amplio has earned the Platinum Seal of Transparency on Candid (GuideStar) and Charity Navigator's Four-Star rating, the highest possible ratings.
             </p>
             <a
@@ -106,18 +111,18 @@ const quote: Quote = {
       </div>
     </div>
 
-    <div class="bg-white py-16">
+    <div class="bg-white py-12 md:py-16">
       <div class="max-w-3xl mx-auto px-4 text-center">
-        <div class="mb-8">
+        <div class="mb-6 md:mb-8">
           <Image
-            src="/assets/financial-reports/green-amplio.png"
+            src={GreenAmplio}
             alt="Talking Book Icon"
             width={160}
             height={160}
-            class="mx-auto"
+            class="mx-auto w-32 md:w-40"
           />
         </div>
-        <blockquote class="text-xl leading-relaxed mb-8 text-gray-800">
+        <blockquote class="text-lg md:text-xl leading-relaxed mb-6 md:mb-8 text-gray-800">
           "{quote.text}"
         </blockquote>
         <div class="text-sm font-medium">
@@ -128,36 +133,33 @@ const quote: Quote = {
     </div>
   </div>
 
+  <section class="relative h-[400px] md:h-[600px] w-full overflow-hidden">
+    <div class="absolute inset-0">
+      <Image
+        src= {Donation}
+        alt="Donation Background"
+        width={1920}
+        height={400}
+        class="object-cover w-full h-full"
+      />
+      <div class="absolute inset-0 bg-black/30"></div>
+    </div>
 
-
-    <section class="relative h-[600px] w-full overflow-hidden">
-      <div class="absolute inset-0">
-        <Image
-            src="/assets/financial-reports/girl-amplio.jpg"
-            alt="Donation Background"
-            width={1920}
-            height={400}
-            class="object-cover w-full h-full"
-        />
-        <div class="absolute inset-0 bg-black/30"></div>
-      </div>
-  
-      <div class="relative h-full flex items-center">
-        <div class="max-w-lg px-8 py-10 mx-auto md:ml-32 bg-[#425092] rounded-lg backdrop-blur-sm text-white">
-            <h2 class="text-3xl font-semibold mb-4 text-center">Amplify learning</h2>
-            <p class="text-xl mb-6 text-center">
-                Engage, inform, and empower people in underserved communities.
-            </p>
-            <div class="text-center">
-              <a 
-                href="#" 
-                class="inline-block px-8 py-3 bg-[#EC704E] text-white font-semibold rounded-md hover:bg-[#ff4730] transition-colors"
-              >
-                DONATE NOW
-              </a>
-            </div>
+    <div class="relative h-full flex items-center justify-center md:justify-start">
+      <div class="max-w-lg px-6 md:px-8 py-8 md:py-10 mx-4 md:mx-0 md:ml-32 bg-[#425092] rounded-lg backdrop-blur-sm text-white">
+        <h2 class="text-2xl md:text-3xl font-semibold mb-3 md:mb-4 text-center">Amplify learning</h2>
+        <p class="text-lg md:text-xl mb-4 md:mb-6 text-center">
+          Engage, inform, and empower people in underserved communities.
+        </p>
+        <div class="text-center">
+          <a 
+            href="#" 
+            class="inline-block px-6 md:px-8 py-3 bg-[#EC704E] text-white font-semibold rounded-md hover:bg-[#ff4730] transition-colors text-sm md:text-base"
+          >
+            DONATE NOW
+          </a>
         </div>
       </div>
-    </section>
-  
+    </div>
+  </section>
 </section>
