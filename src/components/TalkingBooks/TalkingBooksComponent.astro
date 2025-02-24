@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import { statistics } from '../../constants';
+import type { ImageMetadata } from "astro";
+import TalkingBooksBlog from './TalkingBooksBlog.astro';
 
 import UsaidLogo from "../../assets/why-amplio/usaid.jpg"
 import WhyAmplio from "../../assets/why-amplio/why-amplio.jpg"
@@ -8,8 +10,7 @@ import WomanWithAmplio from "../../assets/why-amplio/woman-with-amplio.jpg"
 import WomanClapping from "../../assets/why-amplio/women-clapping.jpg"
 import WomanAmplio from "../../assets/why-amplio/woman-amplio.jpg"
 import GirlAmplio from "../../assets/why-amplio/girl-amplio.jpg"
-import type { ImageMetadata } from "astro";
-import OptimizedImage from '../optimizedImageComponent.astro';
+
 
 
 interface BenefitList {
@@ -65,7 +66,7 @@ const BANNER_HEIGHT = 1080;
       </p>
     </div>
 
-    <div class="relative w-full lg:h-screen h-[230px] mt-8 md:mt-12 overflow-hidden">
+    <div class="relative w-full lg:h-[560px] h-[230px]  mt-8 md:mt-12 overflow-hidden">
       <div class="relative w-full h-full">
             <div class="absolute inset-0">
               <Image
@@ -202,6 +203,9 @@ const BANNER_HEIGHT = 1080;
           </div>
         </div>
     </section>
+
+    <!-- talking books blog -->
+    <TalkingBooksBlog/>
 
     <section class="relative w-full">
       <div class="relative">
