@@ -31,6 +31,13 @@ import Carousel1 from "./assets/programs/carousel1.jpg";
 import Carousel2 from "./assets/programs/carousel2.jpg";
 import Carousel3 from "./assets/programs/carousel3.jpg";
 
+import Illustration1 from "./assets/programs/illustration1.png";
+import Illustration2 from "./assets/programs/illustration2.png";
+import Illustration3 from "./assets/programs/illustration3.png";
+import Illustration4 from "./assets/programs/illustration4.png";
+import Illustration5 from "./assets/programs/illustration5.png";
+import Illustration6 from "./assets/programs/illustration6.png";
+
 export const stats = [
   {
     number: "47",
@@ -160,27 +167,27 @@ export const carouselItems: CarouselItem[] = [
 export const services: Service[] = [
   {
     title: "Program Planning and Field Implementation",
-    imagePath: "./assets/programs/illustration1.png",
+    imagePath: Illustration1,
   },
   {
     title: "Technology Training and Technical Support",
-    imagePath: "./assets/programs/illustration2.png",
+    imagePath: Illustration2,
   },
   {
     title: "Social and Behavior Change Communication (SBCC)",
-    imagePath: "./assets/programs/illustration3.png",
+    imagePath: Illustration3,
   },
   {
     title: "Content Design and Audio Production",
-    imagePath: "./assets/programs/illustration4.png",
+    imagePath: Illustration4,
   },
   {
     title: "Monitoring and Evaluation *including field surveys",
-    imagePath: "./assets/programs/illustration5.png",
+    imagePath: Illustration5,
   },
   {
     title: "Community Dialogue and Group Facilitation",
-    imagePath: "./assets/programs/illustration6.png",
+    imagePath: Illustration6,
   },
 ];
 

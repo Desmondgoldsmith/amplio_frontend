@@ -23,7 +23,7 @@ export interface CarouselItem {
 
 export interface Service {
   title: string;
-  imagePath: string;
+  imagePath: ImageMetadata;
   description?: string;
 }
 
