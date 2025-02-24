@@ -136,7 +136,7 @@ const navItems = [
           ))}
           
           <a
-            href="/donate"
+            href="https://amplioghanasbccfund.donorsupport.co/page/generalgiving"
             class="bg-[#EE8060] text-white px-8 py-3 rounded-md hover:bg-[#ff4a33] transition-colors"
           >
             DONATE
@@ -235,6 +235,7 @@ const navItems = [
     dropdownButtons.forEach(button => {
       button.addEventListener('click', () => {
         const targetId = button.getAttribute('data-target');
+        // @ts-ignore
         const dropdown = document.getElementById(targetId);
         const icon = button.querySelector('.dropdown-icon');
         
@@ -242,6 +243,7 @@ const navItems = [
           const isExpanded = button.getAttribute('aria-expanded') === 'true';
           button.setAttribute('aria-expanded', (!isExpanded).toString());
           dropdown.classList.toggle('hidden');
+          // @ts-ignore
           icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
         }
       });
