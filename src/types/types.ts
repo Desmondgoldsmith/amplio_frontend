@@ -41,7 +41,7 @@ export interface GlobalPartner {
 }
 
 export interface Statistic {
-  imageSrc: string;
+  imageSrc: ImageMetadata;
   value: string;
   description: string;
 }

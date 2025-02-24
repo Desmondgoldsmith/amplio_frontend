@@ -71,6 +71,11 @@ import IFAD from "./assets/partners/ifad.png";
 import Crs from "./assets/partners/crs.png";
 import Ghs from "./assets/partners/ghs.jpeg";
 
+import Book from "./assets/why-amplio/book.svg";
+import Bulb from "./assets/why-amplio/bulb.svg";
+import Phone from "./assets/why-amplio/phone.svg";
+import ConnectIcon from "./assets/why-amplio/connect.svg";
+
 export const stats = [
   {
     number: "47",
@@ -314,23 +319,23 @@ export const testimonial = {
 
 export const statistics: Statistic[] = [
   {
-    imageSrc: "./assets/why-amplio/book.svg",
+    imageSrc: Book,
     value: "773 million",
     description: "adults and youth lack basic literacy skills",
   },
   {
-    imageSrc: "./assets/why-amplio/bulb.svg",
+    imageSrc: Bulb,
     value: "750 million",
     description: "people live without electricity",
   },
   {
-    imageSrc: "./assets/why-amplio/phone.svg",
+    imageSrc: Phone,
     value: "635+ million",
     description:
       "adults in low and middle-income countries don't have mobile phones—including 400 million women",
   },
   {
-    imageSrc: "./assets/why-amplio/connect.svg",
+    imageSrc: ConnectIcon,
     value: "1B+ women",
     description:
       "don't use mobile internet because of cost, illiteracy, safety and security, and other barriers",
