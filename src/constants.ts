@@ -57,7 +57,7 @@ import Tostan from "./assets/partners/tostan.png";
 import Saa from "./assets/partners/saa.png";
 import Volo from "./assets/partners/volo.png";
 import Mercy from "./assets/partners/MercyCorps logo.png";
-import Ifad from "./assets/partners/ifad.png";
+import Ifad from "./assets/partners/ifdc.png";
 import Principe from "./assets/partners/principles.png";
 import Miller from "./assets/partners/miller.png";
 import Connect from "./assets/partners/connect.png";
