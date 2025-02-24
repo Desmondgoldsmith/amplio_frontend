@@ -27,7 +27,7 @@ import Isaac from "./assets/board/Isaac.jpg";
 import Phoebe from "./assets/board/Phoebe.jpg";
 import Mutala from "./assets/board/Mutala.jpg";
 
-import Carousel1 from "./assets/programs/carousel1.jpg";
+import Carousel1 from "./assets/programs/carouselMain.jpg";
 import Carousel2 from "./assets/programs/carousel2.jpg";
 import Carousel3 from "./assets/programs/carousel3.jpg";
 
