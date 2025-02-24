@@ -36,7 +36,7 @@ export interface Topic {
 }
 
 export interface GlobalPartner {
-  logo: string;
+  logo: ImageMetadata;
   name: string;
 }
 

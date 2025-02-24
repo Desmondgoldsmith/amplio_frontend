@@ -38,6 +38,34 @@ import Illustration4 from "./assets/programs/illustration4.png";
 import Illustration5 from "./assets/programs/illustration5.png";
 import Illustration6 from "./assets/programs/illustration6.png";
 
+import Care from "./assets/partners/care.png";
+import VSO from "./assets/partners/vso.jpg";
+import Unicef from "./assets/partners/unicef.png";
+import Meda from "./assets/partners/meda.png";
+import Agra from "./assets/partners/agra.png";
+import Itu from "./assets/partners/itu.png";
+import Mofa from "./assets/partners/mofa.png";
+import Ansi from "./assets/partners/ansi.png";
+import Cbcc from "./assets/partners/cbcc.png";
+import Savana from "./assets/partners/savana.jpeg";
+import Ghdf from "./assets/partners/ghdf.jpeg";
+import Wcf from "./assets/partners/wcf.png";
+import Landsea from "./assets/partners/landsea.png";
+import Techno from "./assets/partners/techn.png";
+import Arm from "./assets/partners/arm.png";
+import Tostan from "./assets/partners/tostan.png";
+import Saa from "./assets/partners/saa.png";
+import Volo from "./assets/partners/volo.png";
+import Mercy from "./assets/partners/MercyCorps logo.png";
+import Ifad from "./assets/partners/ifad.png";
+import Principe from "./assets/partners/principles.png";
+import Miller from "./assets/partners/miller.png";
+import Connect from "./assets/partners/connect.png";
+import Usaid from "./assets/partners/usaid.jpg";
+import Esoko from "./assets/partners/esoko.png";
+import Bmgf from "./assets/partners/BMGF.png";
+import Creative from "./assets/partners/creative.jpeg";
+
 export const stats = [
   {
     number: "47",
@@ -235,36 +263,36 @@ export const topicColumns: Topic[][] = [
 ];
 
 export const GlobalPartnersData: GlobalPartner[] = [
-  { logo: "./assets/partners/care.png", name: "CARE" },
-  { logo: "./assets/partners/vso.jpg", name: "VSO" },
-  { logo: "./assets/partners/unicef.png", name: "UNICEF" },
-  { logo: "./assets/partners/meda.png", name: "MEDA" },
-  { logo: "./assets/partners/agra.png", name: "AGRA" },
-  { logo: "./assets/partners/itu.png", name: "ITU" },
-  { logo: "./assets/partners/ansi.png", name: "ANSI" },
+  { logo: Care, name: "CARE" },
+  { logo: VSO, name: "VSO" },
+  { logo: Unicef, name: "UNICEF" },
+  { logo: Meda, name: "MEDA" },
+  { logo: Agra, name: "AGRA" },
+  { logo: Itu, name: "ITU" },
+  { logo: Ansi, name: "ANSI" },
   {
-    logo: "./assets/partners/mofa.png",
+    logo: Mofa,
     name: "Ministry of Food & Agriculture",
   },
-  { logo: "./assets/partners/cbcc.png", name: "CBCC" },
-  { logo: "./assets/partners/savana.jpeg", name: "Savana Signatures" },
-  { logo: "./assets/partners/ghdf.jpeg", name: "ghdf" },
-  { logo: "./assets/partners/wcf.png", name: "World Cocoa Foundation" },
-  { logo: "./assets/partners/landsea.png", name: "Landesa" },
-  { logo: "./assets/partners/saa.png", name: "Sasawka Africa Association" },
-  { logo: "./assets/partners/techn.png", name: "TechnoServe" },
-  { logo: "./assets/partners/arm.png", name: "ARM" },
-  { logo: "./assets/partners/tostan.png", name: "Tostan" },
-  { logo: "./assets/partners/volo.png", name: "volo" },
-  { logo: "./assets/partners/MercyCorps logo.png", name: "Mercy Corps" },
-  { logo: "./assets/partners/ifad.png", name: "IFDC" },
-  { logo: "./assets/partners/miller.png", name: "miller" },
-  { logo: "./assets/partners/principles.png", name: "principles" },
-  { logo: "./assets/partners/connect.png", name: "connective" },
-  { logo: "./assets/partners/esoko.png", name: "esoko" },
-  { logo: "./assets/partners/usaid.jpg", name: "usaid" },
-  { logo: "./assets/partners/creative.jpeg", name: "creative" },
-  { logo: "./assets/partners/BMGF.png", name: "BillG" },
+  { logo: Cbcc, name: "CBCC" },
+  { logo: Savana, name: "Savana Signatures" },
+  { logo: Ghdf, name: "ghdf" },
+  { logo: Wcf, name: "World Cocoa Foundation" },
+  { logo: Landsea, name: "Landesa" },
+  { logo: Saa, name: "Sasawka Africa Association" },
+  { logo: Techno, name: "TechnoServe" },
+  { logo: Arm, name: "ARM" },
+  { logo: Tostan, name: "Tostan" },
+  { logo: Volo, name: "volo" },
+  { logo: Mercy, name: "Mercy Corps" },
+  { logo: Ifad, name: "IFDC" },
+  { logo: Miller, name: "miller" },
+  { logo: Principe, name: "principles" },
+  { logo: Connect, name: "connective" },
+  { logo: Esoko, name: "esoko" },
+  { logo: Usaid, name: "usaid" },
+  { logo: Creative, name: "creative" },
+  { logo: Bmgf, name: "BillG" },
   { logo: "./assets/partners/Star.png", name: "star" },
   { logo: "./assets/partners/giz.png", name: "giz" },
   { logo: "./assets/partners/ifad.png", name: "ifad" },
