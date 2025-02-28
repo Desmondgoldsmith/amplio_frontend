@@ -1,11 +1,18 @@
 ---
+import { Image } from 'astro:assets';
+
+import ManImage from "../../assets/waystolisten/man.jpg";
+import GroupImage from "../../assets/waystolisten/group.jpg";
+import GivingAmplioImage from "../../assets/waystolisten/giving-amplio.jpg";
+import GatheringImage from "../../assets/waystolisten/gathering.jpg";
+import FamilyImage from "../../assets/waystolisten/family.jpg";
+
 interface Listen{
   title: string;
   description: string;
   deviceCapacity?: string;
   rotationTitle?: string;
   rotationDescription?: string;
-  imageSrc: string;
   imageAlt: string;
 }
 
@@ -15,61 +22,58 @@ const waysToListen:Listen = {
   deviceCapacity : "One device can easily serve up to 100 listeners or more.",
   rotationTitle : "Household Rotation",
   rotationDescription : "Talking Books can be shared and rotated among households over a period of time, such as on a weekly or monthly basis. This allows families and individuals to listen when it's convenient. They can select and replay messages as often as they want.",
-  imageSrc : "/assets/waystolisten/man.jpg",
   imageAlt : "People using Talking Books device"
 } 
 
 const GroupListening:Listen = {
   title : "Group Listening",
   description : "Talking Books can also be used effectively for group listening and discussion. The device has a built-in speaker, which allows for about 20 people to easily listen and learn together. This model is often used with mother-to-mother groups, Village Savings and Loan Associations, and agriculture collectives. ",
-  imageSrc : "/assets/waystolisten/group.jpg",
   imageAlt : "Group Listening"
 } 
 
 const CommunityAgents:Listen = {
   title : "Community Agents",
   description : "Talking Books can be used to train and support community facilitators such as community health volunteers and agriculture extension agents. With the Talking Book, they can share consistent and accurate messages more efficiently and effectively. ",
-  imageSrc : "/assets/waystolisten/giving-amplio.jpg",
   imageAlt : "Group Agent"
 } 
 
 const TalkingBooks:Listen = {
   title : "Place-Based Talking Books",
   description : "Talking Books can be housed at a centralized location for community members to engage with. Examples of place-based settings include health centers, schools, and early childhood development centers. ",
-  imageSrc : "/assets/waystolisten/gathering.jpg",
   imageAlt : "Place-Based Talking Books"
 } 
 ---
 <section>
-<section class="w-full bg-white mt-24">
-    <div class="max-w-7xl px-44 mx-auto  lg:px-20 py-16">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-gray-900 mb-6">
+<section class="w-full bg-white mt-5">
+    <div class="max-w-7xl px-4 sm:px-6 md:px-8 lg:px-20 mx-auto py-8 md:pb-8">
+      <div class="text-center mb-8 md:mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
           {waysToListen.title}
         </h2>
-        <p class="max-w-2xl mx-auto text-lg text-gray-600">
+        <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-600">
           {waysToListen.description}
         </p>
-        <p class="mt-4 text-lg text-gray-600">
+        <p class="mt-4 text-base md:text-lg text-gray-600">
           {waysToListen.deviceCapacity}
         </p>
       </div>
   
-      <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="grid md:grid-cols-2 gap-6 md:gap-8 items-center">
         <div class="relative">
-          <img
-            src={waysToListen.imageSrc}
+          <Image
+            src={ManImage}
             alt={waysToListen.imageAlt}
             class="w-full rounded-lg shadow-lg object-cover"
-            style="aspect-ratio: 4/3;"
+            width={800}
+            height={600}
           />
         </div>
         
-        <div class="space-y-6 md:pl-8">
-          <h3 class="text-3xl font-bold text-gray-900">
+        <div class="space-y-4 md:space-y-6 md:pl-8">
+          <h3 class="text-2xl md:text-3xl font-bold text-gray-900">
             {waysToListen.rotationTitle}
           </h3>
-          <p class="text-lg text-gray-600">
+          <p class="text-base md:text-lg text-gray-600">
             {waysToListen.rotationDescription}
           </p>
         </div>
@@ -77,97 +81,102 @@ const TalkingBooks:Listen = {
     </div>
   </section>
  
-  <section class="w-full bg-white mt-10">
-    <div class="max-w-7xl px-44 mx-auto  lg:px-20 py-5">
-      <div class="grid md:grid-cols-2 gap-8 items-center">
+  <section class="w-full bg-white mt-6 md:mt-10">
+    <div class="max-w-7xl px-4 sm:px-6 md:px-8 lg:px-20 mx-auto py-5">
+      <div class="grid md:grid-cols-2 gap-6 md:gap-8 items-center">
         <div class="relative">
-          <img
-            src={GroupListening.imageSrc}
+          <Image
+            src={GroupImage}
             alt={GroupListening.imageAlt}
             class="w-full rounded-lg shadow-lg object-cover"
-            style="aspect-ratio: 4/3;"
+            width={800}
+            height={600}
           />
         </div>
         
-        <div class="space-y-6 md:pl-8">
-          <h3 class="text-3xl font-bold text-gray-900">
+        <div class="space-y-4 md:space-y-6 md:pl-8">
+          <h3 class="text-2xl md:text-3xl font-bold text-gray-900">
             {GroupListening.title}
           </h3>
-          <p class="text-lg text-gray-600">
+          <p class="text-base md:text-lg text-gray-600">
             {GroupListening.description}
           </p>
         </div>
       </div>
     </div>
   </section>
-  <section class="w-full bg-white mt-10">
-    <div class="max-w-7xl px-44 mx-auto  lg:px-20 py-5">
-      <div class="grid md:grid-cols-2 gap-8 items-center">
+  <section class="w-full bg-white mt-6 md:mt-10">
+    <div class="max-w-7xl px-4 sm:px-6 md:px-8 lg:px-20 mx-auto py-5">
+      <div class="grid md:grid-cols-2 gap-6 md:gap-8 items-center">
         <div class="relative">
-          <img
-            src={CommunityAgents.imageSrc}
+          <Image
+            src={GivingAmplioImage}
             alt={CommunityAgents.imageAlt}
             class="w-full rounded-lg shadow-lg object-cover"
-            style="aspect-ratio: 4/3;"
+            width={800}
+            height={600}
           />
         </div>
         
-        <div class="space-y-6 md:pl-8">
-          <h3 class="text-3xl font-bold text-gray-900">
+        <div class="space-y-4 md:space-y-6 md:pl-8">
+          <h3 class="text-2xl md:text-3xl font-bold text-gray-900">
             {CommunityAgents.title}
           </h3>
-          <p class="text-lg text-gray-600">
+          <p class="text-base md:text-lg text-gray-600">
             {CommunityAgents.description}
           </p>
         </div>
       </div>
     </div>
   </section>
-  <section class="w-full bg-white mt-10">
-    <div class="max-w-7xl px-44 mx-auto  lg:px-20 py-5">
-      <div class="grid md:grid-cols-2 gap-8 items-center">
+  <section class="w-full bg-white mt-6 md:mt-10">
+    <div class="max-w-7xl px-4 sm:px-6 md:px-8 lg:px-20 mx-auto py-5">
+      <div class="grid md:grid-cols-2 gap-6 md:gap-8 items-center">
         <div class="relative">
-          <img
-            src={TalkingBooks.imageSrc}
+          <Image
+            src={GatheringImage}
             alt={TalkingBooks.imageAlt}
             class="w-full rounded-lg shadow-lg object-cover"
-            style="aspect-ratio: 4/3;"
+            width={800}
+            height={600}
           />
         </div>
         
-        <div class="space-y-6 md:pl-8">
-          <h3 class="text-3xl font-bold text-gray-900">
+        <div class="space-y-4 md:space-y-6 md:pl-8">
+          <h3 class="text-2xl md:text-3xl font-bold text-gray-900">
             {TalkingBooks.title}
           </h3>
-          <p class="text-lg text-gray-600">
+          <p class="text-base md:text-lg text-gray-600">
             {TalkingBooks.description}
           </p>
         </div>
       </div>
     </div>
   </section>
-<section class="w-full bg-white mt-24">
-  <div class="mt-12 relative w-screen left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]">
-    <div class="w-full h-[470px] md:h-[560px] relative">
-      <img 
-        src="/assets/waystolisten/family.jpg" 
+<section class="w-full bg-white mt-12 md:mt-24">
+  <div class="mt-8 md:mt-12 relative w-screen left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]">
+    <div class="w-full h-[350px] sm:h-[400px] md:h-[560px] relative">
+      <Image 
+        src={FamilyImage} 
         alt="Girl listening to the Amplio Device with Family" 
         class="w-full h-full object-cover"
+        width={1920}
+        height={1080}
       />
     </div>
   </div>
 
-    <div class="max-w-7xl px-44 mx-auto  lg:px-20 py-16">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-gray-900 mb-6">
+    <div class="max-w-7xl px-4 sm:px-6 md:px-8 lg:px-20 mx-auto py-8 md:py-16">
+      <div class="text-center mb-8 md:mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
             Combining Listening Models
         </h2>
-        <p class="max-w-2xl mx-auto text-lg text-gray-600">
+        <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-600">
             Often, Talking Book programs will use a combination of listening models to strengthen message delivery and reach more people. 
-            If you’re interested in learning more about our technology and services, <span class = "underline text-blue-800"><a href = "/contact">contact</a></span> us for a free consultation to discuss your program and get a Talking Book demo. 
+            If you're interested in learning more about our technology and services, <span class="underline text-blue-800"><a href="/contact">contact</a></span> us for a free consultation to discuss your program and get a Talking Book demo. 
         </p>
-        <button class="p-3 mt-6 mx-auto bg-[#3c519b] rounded-md text-white hover:bg-[#8D99C6]">
-          contact us
+        <button class="p-2 md:p-3 mt-4 md:mt-6 mx-auto bg-[#3c519b] rounded-md text-white hover:bg-[#8D99C6]">
+          <a href="/contact"> contact us </a>
         </button>
       </div>
     </section>

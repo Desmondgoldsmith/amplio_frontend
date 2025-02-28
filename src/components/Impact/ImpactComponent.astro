@@ -1,45 +1,57 @@
 ---
 import { Image } from 'astro:assets';
+import ImpactBlog from "./ImpactBlog.astro"
+
+// Import images
+import ProjectsIcon from "../../assets/homepageAssets/projects.png";
+import PeopleReachedIcon from "../../assets/homepageAssets/peopleReached.png";
+import CountriesIcon from "../../assets/homepageAssets/countries.png";
+import NurseImage from "../../assets/impact/nurse.jpg";
+import ManImage from "../../assets/impact/man.jpg";
+import MedaLogo from "../../assets/impact/meda.png";
+import MotherImage from "../../assets/impact/mother.jpg";
 
 const stats = [
   {
     number: "99",
     label: "Projects",
-    icon: "/assets/homepageAssets/projects.png"
+    icon: ProjectsIcon
   },
   {
     number: "2,066,428",
     label: "People reached",
-    icon: "/public/assets/homepageAssets/peopleReached.png"
+    icon: PeopleReachedIcon
   },
   {
     number: "15",
     label: "Countries",
-    icon: "/public/assets/homepageAssets/countries.png"
+    icon: CountriesIcon
   }
 ];
 
 ---
 
-<section class="mt-32">
+<section class="mt-5 md:mt-5">
  <section>
-  <div class="max-w-[2000px] mx-auto px-52">
-    <h1 class="text-4xl font-bold mb-4 text-center">Our Impact</h1>
+  <div class="max-w-[2000px] mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-52">
+    <h1 class="text-3xl md:text-4xl font-bold mb-4 text-center">Our Impact</h1>
 
-     <p class = "max-w-xl mb-4 mx-auto text-center">Millions of people lack access to knowledge because of poverty, low literacy, and gender inequalities. We amplify program reach and knowledge sharing through audio technology. See our program map below.</p>
+     <p class="max-w-xl mb-4 mx-auto text-center text-base md:text-lg">Millions of people lack access to knowledge because of poverty, low literacy, and gender inequalities. We amplify program reach and knowledge sharing through audio technology. See our program map below.</p>
 
-    <div class="grid grid-cols-3 gap-8  px-24">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4 md:px-12 lg:px-24">
       {stats.map(stat => (
-        <div class="flex flex-col items-center">
-          <div class="w-48 h-48 mb-6">
-            <img 
+        <div class="flex flex-col items-center mb-8 md:mb-0">
+          <div class="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mb-4 md:mb-6">
+            <Image 
               src={stat.icon} 
               alt={stat.label} 
-              class="w-full h-full object-contain p-6 rounded-full overflow-hidden" 
+              width={192}
+              height={192}
+              class="w-full h-full object-contain p-4 md:p-6 rounded-full overflow-hidden" 
             />
           </div>
           <div class="text-center">
-            <p class="text-[#FF5843] text-5xl font-bold mb-2">{stat.number}</p>
+            <p class="text-[#FF5843] text-4xl md:text-5xl font-bold mb-2">{stat.number}</p>
             <p class="text-gray-700">{stat.label}</p>
           </div>
         </div>
@@ -48,7 +60,7 @@ const stats = [
   </div>
 </section>
 
-<section class="max-w-7xl mx-auto py-16 px-4 mt-10 text-center md:px-8 bg-white">
+<section class="max-w-7xl mx-auto py-8 md:py-16 px-4 mt-6 md:mt-10 text-center md:px-8 bg-white">
     <div>
       <div id="loading-spinner" class="flex justify-center items-center py-8">
         <div class="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-blue-600"></div>
@@ -83,23 +95,25 @@ const stats = [
     </div>
   </section>
 
-  <section class="w-full mt-5 pt-16 bg-white">
+  <section class="w-full mt-5 pt-8 md:pt-16 bg-white">
     <div class="grid grid-cols-1 md:grid-cols-2">
         <div class="relative">
-            <img 
-              src="/assets/impact/nurse.jpg" 
+            <Image 
+              src={NurseImage} 
               alt="Recording an interview" 
-              class="w-full h-[500px] object-cover "
+              width={800}
+              height={500}
+              class="w-full h-[350px] md:h-[500px] object-cover"
             />
           </div>
-        <div class = "p-8 text-center mt-16">
-        <h2 class="text-3xl font-bold mb-6">Partnering For Impact</h2>
-        <p class="text-gray-700 mb-8 max-w-3xl w-[550px] text-center mx-auto">
+        <div class="p-4 md:p-8 text-center mt-6 md:mt-16">
+        <h2 class="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Partnering For Impact</h2>
+        <p class="text-gray-700 mb-6 md:mb-8 mx-auto text-center max-w-xs sm:max-w-sm md:max-w-md lg:w-[550px]">
             We work with local experts, government agencies, and international organizations to share knowledge across many sectors.
         </p>
         <a
         href = "/case-studies"
-        class="bg-white border-2 border-black px-6 py-2 font-medium hover:bg-gray-100 transition-colors"
+        class="bg-white border-2 border-black px-4 md:px-6 py-2 font-medium hover:bg-gray-100 transition-colors"
         >
         READ A CASE STUDY
         </a>
@@ -110,54 +124,61 @@ const stats = [
 
 <section class="w-full">
     <div class="grid grid-cols-1 md:grid-cols-2">
-      <div class = "p-8 text-center mt-16">
-        <h2 class="text-3xl font-bold mb-6">Amplifying Community Voices</h2>
-        <p class="text-gray-700 mb-8 max-w-3xl w-[550px] text-center mx-auto">
+      <div class="p-4 md:p-8 text-center mt-6 md:mt-16">
+        <h2 class="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Amplifying Community Voices</h2>
+        <p class="text-gray-700 mb-6 md:mb-8 mx-auto text-center max-w-xs sm:max-w-sm md:max-w-md lg:w-[550px]">
             Our technology creates a community feedback loop that's hard to match in the remote areas we work. 
         </p>
-        <button class="bg-white border-2 border-black px-6 py-2 font-medium hover:bg-gray-100 transition-colors">
+        <button class="bg-white border-2 border-black px-4 md:px-6 py-2 font-medium hover:bg-gray-100 transition-colors">
           <a href = "/team">
                LEARN MORE
           </a>
         </button>
       </div>
       <div class="relative">
-        <img 
-          src="/assets/impact/man.jpg" 
+        <Image 
+          src={ManImage} 
           alt="Community facilitation session" 
-          class="w-full h-[500px] object-cover "
+          width={800}
+          height={500}
+          class="w-full h-[350px] md:h-[500px] object-cover"
         />
       </div>
   </div>
 </section>
-<section class = "max-w-[2000px] mt-10 mb-10">
-    <div class=" mx-auto px-52">
-      <h1 class="text-4xl font-bold mb-4 text-center">Our Technology in Action</h1>
+<section class="max-w-[2000px] mt-6 md:mt-10 mb-6 md:mb-10">
+    <div class="mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-52">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4 text-center">Our Technology in Action</h1>
   
-       <p class = "max-w-xl mb-4 mx-auto text-center">Through Talking Book programs and partnerships, we're sharing knowledge to help families grow more food, earn income, and keep their children safe and healthy.</p>
+       <p class="max-w-xl mb-4 mx-auto text-center text-base md:text-lg">Through Talking Book programs and partnerships, we're sharing knowledge to help families grow more food, earn income, and keep their children safe and healthy.</p>
 
-     <!-- add blog post here -->
+     
+       
+<!-- Tech blog -->
+      <ImpactBlog/>
+
     </section>  
-    <section class = "mt-16">
-        <div class="border-t pt-12 ">
-            <div class="max-w-4xl space-y-10 mx-auto text-center">
-              <img 
-              src= "/assets/impact/meda.png" 
+    <section class="mt-8 md:mt-16">
+        <div class="border-t pt-8 md:pt-12">
+            <div class="max-w-4xl space-y-6 md:space-y-10 mx-auto text-center px-4">
+              <Image 
+              src={MedaLogo} 
               alt="Meda logo" 
-              class="h-20 mx-auto"
+              width={200}
+              height={80}
+              class="h-16 md:h-20 mx-auto"
             />
-              <blockquote class="text-xl text-gray-700 italic max-w-2xl mx-auto mb-8">
+              <blockquote class="text-lg md:text-xl text-gray-700 italic max-w-2xl mx-auto mb-6 md:mb-8">
                 "With the Amplio Talking Book, people can access information in their own language, on demand. The Talking Book was our number one tool besides GROW field agents. Everyone loved it!"
               </blockquote>
   
-              <p class = "max-w-xs mx-auto mb-5 text-sm text-gray-500 text-center space-y-5">Karen Walsh, Country Program Director,
-
+              <p class="max-w-xs mx-auto mb-4 md:mb-5 text-sm text-gray-500 text-center space-y-3 md:space-y-5">Karen Walsh, Country Program Director,
                 Greater Rural Opportunities for Women (GROW), MEDA</p>
              
             </div>
           </div>
 
-          <div class="max-w-3xl mt-6 mx-auto">
+          <div class="max-w-3xl mt-4 md:mt-6 mx-auto px-4">
             <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
               <iframe 
                 src="https://www.youtube.com/embed/J0rAtXfuYow?si=hddTGqE8NmMk8AAZ" 
@@ -170,28 +191,28 @@ const stats = [
             </div>
           </div>
     </section>
-    <section class="relative h-[600px] mt-10 w-full overflow-hidden">
+    <section class="relative h-[400px] md:h-[600px] mt-6 md:mt-10 w-full overflow-hidden">
         <div class="absolute inset-0">
           <Image
-            src="/assets/impact/mother.jpg"
+            src={MotherImage}
             alt="Donation Background"
             width={1920}
-            height={400}
+            height={1080}
             class="object-cover w-full h-full"
           />
           <div class="absolute inset-0 bg-black/30"></div>
         </div>
       
         <div class="relative h-full flex items-center">
-          <div class="max-w-lg px-8 py-10 ml-auto md:mr-32 bg-[#425092] rounded-lg backdrop-blur-sm text-white">
-            <h2 class="text-3xl font-semibold mb-4 text-center">Knowledge is Power</h2>
-            <p class="text-xl mb-6 text-center">
+          <div class="max-w-xs sm:max-w-sm md:max-w-lg px-4 sm:px-6 md:px-8 py-6 md:py-10 mx-4 md:ml-auto md:mr-8 lg:mr-32 bg-[#425092] rounded-lg backdrop-blur-sm text-white">
+            <h2 class="text-2xl md:text-3xl font-semibold mb-3 md:mb-4 text-center">Knowledge is Power</h2>
+            <p class="text-lg md:text-xl mb-4 md:mb-6 text-center">
               Help bridge the knowledge gap through inclusive digital technology and unlock potential for people with low literacy. 
             </p>
             <div class="text-center">
               <a 
                 href="#" 
-                class="inline-block px-8 py-3 bg-[#EC704E] text-white font-semibold rounded-md hover:bg-[#ff4730] transition-colors"
+                class="inline-block px-6 md:px-8 py-2 md:py-3 bg-[#EC704E] text-white font-semibold rounded-md hover:bg-[#ff4730] transition-colors"
               >
                 DONATE NOW
               </a>
