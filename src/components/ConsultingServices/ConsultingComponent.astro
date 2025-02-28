@@ -1,11 +1,19 @@
 ---
 import { Image } from 'astro:assets';
 
+// Import images
+import BannerImage from "../../assets/consulting/banner.jpg";
+import SetupAmplioImage from "../../assets/consulting/setup-amplio.jpg";
+import AppImage from "../../assets/consulting/app.png";
+import WomanAmplioImage from "../../assets/consulting/woman-amplio.png";
+import SecurityImage from "../../assets/consulting/security.png";
+import AnalysisImage from "../../assets/consulting/analysis.png";
+import GreenAmplioImage from "../../assets/consulting/green-amplio.png";
 
 interface ProgramService {
   title: string;
   description: string;
-  imageSrc: string;
+  image: ImageMetadata;
   imageAlt: string;
   subTitle: string;
   subDesc: string;
@@ -17,12 +25,11 @@ interface TrainingService {
   link?: string;
 }
 
-
 const services: ProgramService[] = [
   {
     title: "Situational Assessment",
     description: "Our team can work with you to conduct a situational assessment to understand and segment your target audience, identify behavioral barriers and drivers, and develop clear program objectives.",
-    imageSrc: "/assets/consulting/setup-amplio.jpg",
+    image: SetupAmplioImage,
     imageAlt: "Team working together on assessment",
     subTitle: "Strategy Design",
     subDesc: "Based on your program goals and target audience analysis, we will design the best strategy to deploy and manage Talking Books, alongside other communications and engagement strategies as needed."
@@ -30,7 +37,7 @@ const services: ProgramService[] = [
   {
     title: "Content and Message Design",
     description: "We can develop key messages and creative briefs to support the production of Talking Book audio content. We can also work with creative agencies to develop content and field test messaging.",
-    imageSrc: "/assets/consulting/app.png",
+    image: AppImage,
     imageAlt: "Content and message design illustration",
     subTitle: "Implementation Plans",
     subDesc: "Our team can create a detailed roadmap (with defined activities, tasks, inputs, timelines, and outputs) to support the implementation of your program and communications strategy.",
@@ -39,7 +46,7 @@ const services: ProgramService[] = [
   {
     title: "Implementation Plans",
     description: "Our team can create a detailed roadmap (with defined activities, tasks, inputs, timelines, and outputs) to support the implementation of your program and communications strategy.",
-    imageSrc: "/assets/consulting/woman-amplio.png",
+    image: WomanAmplioImage,
     imageAlt: "Implementation planning",
     subTitle: "Field Logistics",
     subDesc: "Depending on the geographic location, Amplio can manage the field logistics for your Talking Book program, including device distribution, content updates, and data collection activities.",
@@ -51,7 +58,7 @@ const monitoring: ProgramService[] = [
   {
     title: "Custom Monitoring",
     description: "Amplio will design a monitoring plan to help you meet your organizational or grant reporting requirements, with up to 10 custom indicators. This includes the development of custom monitoring tools, training, and quarterly reports.",
-    imageSrc: "/assets/consulting/security.png",
+    image: SecurityImage,
     imageAlt: "Monitoring",
     subTitle: "Operational Research",
     subDesc: "Amplio will design a study and data collection tools to assess your Talking Book program implementation. We will analyze the data and create a narrative report and a visual presentation to inform your programming."
@@ -59,16 +66,16 @@ const monitoring: ProgramService[] = [
   {
     title: "Impact Evaluation",
     description: "Amplio will design an impact study, including data collection tools, tailored to your needs and budget. Once the study is completed, we will analyze the data and create both a narrative report and a visual presentation of its findings.",
-    imageSrc: "/assets/consulting/analysis.png",
+    image: AnalysisImage,
     imageAlt: "Impact Evaluation",
     subTitle: "Custom Dashboard",
-    subDesc: "Amplio will create custom queries and visualizations based on your program’s desired indicators. We will integrate the visualizations into your dashboard.",
+    subDesc: "Amplio will create custom queries and visualizations based on your program's desired indicators. We will integrate the visualizations into your dashboard.",
     
   },
   {
     title: "User Feedback Analysis",
     description: "In certain countries, we can provide local language speakers to help you manage the qualitative analysis of your program's Talking Book user feedback.",
-    imageSrc: "/assets/consulting/woman-amplio.png",
+    image: WomanAmplioImage,
     imageAlt: "User Feedback Analysis",
     subTitle: "",
     subDesc: "The analysis process includes listening to, coding, transcribing, and translating the recorded messages. We can provide a full narrative analysis of key findings from user feedback and make recommendations for your program strategy moving forward.",
@@ -92,20 +99,22 @@ const trainingServices: TrainingService[] = [
 ];
 ---
 
-
 <section>
-    <section class="bg-white mt-24 pt-10  pb-4">
+    <section class="bg-white mt-5 pt-3 pb-4">
         <div class="text-center mb-16">
           <h2 class="text-4xl font-bold mb-4">Consulting Services</h2>
           <p class="max-w-2xl mx-auto text-lg mb-9">
-            Our <a href = "/basic-service-package" class = "hover:underline text-blue-500 font-semibold cursor-pointer">Basic Service Package</a> will get you up to speed with Talking Book technology. If you need more help, let us know! Explore our consulting services below.          </p>
+            Our <a href="/basic-service-package" class="hover:underline text-blue-500 font-semibold cursor-pointer">Basic Service Package</a> will get you up to speed with Talking Book technology. If you need more help, let us know! Explore our consulting services below.
+          </p>
         </div>
       
         <div class="mt-12 relative w-screen left-1/2 right-1/2 ml-[-50vw] mr-[-50vw]">
-          <div class="w-full h-[470px] md:h-[560px] relative">
-            <img 
-              src="/assets/consulting/banner.jpg" 
+          <div class="w-full h-[300px] sm:h-[400px] md:h-[560px] relative">
+            <Image 
+              src={BannerImage} 
               alt="Girl listening to the Amplio Device with Family" 
+              width={1920}
+              height={1080}
               class="w-full h-full object-cover"
             />
           </div>
@@ -123,20 +132,20 @@ const trainingServices: TrainingService[] = [
             <div class="flex flex-col bg-gray-100 rounded-md p-5 space-y-4">
               <div class="mb-6 flex justify-center">
                 <Image
-                  src={service.imageSrc}
+                  src={service.image}
                   alt={service.imageAlt}
                   width={250}
                   height={200}
-                  class="w-full max-w-[250px] h-auto"
+                  class="w-full max-w-[200px] sm:max-w-[250px] h-auto"
                 />
               </div>
               
-              <div class = "text-center mx-auto">
+              <div class="text-center mx-auto">
                 <h3 class="text-xl font-semibold mb-3">{service.title}</h3>
                 <p class="text-gray-600 leading-relaxed">{service.description}</p>
-                <div class = "mt-4">
-                  <h3 class = "text-xl font-semibold mb-3">{service.subTitle}</h4>
-                <p class = "text-gray-600 leading-relaxed">{service.subDesc}</p>
+                <div class="mt-4">
+                  <h3 class="text-xl font-semibold mb-3">{service.subTitle}</h3>
+                  <p class="text-gray-600 leading-relaxed">{service.subDesc}</p>
                 </div>
               </div>
             </div>
@@ -147,7 +156,7 @@ const trainingServices: TrainingService[] = [
       <section class="py-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-bold mb-4">Monitoring and Evaluation</h2>
-          <p class="text-gray-600 text-lg max-w-lg mx-auto">Amplio offers customized monitoring and evaluation plans, tools, and reports. We can also provide enumerator training. </p>
+          <p class="text-gray-600 text-lg max-w-lg mx-auto">Amplio offers customized monitoring and evaluation plans, tools, and reports. We can also provide enumerator training.</p>
         </div>
       
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -155,20 +164,20 @@ const trainingServices: TrainingService[] = [
             <div class="flex flex-col bg-gray-100 rounded-md p-5 space-y-4">
               <div class="mb-6 flex justify-center">
                 <Image
-                  src={monitor.imageSrc}
+                  src={monitor.image}
                   alt={monitor.imageAlt}
                   width={250}
                   height={200}
-                  class="w-full max-w-[250px] h-auto"
+                  class="w-full max-w-[200px] sm:max-w-[250px] h-auto"
                 />
               </div>
               
-              <div class = "text-center mx-auto">
+              <div class="text-center mx-auto">
                 <h3 class="text-xl font-semibold mb-3">{monitor.title}</h3>
                 <p class="text-gray-600 leading-relaxed">{monitor.description}</p>
-                <div class = "mt-4">
-                  <h3 class = "text-xl font-semibold mb-3">{monitor.subTitle}</h4>
-                <p class = "text-gray-600 leading-relaxed">{monitor.subDesc}</p>
+                <div class="mt-4">
+                  <h3 class="text-xl font-semibold mb-3">{monitor.subTitle}</h3>
+                  <p class="text-gray-600 leading-relaxed">{monitor.subDesc}</p>
                 </div>
               </div>
             </div>
@@ -180,11 +189,11 @@ const trainingServices: TrainingService[] = [
         <div class="text-center mb-16">
           <div class="flex justify-center mb-6">
             <Image
-              src="/assets/consulting/green-amplio.png"
+              src={GreenAmplioImage}
               alt="Talking Book Device"
               width={120}
               height={120}
-              class="w-auto h-auto"
+              class="w-auto h-auto max-w-[100px] sm:max-w-[120px]"
             />
           </div>
           <h2 class="text-3xl md:text-4xl font-bold mb-4">Training and Capacity Building</h2>
@@ -214,7 +223,7 @@ const trainingServices: TrainingService[] = [
             If you have questions about our consulting services, please ask. We are happy to set up a free consultation to discuss your needs.
           </p>
           <a
-            href="#"
+            href="/contact"
             class="inline-block bg-[#00D2FF] text-white px-8 py-3 rounded-md font-medium hover:bg-[#00bfe8] transition-colors"
           >
             CONTACT US

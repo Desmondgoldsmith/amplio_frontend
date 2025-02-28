@@ -1,4 +1,9 @@
 ---
+import { Image } from "astro:assets";
+import AmplioLabel from "../../assets/techAssets/amplio-lable.png";
+import AmplioColors from "../../assets/techAssets/amplio-colors.png";
+import GreenAmplio from "../../assets/techAssets/green-amplio.png";
+import Women from "../../assets/techAssets/women.jpg";
 ---
 
 <section class="bg-white py-20">
@@ -18,11 +23,12 @@
       {/* Main Device Diagram */}
       <div class="mb-20">
         <div class="max-w-2xl mx-auto">
-          <img 
-            src="/assets/techAssets/amplio-lable.png"
+          <Image 
+            src={AmplioLabel}
             alt="Amplio Talking Book device features diagram"
+            width={800}
+            height={600}
             class="w-full h-auto"
-            loading="lazy"
           />
         </div>
       </div>
@@ -32,11 +38,12 @@
         {/*  Additional Features */}
         <div>
           <div class="mb-8">
-            <img 
-              src="/assets/techAssets/amplio-colors.png"
+            <Image 
+              src={AmplioColors}
               alt="Amplio Talking Book color variants"
+              width={500}
+              height={400}
               class="w-full max-w-md mx-auto"
-              loading="lazy"
             />
           </div>
           <div>
@@ -52,11 +59,12 @@
         {/* Power Options */}
         <div>
           <div class="mb-8">
-            <img 
-              src="/assets/techAssets/green-amplio.png"
+            <Image 
+              src={GreenAmplio}
               alt="Amplio Talking Book battery options"
+              width={500}
+              height={400}
               class="w-full max-w-md mx-auto"
-              loading="lazy"
             />
           </div>
           <div>
@@ -74,23 +82,24 @@
 
   <section class="relative w-full h-screen">
     <div class="absolute inset-0">
-      <img 
-        src="/assets/techAssets/women.jpg" 
+      <Image 
+        src={Women} 
         alt="Women in traditional dress sitting under a wooden structure"
+        width={1920}
+        height={1080}
         class="w-full h-full object-cover"
-        loading="lazy"
       />
     </div>
   
     {/* Contained Quote Box */}
-    <div class="absolute bottom-[7%] left-56">
-      <div class="bg-[#4D5696]/80 p-8 max-w-[700px]">
-        <blockquote class="text-white w-[450px]">
-          <p class="text-xl md:text-2xl leading-relaxed mb-6">
+    <div class="absolute bottom-[7%] left-4 md:left-12 lg:left-56">
+      <div class="bg-[#4D5696]/80 p-4 md:p-8 max-w-[700px]">
+        <blockquote class="text-white w-full md:w-[450px]">
+          <p class="text-lg md:text-xl lg:text-2xl leading-relaxed mb-4 md:mb-6">
             "After we did a quick Talking Book demo, young people were surprised 
             to see even a 90-year-old woman pick up a device and turn it on."
           </p>
-          <footer class="text-lg">
+          <footer class="text-base md:text-lg">
             Constance Teague, Land Tenure Specialist, Landesa
           </footer>
         </blockquote>
