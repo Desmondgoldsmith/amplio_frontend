@@ -1,12 +1,14 @@
 ---
 import { Image } from 'astro:assets';
 
+import AmplioConnectImage from "../../assets/partners/amplio-connect.jpg";
+
 const slides = [
   {
     titleMain: "USAGE",
     titleSub: "scenarios",
     description: "(explore a few examples)",
-    image: "/assets/partners/amplio-connect.jpg",
+    image: AmplioConnectImage,
     credit: "© UNICEF Ghana/Joseph Mills"
   },
   {
@@ -42,18 +44,17 @@ const slides = [
 const projectStatusText = "Over the past year, Amplio has consulted with more than 50 social and behavior change experts from 37 UNICEF country offices to get their input on what SBC Impact Designer should include.";
 const feedbackText = "We want your feedback and collaboration, too!";
 const partnerText = "We are looking for partners to contribute to the SBC Impact Designer project – from SBC experts and graphic designers to software developers and project funders.";
-
 ---
 
-<main class="py-8 mt-28">
-    <section class=" max-w-4xl mx-auto text-center px-4 mb-12">
-      <h1 class="text-4xl font-bold mb-4">SBC Impact Designer</h1>
-      <p class="text-gray-700 mb-6 max-w-xl mx-auto">
+<main class="pb-4 mt-5">
+    <section class="max-w-4xl mx-auto text-center px-4 mb-12">
+      <h1 class="text-4xl font-bold mb-4 md:text-4xl sm:text-3xl">SBC Impact Designer</h1>
+      <p class="text-gray-700 mb-6 max-w-xl mx-auto text-base sm:text-sm">
         Amplio is creating an open-source, social and behavior change (SBC) 
         digital platform — co-designed with and for SBC practitioners.
       </p>
       
-      <div class="mb-8 max-w-xl mx-auto text-lg">
+      <div class="mb-8 max-w-xl mx-auto text-lg sm:text-base">
         <a 
           href="https://www.youtube.com/embed/vmGpmYhr4Hg?si=84aSDTv-qDMGUBIT" 
           target="_blank" 
@@ -61,7 +62,7 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
           class="text-blue-500 hover:text-blue-600 flex items-center justify-center gap-2"
         >
           <span>➡️</span>
-          <a href = "https://www.youtube.com/watch?v=zmRR1NAQ4ow&t=16s" class="text-blue-500">Watch am SBC Impact Designer product demo and Q&A - a video recording of our webinar on April 19, 2023 ></a>
+          <a href="https://www.youtube.com/watch?v=zmRR1NAQ4ow&t=16s" class="text-blue-500 break-words">Watch am SBC Impact Designer product demo and Q&A - a video recording of our webinar on April 19, 2023 &gt;</a>
         </a>
       </div>
 
@@ -76,7 +77,7 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
         ></iframe>
       </div>
 
-      <p class="text-gray-700">
+      <p class="text-gray-700 text-sm sm:text-xs">
         Watch the SBC Impact Designer video with 
         <a 
           href="https://www.youtube.com/watch?v=RU7TbMx_2ts" 
@@ -89,9 +90,9 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
       </p>
     </section>
 
-    <section class="mb-12">
-      <h2 class="text-3xl font-bold text-center mb-6">The Problem</h2>
-      <p class="text-gray-700 text-center max-w-2xl mx-auto">
+    <section class="mb-12 px-4">
+      <h2 class="text-3xl font-bold text-center mb-6 sm:text-2xl">The Problem</h2>
+      <p class="text-gray-700 text-center max-w-2xl mx-auto sm:text-sm">
         Development organizations recognize the benefit of SBC programming 
         but they often don't know where to start. There's a lot to consider when 
         integrating SBC approaches into program design, implementation, 
@@ -101,34 +102,34 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
       </p>
     </section>
 
-    <section class="text-center">
-      <h2 class="text-3xl font-bold mb-6">Our Solution</h2>
-      <p class="text-gray-700 mb-6 max-w-2xl mx-auto">
+    <section class="text-center px-4">
+      <h2 class="text-3xl font-bold mb-6 sm:text-2xl">Our Solution</h2>
+      <p class="text-gray-700 mb-6 max-w-2xl mx-auto sm:text-sm">
         SBC Impact Designer offers guidance to help you design, plan, 
         manage, and evaluate each step of your social and behavior change 
         program. It integrates SBC best practices, intuitive project 
         management, and human-centered design.
       </p>
-      <p class="text-gray-700 max-w-2xl mx-auto">
+      <p class="text-gray-700 max-w-2xl mx-auto sm:text-sm">
         Most importantly, SBC Impact Designer supports collaboration with 
         communities and all stakeholders for learning and success.
       </p>
     </section>
 
-  <section class="relative w-full mt-10 h-[600px] bg-[#2A8B9D] overflow-hidden">
+  <section class="relative w-full mt-10 h-[600px] md:h-[500px] sm:h-[550px] bg-[#2A8B9D] overflow-hidden">
   <button 
-    class="absolute left-8 top-1/2 -translate-y-1/2 z-20 text-white hover:text-gray-200 transition-colors" 
+    class="absolute left-2 md:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 text-white hover:text-gray-200 transition-colors" 
     id="prevBtn"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-12 h-12">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
     </svg>
   </button>
   <button 
-    class="absolute right-8 top-1/2 -translate-y-1/2 z-20 text-white hover:text-gray-200 transition-colors" 
+    class="absolute right-2 md:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 text-white hover:text-gray-200 transition-colors" 
     id="nextBtn"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-12 h-12">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
     </svg>
   </button>
@@ -141,27 +142,32 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
         data-index={index}
       >
         {index === 0 ? (
-          <!-- First slide layout - Centered content -->
-          <div class="flex items-center justify-center h-full">
-            <div class="flex items-center gap-8 max-w-6xl mx-auto px-8">
-              <div class="slide-content">
-                <h2 class="text-white text-7xl font-bold tracking-wide mb-2">
+          <!-- First slide layout - Mobile-first design -->
+          <div class="flex flex-col items-center justify-center h-full text-center">
+            <div class="w-full px-4 md:px-8">
+              <!-- Title content for both mobile and desktop -->
+              <div class="slide-content mb-4 md:mb-8">
+                <h2 class="text-white text-4xl md:text-6xl lg:text-7xl font-bold tracking-wide mb-1">
                   {slide.titleMain}
                 </h2>
-                <p class="text-white text-5xl italic mb-4">
+                <p class="text-white text-3xl md:text-4xl lg:text-5xl italic mb-1 md:mb-2">
                   {slide.titleSub}
                 </p>
-                <p class="text-white text-xl">
+                <p class="text-white text-lg md:text-xl mb-4">
                   {slide.description}
                 </p>
               </div>
-              <div class="relative">
-                <img 
-                  src={slide.image}
+              
+              <!-- Image container with different sizing for mobile vs desktop -->
+              <div class="relative mx-auto">
+                <Image 
+                  src={AmplioConnectImage}
                   alt="Usage scenarios"
-                  class="w-[500px] h-[300px] object-cover rounded"
+                  width={800}
+                  height={500}
+                  class="w-[260px] h-[170px] sm:w-[320px] sm:h-[210px] md:w-[600px] md:h-[350px] lg:w-[700px] lg:h-[400px] object-cover rounded mx-auto"
                 />
-                <p class="absolute bottom-2 right-2 text-white text-sm">
+                <p class="absolute bottom-2 right-2 text-white text-xs sm:text-sm">
                   {slide.credit}
                 </p>
               </div>
@@ -169,12 +175,12 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
           </div>
         ) : (
           <!-- Other slides layout -->
-          <div class="flex items-center justify-center h-full px-16">
+          <div class="flex items-center justify-center h-full px-4 md:px-16">
             <div class="max-w-3xl text-center">
-              <h2 class="text-white text-4xl font-bold mb-8">
+              <h2 class="text-white text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-8">
                 {slide.title}
               </h2>
-              <p class="text-white text-xl leading-relaxed">
+              <p class="text-white text-base sm:text-lg md:text-xl leading-relaxed">
                 {slide.description}
               </p>
             </div>
@@ -184,22 +190,23 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
     ))}
   </div>
 </section>
-<section class="py-16 px-4">
+
+<section class="py-8 md:py-16 px-4">
   <!-- Project Status -->
-  <div class="max-w-4xl mx-auto text-center mb-16">
-    <h2 class="text-4xl font-bold mb-8">Project Status</h2>
-    <p class="text-gray-700 mb-4 max-w-xl mx-auto">{projectStatusText}</p>
-    <p class="text-gray-700 max-w-xl mx-auto ">{feedbackText}</p>
+  <div class="max-w-4xl mx-auto text-center mb-8 md:mb-16">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4 md:mb-8">Project Status</h2>
+    <p class="text-gray-700 mb-4 max-w-xl mx-auto sm:text-sm">{projectStatusText}</p>
+    <p class="text-gray-700 max-w-xl mx-auto sm:text-sm">{feedbackText}</p>
   </div>
 
   <!-- Partner Card -->
-  <div class="max-w-4xl mx-auto mb-16">
-    <div class="bg-[#4B4B9D] text-white rounded-lg py-12 px-8 text-center">
-      <h2 class="text-3xl font-bold mb-6">Partner with us!</h2>
-      <p class="max-w-xl mx-auto mb-8 ">{partnerText}</p>
+  <div class="max-w-4xl mx-auto mb-8 md:mb-16">
+    <div class="bg-[#4B4B9D] text-white rounded-lg py-8 md:py-12 px-4 md:px-8 text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold mb-4 md:mb-6">Partner with us!</h2>
+      <p class="max-w-xl mx-auto mb-6 md:mb-8 sm:text-sm">{partnerText}</p>
       <a 
         href="#contact" 
-        class="inline-block bg-[#FF6B4A] hover:bg-[#ff5a36] text-white font-medium px-8 py-3 rounded-md transition-colors"
+        class="inline-block bg-[#FF6B4A] hover:bg-[#ff5a36] text-white font-medium px-6 md:px-8 py-2 md:py-3 rounded-md transition-colors"
       >
         CONTACT US
       </a>
@@ -207,12 +214,12 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
   </div>
 
   <!-- Newsletter Signup -->
-  <div class="max-w-4xl mx-auto border border-gray-200 rounded-lg p-8">
+  <div class="max-w-4xl mx-auto border border-gray-200 rounded-lg p-4 md:p-8">
     <form class="space-y-6">
-      <p class="text-center text-gray-700 mb-6">
+      <p class="text-center text-gray-700 mb-4 md:mb-6 sm:text-sm">
         Sign up for Amplio email news and stories
       </p>
-      <div class="flex gap-4">
+      <div class="flex flex-col md:flex-row gap-4">
         <input
           type="text"
           placeholder="First name"
@@ -233,7 +240,7 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
         />
         <button
           type="submit"
-          class="bg-[#4B4B9D] hover:bg-[#3f3f8b] text-white font-medium px-8 py-2 rounded-md transition-colors"
+          class="bg-[#4B4B9D] hover:bg-[#3f3f8b] text-white font-medium px-6 md:px-8 py-2 md:py-3 rounded-md transition-colors w-full md:w-auto"
         >
           Subscribe
         </button>
@@ -241,7 +248,6 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
     </form>
   </div>
 </section>
-</div>
 </main>
 
 <script>
@@ -320,7 +326,6 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
     transition: opacity 0.5s ease-in-out;
   }
 
-
   /* Custom focus styles */
   input:focus {
     outline: none;
@@ -335,5 +340,11 @@ const partnerText = "We are looking for partners to contribute to the SBC Impact
   /* Custom placeholder styles */
   input::placeholder {
     color: #6B7280;
+  }
+
+  @media (max-width: 768px) {
+    input {
+      height: 40px;
+    }
   }
 </style>
