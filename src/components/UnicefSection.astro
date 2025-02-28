@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import UnicefLogo from "../assets/homepageAssets/UNICEF_Logo.png"
-import UnicefSection from "../assets/homepageAssets/unicef_section.jpg"
+import Unicef from "../assets/homepageAssets/unicef_section.jpg"
 
 interface FormData {
   email: string;
@@ -38,7 +38,7 @@ const handleSubmit = async (data: FormData) => {
     <div class="relative w-full h-[600px]">
       <div class="absolute inset-0 w-full h-full">
         <Image 
-          src={UnicefSection} 
+          src={Unicef} 
           alt="Community members" 
           width={2000} 
           height={600} 
@@ -58,7 +58,13 @@ const handleSubmit = async (data: FormData) => {
           type="button"
           class="w-full py-3 px-6 bg-[#FF5C35] hover:bg-[#FF4415] text-white font-medium rounded-md transition-colors duration-200"
         >
+        <a
+            href="https://amplioghanasbccfund.donorsupport.co/page/generalgiving"
+            class="bg-[#EE8060] text-white px-8 py-3 rounded-md hover:bg-[#ff4a33] transition-colors"
+            target = "_blank"
+        >
           DONATE
+      </a>
         </button>
       </div>
     </div>
