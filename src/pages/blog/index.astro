@@ -40,7 +40,7 @@ async function fetchPosts(category?: string, search?: string): Promise<Post[]> {
       params.append('where[or][3][author.name][contains]', searchString);
     }
     
-    const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
+    const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL ;
     const response = await fetch(`${PAYLOAD_URL}/api/posts?${params.toString()}`);
 
     if (!response.ok) {
@@ -109,7 +109,7 @@ const searchContext = getSearchContext();
 ---
 
 <Layout title="Amplio Blog">
-  <main class="max-w-[2000px] mx-auto lg:mt-20 border border-t px-4 md:px-8 lg:px-56 py-12">
+  <main class="max-w-[2000px] mx-auto lg:mt-5 px-4 md:px-8 lg:px-56 pb-6">
     <h1 class="text-5xl font-arial font-semibold mt-3 text-center mb-12">Amplio Blog</h1>
     
     <!-- Navigation and Search Section -->
