@@ -2,6 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import type { ApiResponse, Post, Category, CategoryResponse } from '../../types/payload';
 import { MoreVertical, Share2 } from 'lucide-react';
+import { 
+  PAYLOAD_URL 
+} from '../../utils/blog';
 
 function highlightText(text: string, searchQuery: string): string {
   if (!searchQuery) return text;
@@ -11,7 +14,7 @@ function highlightText(text: string, searchQuery: string): string {
 
 async function fetchCategories(): Promise<Category[]> {
   try {
-    const response = await fetch('http://localhost:3000/api/categories');
+    const response = await fetch(`${PAYLOAD_URL}/api/categories`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -23,10 +26,14 @@ async function fetchCategories(): Promise<Category[]> {
   }
 }
 
-async function fetchPosts(category?: string, search?: string): Promise<Post[]> {
+async function fetchPosts(category?: string, search?: string, limit: number = 9, page: number = 1): Promise<Post[]> {
   try {
     const params = new URLSearchParams();
     params.append('depth', '2'); 
+    
+    // Add pagination parameters
+    params.append('limit', limit.toString());
+    params.append('page', page.toString());
     
     if (category) {
       params.append('where[category.slug][equals]', category);
@@ -85,22 +92,18 @@ const searchParams = new URL(Astro.request.url).searchParams;
 const searchQuery = searchParams.get('search') || '';
 const currentCategory = searchParams.get('category') || '';
 
-// Fetch initial data
+// Fetch initial data - only 9 posts initially
 const categories = await fetchCategories();
-const posts = await fetchPosts(currentCategory, searchQuery);
-
-// Split categories into main and more
-const mainCategories = categories.slice(0, 7);
-const moreCategories = categories.slice(7);
+const initialPosts = await fetchPosts(currentCategory, searchQuery, 9, 1);
 
 // Create search context message
 const getSearchContext = () => {
   if (searchQuery && currentCategory) {
-    return `${posts.length} results for "${searchQuery}" in "${categories.find(c => c.slug === currentCategory)?.name}"`;
+    return `${initialPosts.length} results for "${searchQuery}" in "${categories.find(c => c.slug === currentCategory)?.name}"`;
   } else if (searchQuery) {
-    return `${posts.length} results for "${searchQuery}"`;
+    return `${initialPosts.length} results for "${searchQuery}"`;
   } else if (currentCategory) {
-    return `${posts.length} posts in "${categories.find(c => c.slug === currentCategory)?.name}"`;
+    return `${initialPosts.length} posts in "${categories.find(c => c.slug === currentCategory)?.name}"`;
   }
   return '';
 };
@@ -109,7 +112,7 @@ const searchContext = getSearchContext();
 ---
 
 <Layout title="Amplio Blog">
-  <main class="max-w-[2000px] mx-auto lg:mt-5 px-4 md:px-8 lg:px-56 pb-6">
+  <main class="max-w-[2000px] mx-auto lg:mt-5 px-4 md:px-8 lg:px-56 pb-6" id="main-content">
     <h1 class="text-5xl font-arial font-semibold mt-3 text-center mb-12">Amplio Blog</h1>
     
     <!-- Navigation and Search Section -->
@@ -123,10 +126,10 @@ const searchContext = getSearchContext();
           All Posts
         </a>
 
-        {mainCategories.map((category) => (
+        {categories.slice(0, 7).map((category) => (
           <a
             href={`/blog?category=${category.slug}${searchQuery ? `&search=${searchQuery}` : ''}`}
-            class={`ont-arial text-[14px] hover:text-[#485DAB] transition-colors ${
+            class={`ont-arial text-[14px] hover:text-[#485DAB] transition-colors hidden md:inline-block ${
               currentCategory === category.slug ? 'text-[#485DAB] font-medium' : ''
             }`}
           >
@@ -134,28 +137,56 @@ const searchContext = getSearchContext();
           </a>
         ))}
         
-        {moreCategories.length > 0 && (
-          <div class="relative group">
-            <button class="flex items-center gap-1  hover:text-[#485DAB] transition-colors">
-              more
-              <svg 
-                class="w-4 h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </button>
-            
-            <div class="hidden group-hover:block absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
-              {moreCategories.map((category) => (
+        <div x-data="{ open: false }" class="relative">
+          <button 
+            @click="open = !open" 
+            @click.outside="open = false"
+            class="flex items-center gap-1 hover:text-[#485DAB] transition-colors"
+          >
+            more
+            <svg 
+              class="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          
+          <div 
+            x-show="open" 
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 transform scale-95"
+            x-transition:enter-end="opacity-100 transform scale-100"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-95"
+            class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10"
+          >
+            {/* For mobile: Show all categories except All Posts in more dropdown */}
+            <div class="md:hidden">
+              {categories.map((category) => (
                 <a
                   href={`/blog?category=${category.slug}${searchQuery ? `&search=${searchQuery}` : ''}`}
-                  class={`block px-4 py-2  hover:bg-gray-50 hover:text-[#485DAB] transition-colors ${
+                  class={`block px-4 py-2 hover:bg-gray-50 hover:text-[#485DAB] transition-colors ${
+                    currentCategory === category.slug ? 'text-[#485DAB] bg-gray-50' : ''
+                  }`}
+                >
+                  {category.name}
+                </a>
+              ))}
+            </div>
+            
+            {/* For desktop: Show only remaining categories */}
+            <div class="hidden md:block">
+              {categories.slice(7).map((category) => (
+                <a
+                  href={`/blog?category=${category.slug}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                  class={`block px-4 py-2 hover:bg-gray-50 hover:text-[#485DAB] transition-colors ${
                     currentCategory === category.slug ? 'text-[#485DAB] bg-gray-50' : ''
                   }`}
                 >
@@ -164,7 +195,7 @@ const searchContext = getSearchContext();
               ))}
             </div>
           </div>
-        )}
+        </div>
       </div>
       
       <!-- Search  -->
@@ -174,7 +205,7 @@ const searchContext = getSearchContext();
           <!-- Search Icon Button -->
           <button
             @click="isSearching = !isSearching"
-            class="p-2  hover:text-[#485DAB] transition-colors"
+            class="p-2 hover:text-[#485DAB] transition-colors"
             x-show="!isSearching"
           >
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -233,15 +264,12 @@ const searchContext = getSearchContext();
             </div>
           </form>
         </div>
-
-      
       </div>
     </div>
-    </div>
-
+    
     {(() => {
       // Case 1: No posts found for search or category
-      if ((searchQuery || currentCategory) && posts.length === 0) {
+      if ((searchQuery || currentCategory) && initialPosts.length === 0) {
         return (
           <div class="text-center py-16">
             <div class="mb-4">
@@ -282,56 +310,71 @@ const searchContext = getSearchContext();
               </div>
             )}
             
-            <div class="space-y-8">
-              {posts.map((post) => (
-                <article class="flex flex-col md:flex-row gap-8 p-6 bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-shadow">
+            <div class="space-y-8" id="posts-container">
+              {initialPosts.map((post, index) => (
+                <article class="flex flex-col md:flex-row gap-8 p-6 bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-shadow post-item">
                   <div class="md:w-1/3">
                     <a href={`/blog/${post.id}`} class="block">
                       <img 
                         src={post.featuredImage.url} 
                         alt={post.featuredImage.alt}
-                        class="w-full h-52 object-fill "
+                        class="w-full h-52 object-fill"
                       />
                     </a>
                   </div>
                   
                   <div class="md:w-2/3 space-y-4">
-                  <div class = " flex justify-between items-center">
-                    <div class="flex items-center gap-4">
-                      <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-100">
-                        {post.author.profileImage && (
-                          <img 
-                            src={post.author.profileImage.url} 
-                            alt={`${post.author.name}'s profile`}
-                            class="w-full h-full object-cover"
-                          />
-                        )}
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-100">
+                          {post.author.profileImage && (
+                            <img 
+                              src={post.author.profileImage.url} 
+                              alt={`${post.author.name}'s profile`}
+                              class="w-full h-full object-cover"
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <p class="font-medium text-gray-900">{post.author.name}</p>
+                          <div class="flex items-center text-sm text-gray-500">
+                            <time datetime={post.publishedDate}>
+                              {formatDate(post.publishedDate)}
+                            </time>
+                            <span class="mx-2">•</span>
+                            <span>{post.estimatedReadTime} min read</span>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <p class="font-medium text-gray-900">{post.author.name}</p>
-                        <div class="flex items-center text-sm text-gray-500">
-                          <time datetime={post.publishedDate}>
-                            {formatDate(post.publishedDate)}
-                          </time>
-                          <span class="mx-2">•</span>
-                          <span>{post.estimatedReadTime} min read</span>
+
+                      <div x-data={`{ open: false, postId: '${post.id}' }`} class="relative">
+                        <button 
+                          @click="open = !open" 
+                          @click.outside="open = false"
+                          class="p-2 hover:bg-gray-100 rounded-full"
+                        >
+                          <MoreVertical className="w-5 h-5 text-gray-500" />
+                        </button>
+                        <div 
+                          x-show="open" 
+                          x-transition:enter="transition ease-out duration-200"
+                          x-transition:enter-start="opacity-0 transform scale-95"
+                          x-transition:enter-end="opacity-100 transform scale-100"
+                          x-transition:leave="transition ease-in duration-100"
+                          x-transition:leave-start="opacity-100 transform scale-100"
+                          x-transition:leave-end="opacity-0 transform scale-95"
+                          class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md z-10"
+                        >
+                          <button 
+                            @click="$dispatch('open-share-modal', { postId: postId, postTitle: 'Check out this post from Amplio Blog' })"
+                            class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center"
+                          >
+                            <Share2 className="w-4 h-4 mr-2" />
+                            Share
+                          </button>
                         </div>
                       </div>
                     </div>
-
-                    <div class="relative group">
-                    <button class="p-2 hover:bg-gray-100 rounded-full">
-                      <MoreVertical className="w-5 h-5 text-gray-500" />
-                    </button>
-                    <div class="absolute left-0 mt-1 w-32 bg-white shadow-lg rounded-md hidden group-hover:block z-10">
-                      <button class="w-full px-4 py-1 text-right text-gray-700 hover:bg-gray-100 flex items-center">
-                        <Share2 className="w-4 h-4 mr-2" />
-                        Share
-                      </button>
-                    </div>
-                  </div>
-
-                  </div>
                     
                     <div>
                       <a 
@@ -339,7 +382,7 @@ const searchContext = getSearchContext();
                         class="block group"
                       >
                         <h2 
-                          class="text-xl text-gray-900 group-hover:[#485DAB] transition-colors mb-2"
+                          class="text-xl text-gray-900 group-hover:text-[#485DAB] transition-colors mb-2"
                           set:html={highlightText(post.title, searchQuery)}
                         />
                         <p 
@@ -364,102 +407,602 @@ const searchContext = getSearchContext();
                 </article>
               ))}
             </div>
+            
+            <!-- Loading indicator -->
+            <div id="loading-indicator" class="hidden text-center py-8">
+              <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#485DAB]"></div>
+              <p class="mt-2 text-gray-600">Loading more posts...</p>
+            </div>
           </>
         );
       }
 
-     // Case 3: Default view (all posts)
-return (
-  <div class="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {posts.map((post) => (
-      <article class="bg-white border border-gray-200 shadow hover:shadow-md transition-shadow duration-300">
-        <a href={`/blog/${post.id}`} class="block">
-          <img 
-            src={post.featuredImage.url} 
-            alt={post.featuredImage.alt}
-            class="w-full h-72 object-fill"
-          />
-          
-          <div class="p-6 mt-3 mb-3">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-full overflow-hidden">
-                  {post.author.profileImage && (
-                    <img 
-                      src={post.author.profileImage.url} 
-                      alt={`${post.author.name}'s profile`}
-                      class="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">{post.author.name}</div>
-                  <div class="flex items-center text-xs text-gray-500">
-                    <time datetime={post.publishedDate}>
-                      {formatDate(post.publishedDate)}
-                    </time>
-                    <span class="mx-1">•</span>
-                    <span>{post.estimatedReadTime} min read</span>
+      // Case 3: Default view (all posts)
+      return (
+        <>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="posts-grid">
+            {initialPosts.map((post) => (
+              <article class="bg-white border border-gray-200 shadow hover:shadow-md transition-shadow duration-300 post-item">
+                <a href={`/blog/${post.id}`} class="block">
+                  <img 
+                    src={post.featuredImage.url} 
+                    alt={post.featuredImage.alt}
+                    class="w-full h-72 object-fill"
+                  />
+                </a>
+                <div class="p-6 mt-3 mb-3">
+                  <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                      <div class="w-8 h-8 rounded-full overflow-hidden">
+                        {post.author.profileImage && (
+                          <img 
+                            src={post.author.profileImage.url} 
+                            alt={`${post.author.name}'s profile`}
+                            class="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <div class="text-sm font-medium text-gray-900">{post.author.name}</div>
+                        <div class="flex items-center text-xs text-gray-500">
+                          <time datetime={post.publishedDate}>
+                            {formatDate(post.publishedDate)}
+                          </time>
+                          <span class="mx-1">•</span>
+                          <span>{post.estimatedReadTime} min read</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div x-data={`{ open: false, postId: '${post.id}' }`} class="relative">
+                      <button 
+                        @click="open = !open" 
+                        @click.outside="open = false"
+                        class="p-1 hover:bg-gray-100 rounded-full"
+                      >
+                        <MoreVertical className="w-5 h-5 text-gray-500" />
+                      </button>
+                      <div 
+                        x-show="open" 
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 transform scale-95"
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        x-transition:leave="transition ease-in duration-100"
+                        x-transition:leave-start="opacity-100 transform scale-100"
+                        x-transition:leave-end="opacity-0 transform scale-95"
+                        class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md z-10"
+                      >
+                        <button 
+                          @click="$dispatch('open-share-modal', { postId: postId, postTitle: 'Check out this post from Amplio Blog' })"
+                          class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center"
+                        >
+                          <Share2 className="w-4 h-4 mr-2" />
+                          Share
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="relative group">
-                <button class="p-1 hover:bg-gray-100">
-                  <MoreVertical className="w-5 h-5 text-gray-500" />
-                </button>
-                <div class="absolute right-0 mt-1 w-32 bg-white shadow-lg hidden group-hover:block z-10">
-                  <button class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center">
-                    <Share2 className="w-4 h-4 mr-2" />
-                    Share
-                  </button>
+                  <h3 class="font-semibold pl-3 text-gray-900 hover:text-[#485DAB] transition-colors">
+                   <a href={`/blog/${post.id}`} class="block"> {post.title}</a>
+                  </h3>
                 </div>
-              </div>
-            </div>
-
-            <h3 class="font-semibold pl-3 text-gray-900 hover:text-[#485DAB] transition-colors">
-              {post.title}
-            </h3>
+              </article>
+            ))}
           </div>
-        </a>
-      </article>
-    ))}
-  </div>
-);
-  })()}
+          
+          <!-- Loading indicator -->
+          <div id="loading-indicator" class="hidden text-center py-8">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#485DAB]"></div>
+            <p class="mt-2 text-gray-600">Loading more posts...</p>
+          </div>
+        </>
+      );
+    })()}
   </main>
+
+  <!-- Share Modal Component -->
+  <div 
+  x-data="shareModal" 
+  x-show="isOpen" 
+  x-cloak
+  @open-share-modal.window="openModal($event.detail)"
+  x-transition:enter="transition ease-out duration-300"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="transition ease-in duration-200"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+    class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black bg-opacity-50"
+    @keydown.escape.window="isOpen = false"
+  >
+    <div 
+      x-show="isOpen"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0 transform scale-95"
+      x-transition:enter-end="opacity-100 transform scale-100"
+      x-transition:leave="transition ease-in duration-200"
+      x-transition:leave-start="opacity-100 transform scale-100"
+      x-transition:leave-end="opacity-0 transform scale-95"
+      @click.outside="isOpen = false"
+      class="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+    >
+      <div class="text-center mb-6">
+        <h3 class="text-xl font-semibold text-gray-900">Share Post</h3>
+      </div>
+      
+      <div class="flex justify-center space-x-4">
+        <!-- Facebook Share Button -->
+        <button 
+          @click="shareToFacebook()"
+          class="w-12 h-12 rounded-full bg-[#3b5998] text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
+          aria-label="Share on Facebook"
+        >
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.77,7.46H14.54v-1.9c0-1.03,0.68-1.27,1.16-1.27c0.48,0,2.94,0,2.94,0V0.13H14.53c-3.28,0-4.03,2.47-4.03,4.05v3.28H8.31v4.14h2.19c0,5.32,0,11.77,0,11.77h4.04c0,0,0-6.5,0-11.77h2.72L18.77,7.46z"/>
+          </svg>
+        </button>
+        
+        <!-- Twitter/X Share Button -->
+        <button 
+          @click="shareToTwitter()"
+          class="w-12 h-12 rounded-full bg-[#1DA1F2] text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
+          aria-label="Share on X/Twitter"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.1 10.1 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"/>
+          </svg>
+        </button>
+        
+        <!-- LinkedIn Share Button -->
+        <button 
+          @click="shareToLinkedIn()"
+          class="w-12 h-12 rounded-full bg-[#0e76a8] text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
+          aria-label="Share on LinkedIn"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </button>
+        
+        <!-- Copy Link Button -->
+        <button 
+          @click="copyLink()"
+          class="w-12 h-12 rounded-full bg-gray-700 text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
+          aria-label="Copy link"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Copy feedback message -->
+      <div x-show="copySuccess" class="mt-4 text-center text-sm text-green-600">Link copied to clipboard!</div>
+    </div>
+  </div>
 </Layout>
 
 <script>
   document.addEventListener('alpine:init', () => {
-    window.Alpine.data('search', () => ({
-      isSearching: false,
+  // Search functionality
+  window.Alpine.data('search', () => ({
+    isSearching: false,
+    
+    handleSearch(event) {
+      event.preventDefault();
+      const form = event.target;
+      const searchInput = form.querySelector('input[name="search"]');
+      const searchValue = searchInput.value.trim();
       
-      handleSearch(event: Event) {
-        event.preventDefault();
-        const form = event.target as HTMLFormElement;
-        const searchInput = form.querySelector('input[name="search"]') as HTMLInputElement;
-        const searchValue = searchInput.value.trim();
-        
-        const currentParams = new URLSearchParams(window.location.search);
-        const category = currentParams.get('category');
-        
-        const newParams = new URLSearchParams();
-        if (category) {
-          newParams.set('category', category);
-        }
-        if (searchValue) {
-          newParams.set('search', searchValue);
-        }
-        
-        window.location.href = `${window.location.pathname}${newParams.toString() ? `?${newParams.toString()}` : ''}`;
-      },
-
-      clearSearch() {
-        const currentParams = new URLSearchParams(window.location.search);
-        currentParams.delete('search');
-        window.location.href = `${window.location.pathname}${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
+      // Get current URL parameters
+      const url = new URL(window.location.href);
+      
+      if (searchValue) {
+        url.searchParams.set('search', searchValue);
+      } else {
+        url.searchParams.delete('search');
       }
-    }));
+      
+      window.location.href = url.toString();
+    },
+    
+    clearSearch() {
+      // Get current URL parameters
+      const url = new URL(window.location.href);
+      url.searchParams.delete('search');
+      window.location.href = url.toString();
+    }
+  }));
+  
+  // Share modal functionality
+  window.Alpine.data('shareModal', () => ({
+    isOpen: false,
+    postId: null,
+    postTitle: '',
+    copySuccess: false,
+    
+    openModal(detail) {
+      this.isOpen = true;
+      this.postId = detail.postId;
+      this.postTitle = detail.postTitle;
+      this.copySuccess = false;
+    },
+    
+    shareToFacebook() {
+      const url = `${window.location.origin}/blog/${this.postId}`;
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    },
+    
+    shareToTwitter() {
+      const url = `${window.location.origin}/blog/${this.postId}`;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(this.postTitle)}&url=${encodeURIComponent(url)}`, '_blank');
+    },
+    
+    shareToLinkedIn() {
+      const url = `${window.location.origin}/blog/${this.postId}`;
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+    },
+    
+    copyLink() {
+      const url = `${window.location.origin}/blog/${this.postId}`;
+      navigator.clipboard.writeText(url).then(() => {
+        this.copySuccess = true;
+        setTimeout(() => {
+          this.copySuccess = false;
+        }, 2000);
+      });
+    }
+  }));
+});
+
+// Infinite scroll implementation
+document.addEventListener('DOMContentLoaded', () => {
+  let currentPage = 1;
+  let isLoading = false;
+  let hasMorePosts = true;
+  
+  // Get current URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = urlParams.get('category') || '';
+  const search = urlParams.get('search') || '';
+  
+  // Determine if we're in grid or list view
+  const isGridView = document.getElementById('posts-grid') !== null;
+  
+  // Get the post container element
+  const postsContainer = isGridView 
+    ? document.getElementById('posts-grid')
+    : document.getElementById('posts-container');
+    
+  // Get the loading indicator
+  const loadingIndicator = document.getElementById('loading-indicator');
+  
+  // Function to determine if user has scrolled to bottom
+  const isNearBottom = () => {
+    return window.innerHeight + window.scrollY >= document.body.offsetHeight - 500;
+  };
+  
+  // Function to fetch more posts
+  const fetchMorePosts = async () => {
+    if (isLoading || !hasMorePosts) return;
+    
+    isLoading = true;
+    currentPage++;
+    
+    // Show loading indicator
+    loadingIndicator?.classList.remove('hidden');
+    
+    try {
+      // Calculate posts per page based on device type
+      const isMobile = window.innerWidth < 768;
+      const postsPerPage = isMobile ? 3 : 9;
+      
+      // Build the URL for the fetch request
+      const params = new URLSearchParams();
+      params.append('depth', '2');
+      params.append('limit', postsPerPage.toString());
+      params.append('page', currentPage.toString());
+      
+      if (category) {
+        params.append('where[category.slug][equals]', category);
+      }
+      
+      if (search) {
+        const searchString = search.trim();
+        params.append('where[or][0][title][contains]', searchString);
+        params.append('where[or][1][content][contains]', searchString);
+        params.append('where[or][2][category.name][contains]', searchString);
+        params.append('where[or][3][author.name][contains]', searchString);
+      }
+      
+      // Get the PAYLOAD_URL from the meta tag
+      const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL;
+      const response = await fetch(`${PAYLOAD_URL}/api/posts?${params.toString()}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // Process the posts
+      const newPosts = data.docs
+        .filter(post => post.status === 'published')
+        .map(post => ({
+          ...post,
+          featuredImage: {
+            ...post.featuredImage,
+            url: `${PAYLOAD_URL}${post.featuredImage.url}`,
+          },
+          author: {
+            ...post.author,
+            profileImage: post.author.profileImage ? {
+              ...post.author.profileImage,
+              url: `${PAYLOAD_URL}${post.author.profileImage.url}`,
+            } : undefined,
+          },
+        }))
+        .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime());
+      
+      // If no more posts, set hasMorePosts to false
+      if (newPosts.length === 0) {
+        hasMorePosts = false;
+        loadingIndicator.classList.add('hidden');
+        return;
+      }
+      
+      // Format date function
+      const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+      };
+      
+      // Highlight text function
+      const highlightText = (text, searchQuery) => {
+        if (!searchQuery) return text;
+        const regex = new RegExp(`(${searchQuery})`, 'gi');
+        return text.replace(regex, '<mark class="bg-yellow-200">$1</mark>');
+      };
+      
+      // Create and append new post elements
+      newPosts.forEach(post => {
+        let postElement;
+        
+        if (isGridView) {
+          // Grid view (desktop default view)
+          postElement = document.createElement('article');
+          postElement.className = 'bg-white border border-gray-200 shadow hover:shadow-md transition-shadow duration-300 post-item';
+          
+          postElement.innerHTML = `
+            <a href="/blog/${post.id}" class="block">
+              <img 
+                src="${post.featuredImage.url}" 
+                alt="${post.featuredImage.alt}"
+                class="w-full h-72 object-fill"
+              />
+            </a>
+            <div class="p-6 mt-3 mb-3">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-full overflow-hidden">
+                    ${post.author.profileImage ? `
+                      <img 
+                        src="${post.author.profileImage.url}" 
+                        alt="${post.author.name}'s profile"
+                        class="w-full h-full object-cover"
+                      />
+                    ` : ''}
+                  </div>
+                  <div>
+                    <div class="text-sm font-medium text-gray-900">${post.author.name}</div>
+                    <div class="flex items-center text-xs text-gray-500">
+                      <time datetime="${post.publishedDate}">
+                        ${formatDate(post.publishedDate)}
+                      </time>
+                      <span class="mx-1">•</span>
+                      <span>${post.estimatedReadTime} min read</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div x-data="{ open: false, postId: '${post.id}' }" class="relative">
+                  <button 
+                    @click="open = !open" 
+                    @click.outside="open = false"
+                    class="p-1 hover:bg-gray-100 rounded-full"
+                  >
+                    <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="19" r="1"></circle>
+                      <circle cx="12" cy="12" r="1"></circle>
+                      <circle cx="12" cy="5" r="1"></circle>
+                    </svg>
+                  </button>
+                  <div 
+                    x-show="open" 
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 transform scale-95"
+                    x-transition:enter-end="opacity-100 transform scale-100"
+                    x-transition:leave="transition ease-in duration-100"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md z-10"
+                  >
+                    <button 
+                      @click="$dispatch('open-share-modal', { postId: postId, postTitle: 'Check out this post from Amplio Blog' })"
+                      class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center"
+                    >
+                      <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                        <polyline points="16 6 12 2 8 6"></polyline>
+                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                      </svg>
+                      Share
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="font-semibold pl-3 text-gray-900 hover:text-[#485DAB] transition-colors">
+               <a href="/blog/${post.id}" class="block"> ${post.title}</a>
+              </h3>
+            </div>
+          `;
+        } else {
+          // List view (search/category results)
+          postElement = document.createElement('article');
+          postElement.className = 'flex flex-col md:flex-row gap-8 p-6 bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-shadow post-item';
+          
+          const excerpt = post.content.root.children.find(child => child.children?.[0]?.text)?.children[0]?.text || '';
+          
+          postElement.innerHTML = `
+            <div class="md:w-1/3">
+              <a href="/blog/${post.id}" class="block">
+                <img 
+                  src="${post.featuredImage.url}" 
+                  alt="${post.featuredImage.alt}"
+                  class="w-full h-52 object-fill"
+                />
+              </a>
+            </div>
+            
+            <div class="md:w-2/3 space-y-4">
+              <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-100">
+                    ${post.author.profileImage ? `
+                      <img 
+                        src="${post.author.profileImage.url}" 
+                        alt="${post.author.name}'s profile"
+                        class="w-full h-full object-cover"
+                      />
+                    ` : ''}
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">${post.author.name}</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                      <time datetime="${post.publishedDate}">
+                        ${formatDate(post.publishedDate)}
+                      </time>
+                      <span class="mx-2">•</span>
+                      <span>${post.estimatedReadTime} min read</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div x-data="{ open: false, postId: '${post.id}' }" class="relative">
+                  <button 
+                    @click="open = !open" 
+                    @click.outside="open = false"
+                    class="p-2 hover:bg-gray-100 rounded-full"
+                  >
+                    <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="19" r="1"></circle>
+                      <circle cx="12" cy="12" r="1"></circle>
+                      <circle cx="12" cy="5" r="1"></circle>
+                    </svg>
+                  </button>
+                  <div 
+                    x-show="open" 
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 transform scale-95"
+                    x-transition:enter-end="opacity-100 transform scale-100"
+                    x-transition:leave="transition ease-in duration-100"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md z-10"
+                  >
+                    <button 
+                      @click="$dispatch('open-share-modal', { postId: postId, postTitle: 'Check out this post from Amplio Blog' })"
+                      class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center"
+                    >
+                      <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                        <polyline points="16 6 12 2 8 6"></polyline>
+                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                      </svg>
+                      Share
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <a 
+                  href="/blog/${post.id}"
+                  class="block group"
+                >
+                  <h2 
+                    class="text-xl text-gray-900 group-hover:text-[#485DAB] transition-colors mb-2"
+                  >${highlightText(post.title, search)}
+                  </h2>
+                  <p 
+                    class="text-gray-600 line-clamp-2"
+                  >${highlightText(excerpt, search)}
+                  </p>
+                </a>
+              </div>
+              
+              <div class="flex items-center gap-3">
+                <a
+                  href="/blog?category=${post.category.slug}"
+                  class="text-sm px-3 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                >
+                  ${post.category.name}
+                </a>
+              </div>
+            </div>
+          `;
+        }
+        
+        postsContainer.appendChild(postElement);
+      });
+      
+    } catch (error) {
+      console.error('Error fetching more posts:', error);
+    } finally {
+      isLoading = false;
+      loadingIndicator.classList.add('hidden');
+    }
+  };
+  
+  // Add scroll event listener for infinite scrolling
+  window.addEventListener('scroll', () => {
+    if (isNearBottom()) {
+      fetchMorePosts();
+    }
   });
+  
+  // Initial check if the page is small and needs more posts right away
+  if (isNearBottom()) {
+    fetchMorePosts();
+  }
+  
+  // Handle window resize events to adjust mobile/desktop view
+  window.addEventListener('resize', () => {
+    if (isNearBottom() && !isLoading && hasMorePosts) {
+      fetchMorePosts();
+    }
+  });
+});
 </script>
+
+<style>
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+[x-cloak] { display: none !important; }
+mark.bg-yellow-200 {
+  padding: 0.1em 0;
+  background-color: #fef08a;
+  border-radius: 0.2em;
+}
+</style>

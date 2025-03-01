@@ -5,8 +5,7 @@ import type {
   ApiResponse,
 } from "../types/payload";
 
-export const PAYLOAD_URL =
-  import.meta.env.PUBLIC_PAYLOAD_URL || "http://localhost:3000";
+export const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL;
 
 export function transformPost(post: Post): Post {
   return {
