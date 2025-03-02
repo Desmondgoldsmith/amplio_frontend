@@ -356,7 +356,7 @@ const searchContext = getSearchContext();
 
       <!-- Dynamic Content -->
       <div class="prose max-w-none" x-data="imageViewer">
-        <!-- Add click handler to all images in the content -->
+        <!-- click handler to all images in the content -->
         <Fragment set:html={contentHtml} />
 
         <!-- Image Viewer Modal -->
@@ -638,13 +638,13 @@ const searchContext = getSearchContext();
       }
     }));
     
-    // Image viewer functionality
+    // Image viewer 
     window.Alpine.data('imageViewer', () => ({
       viewerOpen: false,
       currentImage: '',
       
       init() {
-        // Add click handler to all images in the content
+        // Add click handler to images
         setTimeout(() => {
           const contentImages = document.querySelectorAll('.prose img');
           contentImages.forEach(img => {
