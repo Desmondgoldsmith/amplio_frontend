@@ -108,11 +108,11 @@ const searchContext = getSearchContext();
 
 <Layout title={post.title}>
   <!-- Navigation Bar -->
-  <nav class="pt-[25px]">
-    <div class="max-w-[2000px] mx-auto lg:mt-20 md:px-8 lg:px-56 py-4">
+  <nav>
+    <div class="max-w-[2000px] mx-auto lg:mt-5 md:px-5 lg:px-56 pb-2">
       <div class="flex items-center justify-between text-[17px] mt-8 md:mb-[-50px]">
-        <!-- Categories -->
-        <div class="flex items-center gap-6">
+        <!-- Categories - Desktop View -->
+        <div class="hidden md:flex items-center gap-6">
           <a 
             href="/blog" 
             class={` hover:text-[#485DAB] transition-colors ${!currentCategory ? 'text-[#485DAB] font-medium' : ''}`}
@@ -132,8 +132,11 @@ const searchContext = getSearchContext();
           ))}
 
           {moreCategories.length > 0 && (
-            <div class="relative group">
-              <button class="flex items-center gap-1  hover:text-[#485DAB] transition-colors">
+            <div class="relative" x-data="{ open: false }">
+              <button 
+                @click="open = !open" 
+                class="flex items-center gap-1 hover:text-[#485DAB] transition-colors"
+              >
                 more
                 <svg 
                   class="w-4 h-4"
@@ -146,7 +149,11 @@ const searchContext = getSearchContext();
                 </svg>
               </button>
               
-              <div class="hidden group-hover:block absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
+              <div 
+                x-show="open" 
+                @click.outside="open = false"
+                class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10"
+              >
                 {moreCategories.map((category) => (
                   <a
                     href={`/blog?category=${category.slug}${searchQuery ? `&search=${searchQuery}` : ''}`}
@@ -162,6 +169,51 @@ const searchContext = getSearchContext();
           )}
         </div>
 
+        <!-- Categories - Mobile View -->
+        <div class="flex md:hidden items-center gap-4" x-data="{ mobileMenuOpen: false }">
+          <a 
+            href="/blog" 
+            class={` hover:text-[#485DAB] transition-colors ${!currentCategory ? 'text-[#485DAB] font-medium' : ''}`}
+          >
+            All Posts
+          </a>
+          
+          <div class="relative">
+            <button 
+              @click="mobileMenuOpen = !mobileMenuOpen" 
+              class="flex items-center gap-1 hover:text-[#485DAB] transition-colors"
+            >
+              Categories
+              <svg 
+                class="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            
+            <div 
+              x-show="mobileMenuOpen" 
+              @click.outside="mobileMenuOpen = false"
+              class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10"
+            >
+              {[...mainCategories, ...moreCategories].map((category) => (
+                <a
+                  href={`/blog?category=${category.slug}${searchQuery ? `&search=${searchQuery}` : ''}`}
+                  class={`block px-4 py-2 hover:bg-gray-50 hover:text-[#485DAB] transition-colors ${
+                    currentCategory === category.slug ? 'text-[#485DAB] bg-gray-50' : ''
+                  }`}
+                >
+                  {category.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <!-- Search Form -->
         <div class="flex items-center gap-4">
           <!-- Search Feature -->
@@ -169,7 +221,7 @@ const searchContext = getSearchContext();
             <!-- Search Icon Button -->
             <button
               @click="isSearching = !isSearching"
-              class="p-2  hover:text-[#485DAB] transition-colors"
+              class="p-2 hover:text-[#485DAB] transition-colors"
               x-show="!isSearching"
             >
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -204,7 +256,7 @@ const searchContext = getSearchContext();
                 <button
                   type="button"
                   @click="isSearching = false"
-                  class="absolute right-2 p-1.5  hover:text-[#485DAB] transition-colors"
+                  class="absolute right-2 p-1.5 hover:text-[#485DAB] transition-colors"
                 >
                   <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18" />
@@ -238,6 +290,7 @@ const searchContext = getSearchContext();
           </a> -->
         </div>
       </div>
+    </div>
   </nav>
 
   <!-- Main Content -->
@@ -253,24 +306,41 @@ const searchContext = getSearchContext();
               class="w-12 h-12 rounded-full object-cover"
             />
           )}
-          <div class="flex items-center gap-2 text-sm text-gray-500">
+          <div class="flex flex-col md:flex-row md:items-center gap-1 md:gap-2 text-sm text-gray-500">
             <span class="font-medium text-gray-900">{post.author?.name}</span>
-            <span>•</span>
+            <span class="hidden md:inline-block">•</span>
             <time datetime={post.publishedDate}>
               {formatDate(post.publishedDate)}
             </time>
-            <span>•</span>
+            <span class="hidden md:inline-block">•</span>
             <span>{post.estimatedReadTime} min read</span>
           </div>
         </div>
         
-        <div class="relative group">
-          <button class="p-2 hover:bg-gray-100 rounded-full">
-            <MoreVertical className="w-5 h-5 text-gray-500" />
+        <div class="relative" x-data="{ open: false }">
+          <button @click="open = !open" class="p-2 hover:bg-gray-100 rounded-full">
+            <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="5" r="1" />
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="12" cy="19" r="1" />
+            </svg>
           </button>
-          <div class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md hidden group-hover:block z-10">
-            <button class="w-full px-4 py-1 text-right text-gray-700 hover:bg-gray-100 flex items-center">
-              <Share2 className="w-4 h-4 mr-2" />
+          <div 
+            x-show="open" 
+            @click.outside="open = false"
+            class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md z-10"
+          >
+            <button 
+              @click="$dispatch('open-share-modal', { postId: '${post.id}', postTitle: '${post.title}' }); open = false"
+              class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center"
+            >
+              <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
               Share
             </button>
           </div>
@@ -278,11 +348,72 @@ const searchContext = getSearchContext();
       </div>
 
       <!-- Title -->
-      <h1 class="text-5xl font-semibold text-gray-900 mb-8">{post.title}</h1>
+      <h1 class="text-3xl md:text-5xl font-semibold text-gray-900 mb-8">{post.title}</h1>
 
       <!-- Dynamic Content -->
       <div class="prose max-w-none">
         <Fragment set:html={contentHtml} />
+      </div>
+      
+      <!-- Post Footer -->
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+          <!-- Social Media Links -->
+          <div class="flex items-center gap-4 mb-4 sm:mb-0">
+            <button 
+              @click="$dispatch('open-share-modal', { postId: '${post.id}', postTitle: '${post.title}', platform: 'facebook' })"
+              class="text-gray-600 hover:text-[#3b5998]"
+              aria-label="Share on Facebook"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.77,7.46H14.54v-1.9c0-1.03,0.68-1.27,1.16-1.27c0.48,0,2.94,0,2.94,0V0.13H14.53c-3.28,0-4.03,2.47-4.03,4.05v3.28H8.31v4.14h2.19c0,5.32,0,11.77,0,11.77h4.04c0,0,0-6.5,0-11.77h2.72L18.77,7.46z"/>
+              </svg>
+            </button>
+            
+            <button 
+              @click="$dispatch('open-share-modal', { postId: '${post.id}', postTitle: '${post.title}', platform: 'twitter' })"
+              class="text-gray-600 hover:text-[#1DA1F2]"
+              aria-label="Share on Twitter"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.1 10.1 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"/>
+              </svg>
+            </button>
+            
+            <button 
+              @click="$dispatch('open-share-modal', { postId: '${post.id}', postTitle: '${post.title}', platform: 'linkedin' })"
+              class="text-gray-600 hover:text-[#0e76a8]"
+              aria-label="Share on LinkedIn"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </button>
+            
+            <button 
+              @click="$dispatch('open-share-modal', { postId: '${post.id}', postTitle: '${post.title}', platform: 'copy' })"
+              class="text-gray-600 hover:text-gray-900"
+              aria-label="Copy link"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Post Categories -->
+          <div class="flex flex-wrap items-center gap-2">
+            {post.categories?.map((category) => (
+              <a 
+                href={`/blog?category=${category.slug}`}
+                class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full hover:bg-[#485DAB] hover:text-white transition-colors"
+              >
+                {category.name}
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
     </article>
 
@@ -296,7 +427,7 @@ const searchContext = getSearchContext();
         )}
         
         <h2 class="text-2xl font-semibold mb-8">Related Posts</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {relatedPosts.map((relatedPost) => (
             <a 
               href={`/blog/${relatedPost.id}`}
@@ -328,7 +459,90 @@ const searchContext = getSearchContext();
         </div>
       </div>
     )}
+    
   </main>
+  
+  <!-- Share Modal -->
+  <div 
+    x-data="shareModal" 
+    x-show="isOpen" 
+    x-cloak
+    @open-share-modal.window="openModal($event.detail)"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black bg-opacity-50"
+    @keydown.escape.window="isOpen = false"
+  >
+    <div 
+      x-show="isOpen"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0 transform scale-95"
+      x-transition:enter-end="opacity-100 transform scale-100"
+      x-transition:leave="transition ease-in duration-200"
+      x-transition:leave-start="opacity-100 transform scale-100"
+      x-transition:leave-end="opacity-0 transform scale-95"
+      @click.outside="isOpen = false"
+      class="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+    >
+      <div class="text-center mb-6">
+        <h3 class="text-xl font-semibold text-gray-900">Share Post</h3>
+      </div>
+      
+      <div class="flex justify-center space-x-4">
+        <!-- Facebook Share Button -->
+        <button 
+          @click="shareToFacebook()"
+          class="w-12 h-12 rounded-full bg-[#3b5998] text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
+          aria-label="Share on Facebook"
+        >
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.77,7.46H14.54v-1.9c0-1.03,0.68-1.27,1.16-1.27c0.48,0,2.94,0,2.94,0V0.13H14.53c-3.28,0-4.03,2.47-4.03,4.05v3.28H8.31v4.14h2.19c0,5.32,0,11.77,0,11.77h4.04c0,0,0-6.5,0-11.77h2.72L18.77,7.46z"/>
+          </svg>
+        </button>
+        
+        <!-- Twitter/X Share Button -->
+        <button 
+          @click="shareToTwitter()"
+          class="w-12 h-12 rounded-full bg-[#1DA1F2] text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
+          aria-label="Share on X/Twitter"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.1 10.1 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"/>
+          </svg>
+        </button>
+        
+        <!-- LinkedIn Share Button -->
+        <button 
+          @click="shareToLinkedIn()"
+          class="w-12 h-12 rounded-full bg-[#0e76a8] text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
+          aria-label="Share on LinkedIn"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </button>
+        
+        <!-- Copy Link Button -->
+        <button 
+          @click="copyLink()"
+          class="w-12 h-12 rounded-full bg-gray-700 text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
+          aria-label="Copy link"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Copy feedback message -->
+      <div x-show="copySuccess" class="mt-4 text-center text-sm text-green-600">Link copied to clipboard!</div>
+    </div>
+  </div>
 </Layout>
 
 <script>
@@ -369,5 +583,62 @@ const searchContext = getSearchContext();
   window.location.href = `/blog${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
 }
     }));
-  });
+ 
+ 
+  // Share modal functionality
+  window.Alpine.data('shareModal', () => ({
+    isOpen: false,
+    postId: null,
+    postTitle: '',
+    copySuccess: false,
+    
+    openModal(detail) {
+      this.isOpen = true;
+      this.postId = detail.postId;
+      this.postTitle = detail.postTitle;
+      this.copySuccess = false;
+    },
+    
+    shareToFacebook() {
+      const url = `${window.location.origin}/blog/${this.postId}`;
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    },
+    
+    shareToTwitter() {
+      const url = `${window.location.origin}/blog/${this.postId}`;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(this.postTitle)}&url=${encodeURIComponent(url)}`, '_blank');
+    },
+    
+    shareToLinkedIn() {
+      const url = `${window.location.origin}/blog/${this.postId}`;
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+    },
+    
+    copyLink() {
+      const url = `${window.location.origin}/blog/${this.postId}`;
+      navigator.clipboard.writeText(url).then(() => {
+        this.copySuccess = true;
+        setTimeout(() => {
+          this.copySuccess = false;
+        }, 2000);
+      });
+    }
+  }));
+});
 </script>
+
+<style>
+  /* .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  } */
+  
+  [x-cloak] { display: none !important; }
+  mark.bg-yellow-200 {
+    padding: 0.1em 0;
+    background-color: #fef08a;
+    border-radius: 0.2em;
+  }
+  </style>
