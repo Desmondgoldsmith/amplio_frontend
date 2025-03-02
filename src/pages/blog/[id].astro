@@ -640,25 +640,23 @@ const searchContext = getSearchContext();
     
     // Image viewer 
     window.Alpine.data('imageViewer', () => ({
-      viewerOpen: false,
-      currentImage: '',
-      
-      init() {
-        // Add click handler to images
-        setTimeout(() => {
-          const contentImages = document.querySelectorAll('.prose img');
-          contentImages.forEach(img => {
-            img.addEventListener('click', (e) => {
-              const target = e.target as HTMLImageElement;
-              this.currentImage = target.src;
-              this.viewerOpen = true;
-            });
-            // cursor pointer to show images are clickable
-            img.style.cursor = 'pointer';
-          });
-        }, 100); 
-      }
-    }));
+  viewerOpen: false,
+  currentImage: '',
+  
+  init() {
+    setTimeout(() => {
+      const contentImages = document.querySelectorAll('.prose img');
+      contentImages.forEach(img => {
+        img.addEventListener('click', (e) => {
+          const target = e.target as HTMLImageElement;
+          this.currentImage = target.src;
+          this.viewerOpen = true;
+        });
+        img.style.cursor = 'pointer';
+      });
+    }, 100);
+  }
+  }));
     
     window.Alpine.data('socialSharing', () => ({
       copySuccess: false,
@@ -684,14 +682,15 @@ const searchContext = getSearchContext();
       },
       
       copyLink() {
-        const url = `${window.location.origin}/blog/${this.postId || getCurrentPostId()}`;
-        navigator.clipboard.writeText(url).then(() => {
-          this.copySuccess = true;
-          setTimeout(() => {
-            this.copySuccess = false;
-          }, 2000);
-        });
-      }
+      const postId = this.postId || getCurrentPostId();
+      const url = `${window.location.origin}/blog/${postId}`;
+      navigator.clipboard.writeText(url).then(() => {
+        this.copySuccess = true;
+        setTimeout(() => {
+          this.copySuccess = false;
+        }, 2000);
+      });
+    }
     }));
  
     // Share modal functionality
