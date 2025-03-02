@@ -132,7 +132,7 @@ const searchContext = getSearchContext();
           ))}
 
           {moreCategories.length > 0 && (
-            <div class="relative" x-data="{ open: false }">
+            <div class="relative" x-data="{ open: false }" x-cloak>
               <button 
                 @click="open = !open" 
                 class="flex items-center gap-1 hover:text-[#485DAB] transition-colors"
@@ -153,6 +153,7 @@ const searchContext = getSearchContext();
                 x-show="open" 
                 @click.outside="open = false"
                 class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10"
+                x-cloak
               >
                 {moreCategories.map((category) => (
                   <a
@@ -199,6 +200,7 @@ const searchContext = getSearchContext();
               x-show="mobileMenuOpen" 
               @click.outside="mobileMenuOpen = false"
               class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10"
+              x-cloak
             >
               {[...mainCategories, ...moreCategories].map((category) => (
                 <a
@@ -233,6 +235,7 @@ const searchContext = getSearchContext();
             <!-- Search Form  -->
             <form
               x-show="isSearching"
+              x-cloak
               x-transition:enter="transition ease-out duration-200"
               x-transition:enter-start="opacity-0 transform scale-95"
               x-transition:enter-end="opacity-100 transform scale-100"
@@ -327,11 +330,12 @@ const searchContext = getSearchContext();
           </button>
           <div 
             x-show="open" 
+            x-cloak
             @click.outside="open = false"
             class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md z-10"
           >
             <button 
-              @click="$dispatch('open-share-modal', { postId: '${post.id}', postTitle: '${post.title}' }); open = false"
+              @click="$dispatch('open-share-modal', { postId: '{post.id}', postTitle: '{post.title}' }); open = false"
               class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center"
             >
               <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -351,17 +355,42 @@ const searchContext = getSearchContext();
       <h1 class="text-3xl md:text-5xl font-semibold text-gray-900 mb-8">{post.title}</h1>
 
       <!-- Dynamic Content -->
-      <div class="prose max-w-none">
+      <div class="prose max-w-none" x-data="imageViewer">
+        <!-- Add click handler to all images in the content -->
         <Fragment set:html={contentHtml} />
+
+        <!-- Image Viewer Modal -->
+        <div 
+          x-show="viewerOpen" 
+          x-cloak
+          class="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center"
+          @click.self="viewerOpen = false"
+          @keydown.escape.window="viewerOpen = false"
+        >
+          <button 
+            @click="viewerOpen = false" 
+            class="absolute top-4 right-4 text-white hover:text-gray-300"
+          >
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+          <img 
+            :src="currentImage" 
+            class="max-h-[90vh] max-w-[90vw] object-contain" 
+            alt="Enlarged view" 
+          />
+        </div>
       </div>
       
       <!-- Post Footer -->
       <div class="mt-12 pt-8 border-t border-gray-200">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <!-- Social Media Links -->
-          <div class="flex items-center gap-4 mb-4 sm:mb-0">
+          <div class="flex items-center gap-4 mb-4 sm:mb-0" x-data="socialSharing">
             <button 
-              @click="$dispatch('open-share-modal', { postId: '${post.id}', postTitle: '${post.title}', platform: 'facebook' })"
+              @click="shareToFacebook('{post.id}', '{post.title}')"
               class="text-gray-600 hover:text-[#3b5998]"
               aria-label="Share on Facebook"
             >
@@ -371,7 +400,7 @@ const searchContext = getSearchContext();
             </button>
             
             <button 
-              @click="$dispatch('open-share-modal', { postId: '${post.id}', postTitle: '${post.title}', platform: 'twitter' })"
+              @click="shareToTwitter('{post.id}', '{post.title}')"
               class="text-gray-600 hover:text-[#1DA1F2]"
               aria-label="Share on Twitter"
             >
@@ -381,7 +410,7 @@ const searchContext = getSearchContext();
             </button>
             
             <button 
-              @click="$dispatch('open-share-modal', { postId: '${post.id}', postTitle: '${post.title}', platform: 'linkedin' })"
+              @click="shareToLinkedIn('{post.id}', '{post.title}')"
               class="text-gray-600 hover:text-[#0e76a8]"
               aria-label="Share on LinkedIn"
             >
@@ -391,14 +420,22 @@ const searchContext = getSearchContext();
             </button>
             
             <button 
-              @click="$dispatch('open-share-modal', { postId: '${post.id}', postTitle: '${post.title}', platform: 'copy' })"
-              class="text-gray-600 hover:text-gray-900"
+              @click="copyLink('{post.id}')"
+              class="text-gray-600 hover:text-gray-900 relative group"
               aria-label="Copy link"
             >
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                 <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
               </svg>
+              <span 
+                x-show="copySuccess" 
+                x-cloak
+                x-transition 
+                class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap"
+              >
+                Copied!
+              </span>
             </button>
           </div>
           
@@ -459,7 +496,6 @@ const searchContext = getSearchContext();
         </div>
       </div>
     )}
-    
   </main>
   
   <!-- Share Modal -->
@@ -540,7 +576,7 @@ const searchContext = getSearchContext();
       </div>
       
       <!-- Copy feedback message -->
-      <div x-show="copySuccess" class="mt-4 text-center text-sm text-green-600">Link copied to clipboard!</div>
+      <div x-show="copySuccess" x-cloak class="mt-4 text-center text-sm text-green-600">Link copied to clipboard!</div>
     </div>
   </div>
 </Layout>
@@ -560,85 +596,199 @@ const searchContext = getSearchContext();
     }
   }
 
+  // Get the actual post ID from the URL
+  const getCurrentPostId = () => {
+    const path = window.location.pathname;
+    return path.split('/').pop();
+  };
+
   document.addEventListener('alpine:init', () => {
+    // Search functionality
     window.Alpine.data('search', () => ({
       isSearching: false,
       
       handleSearch(event: Event) {
-  event.preventDefault();
-  
-  const form = (event.target as HTMLElement).closest('form');
-  if (!form) return;
-  
-  const searchInput = form.querySelector('input[name="search"]') as HTMLInputElement | null;
-  if (!searchInput) return;
-  
-  const searchValue = searchInput.value.trim();
-  
-  const currentParams = new URLSearchParams();
-  if (searchValue) {
-    currentParams.set('search', searchValue);
-  }
-  
-  window.location.href = `/blog${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
-}
+        event.preventDefault();
+        
+        const form = (event.target as HTMLElement).closest('form');
+        if (!form) return;
+        
+        const searchInput = form.querySelector('input[name="search"]') as HTMLInputElement | null;
+        if (!searchInput) return;
+        
+        const searchValue = searchInput.value.trim();
+        
+        const currentParams = new URLSearchParams(window.location.search);
+        if (searchValue) {
+          currentParams.set('search', searchValue);
+        } else {
+          currentParams.delete('search');
+        }
+        
+        // Preserve the category parameter if it exists
+        window.location.href = `/blog${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
+      },
+      
+      clearSearch() {
+        const searchInput = document.querySelector('input[name="search"]') as HTMLInputElement | null;
+        if (searchInput) {
+          searchInput.value = '';
+          this.handleSearch(new Event('submit'));
+        }
+      }
+    }));
+    
+    // Image viewer functionality
+    window.Alpine.data('imageViewer', () => ({
+      viewerOpen: false,
+      currentImage: '',
+      
+      init() {
+        // Add click handler to all images in the content
+        setTimeout(() => {
+          const contentImages = document.querySelectorAll('.prose img');
+          contentImages.forEach(img => {
+            img.addEventListener('click', (e) => {
+              const target = e.target as HTMLImageElement;
+              this.currentImage = target.src;
+              this.viewerOpen = true;
+            });
+            // cursor pointer to show images are clickable
+            img.style.cursor = 'pointer';
+          });
+        }, 100); 
+      }
+    }));
+    
+    window.Alpine.data('socialSharing', () => ({
+      copySuccess: false,
+      
+      shareToFacebook() {
+        const postId = getCurrentPostId();
+        const postTitle = document.querySelector('h1')?.textContent || '';
+        const url = `${window.location.origin}/blog/${postId}`;
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+      },
+      
+      shareToTwitter() {
+        const postId = getCurrentPostId();
+        const postTitle = document.querySelector('h1')?.textContent || '';
+        const url = `${window.location.origin}/blog/${postId}`;
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(postTitle)}&url=${encodeURIComponent(url)}`, '_blank');
+      },
+      
+      shareToLinkedIn() {
+        const postId = getCurrentPostId();
+        const url = `${window.location.origin}/blog/${postId}`;
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+      },
+      
+      copyLink() {
+        const postId = getCurrentPostId();
+        const url = `${window.location.origin}/blog/${this.postId || getCurrentPostId()}`;
+        navigator.clipboard.writeText(url).then(() => {
+          this.copySuccess = true;
+          setTimeout(() => {
+            this.copySuccess = false;
+          }, 2000);
+        });
+      }
     }));
  
- 
-  // Share modal functionality
-  window.Alpine.data('shareModal', () => ({
-    isOpen: false,
-    postId: null,
-    postTitle: '',
-    copySuccess: false,
-    
-    openModal(detail) {
-      this.isOpen = true;
-      this.postId = detail.postId;
-      this.postTitle = detail.postTitle;
-      this.copySuccess = false;
-    },
-    
-    shareToFacebook() {
-      const url = `${window.location.origin}/blog/${this.postId}`;
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-    },
-    
-    shareToTwitter() {
-      const url = `${window.location.origin}/blog/${this.postId}`;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(this.postTitle)}&url=${encodeURIComponent(url)}`, '_blank');
-    },
-    
-    shareToLinkedIn() {
-      const url = `${window.location.origin}/blog/${this.postId}`;
-      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
-    },
-    
-    copyLink() {
-      const url = `${window.location.origin}/blog/${this.postId}`;
-      navigator.clipboard.writeText(url).then(() => {
-        this.copySuccess = true;
-        setTimeout(() => {
-          this.copySuccess = false;
-        }, 2000);
-      });
-    }
-  }));
-});
+    // Share modal functionality
+    window.Alpine.data('shareModal', () => ({
+      isOpen: false,
+      postId: null,
+      postTitle: '',
+      copySuccess: false,
+      
+      openModal(detail) {
+        this.isOpen = true;
+        this.postId = detail.postId || getCurrentPostId();
+        this.postTitle = detail.postTitle || document.querySelector('h1')?.textContent || '';
+        this.copySuccess = false;
+      },
+      
+      shareToFacebook() {
+        const url = `${window.location.origin}/blog/${this.postId || getCurrentPostId()}`;
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+      },
+      
+      shareToTwitter() {
+        const url = `${window.location.origin}/blog/${this.postId || getCurrentPostId()}`;
+        const text = this.postTitle || document.querySelector('h1')?.textContent || '';
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+      },
+      
+      shareToLinkedIn() {
+        const url = `${window.location.origin}/blog/${this.postId || getCurrentPostId()}`;
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+      },
+      
+      copyLink() {
+        const url = `${window.location.origin}/blog/${this.postId || getCurrentPostId()}`;
+        navigator.clipboard.writeText(url).then(() => {
+          this.copySuccess = true;
+          setTimeout(() => {
+            this.copySuccess = false;
+          }, 2000);
+        });
+      }
+    }));
+  });
 </script>
 
 <style>
-  /* .line-clamp-2 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  } */
+  /* Hide Alpine components before initialization */
+  [x-cloak] { 
+    display: none !important; 
+  }
   
-  [x-cloak] { display: none !important; }
+  /* Highlighted search terms */
   mark.bg-yellow-200 {
     padding: 0.1em 0;
     background-color: #fef08a;
     border-radius: 0.2em;
   }
-  </style>
+  
+  /* Image viewer styling */
+  .prose img {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .prose img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Image viewer modal styling */
+  .modal-image-viewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+  
+  .modal-image-viewer img {
+    max-height: 90vh;
+    max-width: 90vw;
+    object-fit: contain;
+  }
+  
+  .modal-close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: white;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+  }
+</style>
