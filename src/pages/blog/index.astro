@@ -94,7 +94,7 @@ const currentCategory = searchParams.get('category') || '';
 
 // Fetch initial data - only 9 posts initially
 const categories = await fetchCategories();
-const initialPosts = await fetchPosts(currentCategory, searchQuery, 9, 1);
+const initialPosts = await fetchPosts(currentCategory, searchQuery, 12, 1);
 
 // Create search context message
 const getSearchContext = () => {
@@ -658,337 +658,337 @@ const searchContext = getSearchContext();
 });
 
 // Infinite scroll implementation
-document.addEventListener('DOMContentLoaded', () => {
-  let currentPage = 1;
-  let isLoading = false;
-  let hasMorePosts = true;
+// document.addEventListener('DOMContentLoaded', () => {
+//   let currentPage = 1;
+//   let isLoading = false;
+//   let hasMorePosts = true;
   
-  // Get current URL parameters
-  const urlParams = new URLSearchParams(window.location.search);
-  const category = urlParams.get('category') || '';
-  const search = urlParams.get('search') || '';
+//   // Get current URL parameters
+//   const urlParams = new URLSearchParams(window.location.search);
+//   const category = urlParams.get('category') || '';
+//   const search = urlParams.get('search') || '';
   
-  // Determine if we're in grid or list view
-  const isGridView = document.getElementById('posts-grid') !== null;
+//   // Determine if we're in grid or list view
+//   const isGridView = document.getElementById('posts-grid') !== null;
   
-  // Get the post container element
-  const postsContainer = isGridView 
-    ? document.getElementById('posts-grid')
-    : document.getElementById('posts-container');
+//   // Get the post container element
+//   const postsContainer = isGridView 
+//     ? document.getElementById('posts-grid')
+//     : document.getElementById('posts-container');
     
-  // Get the loading indicator
-  const loadingIndicator = document.getElementById('loading-indicator');
+//   // Get the loading indicator
+//   const loadingIndicator = document.getElementById('loading-indicator');
   
-  // Function to determine if user has scrolled to bottom
-  const isNearBottom = () => {
-    return window.innerHeight + window.scrollY >= document.body.offsetHeight - 500;
-  };
+//   // Function to determine if user has scrolled to bottom
+//   const isNearBottom = () => {
+//     return window.innerHeight + window.scrollY >= document.body.offsetHeight - 500;
+//   };
   
-  // Function to fetch more posts
-  const fetchMorePosts = async () => {
-    if (isLoading || !hasMorePosts) return;
+//   // Function to fetch more posts
+//   const fetchMorePosts = async () => {
+//     if (isLoading || !hasMorePosts) return;
     
-    isLoading = true;
-    currentPage++;
+//     isLoading = true;
+//     currentPage++;
     
-    // Show loading indicator
-    loadingIndicator?.classList.remove('hidden');
+//     // Show loading indicator
+//     loadingIndicator?.classList.remove('hidden');
     
-    try {
-      // Calculate posts per page based on device type
-      const isMobile = window.innerWidth < 768;
-      const postsPerPage = isMobile ? 3 : 9;
+//     try {
+//       // Calculate posts per page based on device type
+//       const isMobile = window.innerWidth < 768;
+//       const postsPerPage = isMobile ? 3 : 9;
       
-      // Build the URL for the fetch request
-      const params = new URLSearchParams();
-      params.append('depth', '2');
-      params.append('limit', postsPerPage.toString());
-      params.append('page', currentPage.toString());
+//       // Build the URL for the fetch request
+//       const params = new URLSearchParams();
+//       params.append('depth', '2');
+//       params.append('limit', postsPerPage.toString());
+//       params.append('page', currentPage.toString());
       
-      if (category) {
-        params.append('where[category.slug][equals]', category);
-      }
+//       if (category) {
+//         params.append('where[category.slug][equals]', category);
+//       }
       
-      if (search) {
-        const searchString = search.trim();
-        params.append('where[or][0][title][contains]', searchString);
-        params.append('where[or][1][content][contains]', searchString);
-        params.append('where[or][2][category.name][contains]', searchString);
-        params.append('where[or][3][author.name][contains]', searchString);
-      }
+//       if (search) {
+//         const searchString = search.trim();
+//         params.append('where[or][0][title][contains]', searchString);
+//         params.append('where[or][1][content][contains]', searchString);
+//         params.append('where[or][2][category.name][contains]', searchString);
+//         params.append('where[or][3][author.name][contains]', searchString);
+//       }
       
-      // Get the PAYLOAD_URL from the meta tag
-      const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL;
-      const response = await fetch(`${PAYLOAD_URL}/api/posts?${params.toString()}`);
+//       // Get the PAYLOAD_URL from the meta tag
+//       const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL;
+//       const response = await fetch(`${PAYLOAD_URL}/api/posts?${params.toString()}`);
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! Status: ${response.status}`);
+//       }
       
-      const data = await response.json();
+//       const data = await response.json();
       
-      // Process the posts
-      const newPosts = data.docs
-        .filter(post => post.status === 'published')
-        .map(post => ({
-          ...post,
-          featuredImage: {
-            ...post.featuredImage,
-            url: `${PAYLOAD_URL}${post.featuredImage.url}`,
-          },
-          author: {
-            ...post.author,
-            profileImage: post.author.profileImage ? {
-              ...post.author.profileImage,
-              url: `${PAYLOAD_URL}${post.author.profileImage.url}`,
-            } : undefined,
-          },
-        }))
-        .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime());
+//       // Process the posts
+//       const newPosts = data.docs
+//         .filter(post => post.status === 'published')
+//         .map(post => ({
+//           ...post,
+//           featuredImage: {
+//             ...post.featuredImage,
+//             url: `${PAYLOAD_URL}${post.featuredImage.url}`,
+//           },
+//           author: {
+//             ...post.author,
+//             profileImage: post.author.profileImage ? {
+//               ...post.author.profileImage,
+//               url: `${PAYLOAD_URL}${post.author.profileImage.url}`,
+//             } : undefined,
+//           },
+//         }))
+//         .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime());
       
-      // If no more posts, set hasMorePosts to false
-      if (newPosts.length === 0) {
-        hasMorePosts = false;
-        loadingIndicator.classList.add('hidden');
-        return;
-      }
+//       // If no more posts, set hasMorePosts to false
+//       if (newPosts.length === 0) {
+//         hasMorePosts = false;
+//         loadingIndicator.classList.add('hidden');
+//         return;
+//       }
       
-      // Format date function
-      const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric'
-        });
-      };
+//       // Format date function
+//       const formatDate = (dateString) => {
+//         return new Date(dateString).toLocaleDateString('en-US', {
+//           month: 'short',
+//           day: 'numeric',
+//           year: 'numeric'
+//         });
+//       };
       
-      // Highlight text function
-      const highlightText = (text, searchQuery) => {
-        if (!searchQuery) return text;
-        const regex = new RegExp(`(${searchQuery})`, 'gi');
-        return text.replace(regex, '<mark class="bg-yellow-200">$1</mark>');
-      };
+//       // Highlight text function
+//       const highlightText = (text, searchQuery) => {
+//         if (!searchQuery) return text;
+//         const regex = new RegExp(`(${searchQuery})`, 'gi');
+//         return text.replace(regex, '<mark class="bg-yellow-200">$1</mark>');
+//       };
       
-      // Create and append new post elements
-      newPosts.forEach(post => {
-        let postElement;
+//       // Create and append new post elements
+//       newPosts.forEach(post => {
+//         let postElement;
         
-        if (isGridView) {
-          // Grid view (desktop default view)
-          postElement = document.createElement('article');
-          postElement.className = 'bg-white border border-gray-200 shadow hover:shadow-md transition-shadow duration-300 post-item';
+//         if (isGridView) {
+//           // Grid view (desktop default view)
+//           postElement = document.createElement('article');
+//           postElement.className = 'bg-white border border-gray-200 shadow hover:shadow-md transition-shadow duration-300 post-item';
           
-          postElement.innerHTML = `
-            <a href="/blog/${post.id}" class="block">
-              <img 
-                src="${post.featuredImage.url}" 
-                alt="${post.featuredImage.alt}"
-                class="w-full h-72 object-fill"
-              />
-            </a>
-            <div class="p-6 mt-3 mb-3">
-              <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center gap-2">
-                  <div class="w-8 h-8 rounded-full overflow-hidden">
-                    ${post.author.profileImage ? `
-                      <img 
-                        src="${post.author.profileImage.url}" 
-                        alt="${post.author.name}'s profile"
-                        class="w-full h-full object-cover"
-                      />
-                    ` : ''}
-                  </div>
-                  <div>
-                    <div class="text-sm font-medium text-gray-900">${post.author.name}</div>
-                    <div class="flex items-center text-xs text-gray-500">
-                      <time datetime="${post.publishedDate}">
-                        ${formatDate(post.publishedDate)}
-                      </time>
-                      <span class="mx-1">•</span>
-                      <span>${post.estimatedReadTime} min read</span>
-                    </div>
-                  </div>
-                </div>
+//           postElement.innerHTML = `
+//             <a href="/blog/${post.id}" class="block">
+//               <img 
+//                 src="${post.featuredImage.url}" 
+//                 alt="${post.featuredImage.alt}"
+//                 class="w-full h-72 object-fill"
+//               />
+//             </a>
+//             <div class="p-6 mt-3 mb-3">
+//               <div class="flex items-center justify-between mb-3">
+//                 <div class="flex items-center gap-2">
+//                   <div class="w-8 h-8 rounded-full overflow-hidden">
+//                     ${post.author.profileImage ? `
+//                       <img 
+//                         src="${post.author.profileImage.url}" 
+//                         alt="${post.author.name}'s profile"
+//                         class="w-full h-full object-cover"
+//                       />
+//                     ` : ''}
+//                   </div>
+//                   <div>
+//                     <div class="text-sm font-medium text-gray-900">${post.author.name}</div>
+//                     <div class="flex items-center text-xs text-gray-500">
+//                       <time datetime="${post.publishedDate}">
+//                         ${formatDate(post.publishedDate)}
+//                       </time>
+//                       <span class="mx-1">•</span>
+//                       <span>${post.estimatedReadTime} min read</span>
+//                     </div>
+//                   </div>
+//                 </div>
 
-                <div x-data="{ open: false, postId: '${post.id}' }" class="relative">
-                  <button 
-                    @click="open = !open" 
-                    @click.outside="open = false"
-                    class="p-1 hover:bg-gray-100 rounded-full"
-                  >
-                    <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="19" r="1"></circle>
-                      <circle cx="12" cy="12" r="1"></circle>
-                      <circle cx="12" cy="5" r="1"></circle>
-                    </svg>
-                  </button>
-                  <div 
-                    x-show="open" 
-                    x-transition:enter="transition ease-out duration-200"
-                    x-transition:enter-start="opacity-0 transform scale-95"
-                    x-transition:enter-end="opacity-100 transform scale-100"
-                    x-transition:leave="transition ease-in duration-100"
-                    x-transition:leave-start="opacity-100 transform scale-100"
-                    x-transition:leave-end="opacity-0 transform scale-95"
-                    class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md z-10"
-                  >
-                    <button 
-                      @click="$dispatch('open-share-modal', { postId: postId, postTitle: 'Check out this post from Amplio Blog' })"
-                      class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center"
-                    >
-                      <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                        <polyline points="16 6 12 2 8 6"></polyline>
-                        <line x1="12" y1="2" x2="12" y2="15"></line>
-                      </svg>
-                      Share
-                    </button>
-                  </div>
-                </div>
-              </div>
+//                 <div x-data="{ open: false, postId: '${post.id}' }" class="relative">
+//                   <button 
+//                     @click="open = !open" 
+//                     @click.outside="open = false"
+//                     class="p-1 hover:bg-gray-100 rounded-full"
+//                   >
+//                     <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+//                       <circle cx="12" cy="19" r="1"></circle>
+//                       <circle cx="12" cy="12" r="1"></circle>
+//                       <circle cx="12" cy="5" r="1"></circle>
+//                     </svg>
+//                   </button>
+//                   <div 
+//                     x-show="open" 
+//                     x-transition:enter="transition ease-out duration-200"
+//                     x-transition:enter-start="opacity-0 transform scale-95"
+//                     x-transition:enter-end="opacity-100 transform scale-100"
+//                     x-transition:leave="transition ease-in duration-100"
+//                     x-transition:leave-start="opacity-100 transform scale-100"
+//                     x-transition:leave-end="opacity-0 transform scale-95"
+//                     class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md z-10"
+//                   >
+//                     <button 
+//                       @click="$dispatch('open-share-modal', { postId: postId, postTitle: 'Check out this post from Amplio Blog' })"
+//                       class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center"
+//                     >
+//                       <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+//                         <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+//                         <polyline points="16 6 12 2 8 6"></polyline>
+//                         <line x1="12" y1="2" x2="12" y2="15"></line>
+//                       </svg>
+//                       Share
+//                     </button>
+//                   </div>
+//                 </div>
+//               </div>
 
-              <h3 class="font-semibold pl-3 text-gray-900 hover:text-[#485DAB] transition-colors">
-               <a href="/blog/${post.id}" class="block"> ${post.title}</a>
-              </h3>
-            </div>
-          `;
-        } else {
-          // List view (search/category results)
-          postElement = document.createElement('article');
-          postElement.className = 'flex flex-col md:flex-row gap-8 p-6 bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-shadow post-item';
+//               <h3 class="font-semibold pl-3 text-gray-900 hover:text-[#485DAB] transition-colors">
+//                <a href="/blog/${post.id}" class="block"> ${post.title}</a>
+//               </h3>
+//             </div>
+//           `;
+//         } else {
+//           // List view (search/category results)
+//           postElement = document.createElement('article');
+//           postElement.className = 'flex flex-col md:flex-row gap-8 p-6 bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-shadow post-item';
           
-          const excerpt = post.content.root.children.find(child => child.children?.[0]?.text)?.children[0]?.text || '';
+//           const excerpt = post.content.root.children.find(child => child.children?.[0]?.text)?.children[0]?.text || '';
           
-          postElement.innerHTML = `
-            <div class="md:w-1/3">
-              <a href="/blog/${post.id}" class="block">
-                <img 
-                  src="${post.featuredImage.url}" 
-                  alt="${post.featuredImage.alt}"
-                  class="w-full h-52 object-fill"
-                />
-              </a>
-            </div>
+//           postElement.innerHTML = `
+//             <div class="md:w-1/3">
+//               <a href="/blog/${post.id}" class="block">
+//                 <img 
+//                   src="${post.featuredImage.url}" 
+//                   alt="${post.featuredImage.alt}"
+//                   class="w-full h-52 object-fill"
+//                 />
+//               </a>
+//             </div>
             
-            <div class="md:w-2/3 space-y-4">
-              <div class="flex justify-between items-center">
-                <div class="flex items-center gap-4">
-                  <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-100">
-                    ${post.author.profileImage ? `
-                      <img 
-                        src="${post.author.profileImage.url}" 
-                        alt="${post.author.name}'s profile"
-                        class="w-full h-full object-cover"
-                      />
-                    ` : ''}
-                  </div>
-                  <div>
-                    <p class="font-medium text-gray-900">${post.author.name}</p>
-                    <div class="flex items-center text-sm text-gray-500">
-                      <time datetime="${post.publishedDate}">
-                        ${formatDate(post.publishedDate)}
-                      </time>
-                      <span class="mx-2">•</span>
-                      <span>${post.estimatedReadTime} min read</span>
-                    </div>
-                  </div>
-                </div>
+//             <div class="md:w-2/3 space-y-4">
+//               <div class="flex justify-between items-center">
+//                 <div class="flex items-center gap-4">
+//                   <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-100">
+//                     ${post.author.profileImage ? `
+//                       <img 
+//                         src="${post.author.profileImage.url}" 
+//                         alt="${post.author.name}'s profile"
+//                         class="w-full h-full object-cover"
+//                       />
+//                     ` : ''}
+//                   </div>
+//                   <div>
+//                     <p class="font-medium text-gray-900">${post.author.name}</p>
+//                     <div class="flex items-center text-sm text-gray-500">
+//                       <time datetime="${post.publishedDate}">
+//                         ${formatDate(post.publishedDate)}
+//                       </time>
+//                       <span class="mx-2">•</span>
+//                       <span>${post.estimatedReadTime} min read</span>
+//                     </div>
+//                   </div>
+//                 </div>
 
-                <div x-data="{ open: false, postId: '${post.id}' }" class="relative">
-                  <button 
-                    @click="open = !open" 
-                    @click.outside="open = false"
-                    class="p-2 hover:bg-gray-100 rounded-full"
-                  >
-                    <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="19" r="1"></circle>
-                      <circle cx="12" cy="12" r="1"></circle>
-                      <circle cx="12" cy="5" r="1"></circle>
-                    </svg>
-                  </button>
-                  <div 
-                    x-show="open" 
-                    x-transition:enter="transition ease-out duration-200"
-                    x-transition:enter-start="opacity-0 transform scale-95"
-                    x-transition:enter-end="opacity-100 transform scale-100"
-                    x-transition:leave="transition ease-in duration-100"
-                    x-transition:leave-start="opacity-100 transform scale-100"
-                    x-transition:leave-end="opacity-0 transform scale-95"
-                    class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md z-10"
-                  >
-                    <button 
-                      @click="$dispatch('open-share-modal', { postId: postId, postTitle: 'Check out this post from Amplio Blog' })"
-                      class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center"
-                    >
-                      <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                        <polyline points="16 6 12 2 8 6"></polyline>
-                        <line x1="12" y1="2" x2="12" y2="15"></line>
-                      </svg>
-                      Share
-                    </button>
-                  </div>
-                </div>
-              </div>
+//                 <div x-data="{ open: false, postId: '${post.id}' }" class="relative">
+//                   <button 
+//                     @click="open = !open" 
+//                     @click.outside="open = false"
+//                     class="p-2 hover:bg-gray-100 rounded-full"
+//                   >
+//                     <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+//                       <circle cx="12" cy="19" r="1"></circle>
+//                       <circle cx="12" cy="12" r="1"></circle>
+//                       <circle cx="12" cy="5" r="1"></circle>
+//                     </svg>
+//                   </button>
+//                   <div 
+//                     x-show="open" 
+//                     x-transition:enter="transition ease-out duration-200"
+//                     x-transition:enter-start="opacity-0 transform scale-95"
+//                     x-transition:enter-end="opacity-100 transform scale-100"
+//                     x-transition:leave="transition ease-in duration-100"
+//                     x-transition:leave-start="opacity-100 transform scale-100"
+//                     x-transition:leave-end="opacity-0 transform scale-95"
+//                     class="absolute right-0 mt-1 w-32 bg-white shadow-lg rounded-md z-10"
+//                   >
+//                     <button 
+//                       @click="$dispatch('open-share-modal', { postId: postId, postTitle: 'Check out this post from Amplio Blog' })"
+//                       class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center"
+//                     >
+//                       <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+//                         <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+//                         <polyline points="16 6 12 2 8 6"></polyline>
+//                         <line x1="12" y1="2" x2="12" y2="15"></line>
+//                       </svg>
+//                       Share
+//                     </button>
+//                   </div>
+//                 </div>
+//               </div>
               
-              <div>
-                <a 
-                  href="/blog/${post.id}"
-                  class="block group"
-                >
-                  <h2 
-                    class="text-xl text-gray-900 group-hover:text-[#485DAB] transition-colors mb-2"
-                  >${highlightText(post.title, search)}
-                  </h2>
-                  <p 
-                    class="text-gray-600 line-clamp-2"
-                  >${highlightText(excerpt, search)}
-                  </p>
-                </a>
-              </div>
+//               <div>
+//                 <a 
+//                   href="/blog/${post.id}"
+//                   class="block group"
+//                 >
+//                   <h2 
+//                     class="text-xl text-gray-900 group-hover:text-[#485DAB] transition-colors mb-2"
+//                   >${highlightText(post.title, search)}
+//                   </h2>
+//                   <p 
+//                     class="text-gray-600 line-clamp-2"
+//                   >${highlightText(excerpt, search)}
+//                   </p>
+//                 </a>
+//               </div>
               
-              <div class="flex items-center gap-3">
-                <a
-                  href="/blog?category=${post.category.slug}"
-                  class="text-sm px-3 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
-                >
-                  ${post.category.name}
-                </a>
-              </div>
-            </div>
-          `;
-        }
+//               <div class="flex items-center gap-3">
+//                 <a
+//                   href="/blog?category=${post.category.slug}"
+//                   class="text-sm px-3 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+//                 >
+//                   ${post.category.name}
+//                 </a>
+//               </div>
+//             </div>
+//           `;
+//         }
         
-        postsContainer.appendChild(postElement);
-      });
+//         postsContainer.appendChild(postElement);
+//       });
       
-    } catch (error) {
-      console.error('Error fetching more posts:', error);
-    } finally {
-      isLoading = false;
-      loadingIndicator.classList.add('hidden');
-    }
-  };
+//     } catch (error) {
+//       console.error('Error fetching more posts:', error);
+//     } finally {
+//       isLoading = false;
+//       loadingIndicator.classList.add('hidden');
+//     }
+//   };
   
-  // Add scroll event listener for infinite scrolling
-  window.addEventListener('scroll', () => {
-    if (isNearBottom()) {
-      fetchMorePosts();
-    }
-  });
+//   // Add scroll event listener for infinite scrolling
+//   window.addEventListener('scroll', () => {
+//     if (isNearBottom()) {
+//       fetchMorePosts();
+//     }
+//   });
   
-  // Initial check if the page is small and needs more posts right away
-  if (isNearBottom()) {
-    fetchMorePosts();
-  }
+//   // Initial check if the page is small and needs more posts right away
+//   if (isNearBottom()) {
+//     fetchMorePosts();
+//   }
   
-  // Handle window resize events to adjust mobile/desktop view
-  window.addEventListener('resize', () => {
-    if (isNearBottom() && !isLoading && hasMorePosts) {
-      fetchMorePosts();
-    }
-  });
-});
+//   // Handle window resize events to adjust mobile/desktop view
+//   window.addEventListener('resize', () => {
+//     if (isNearBottom() && !isLoading && hasMorePosts) {
+//       fetchMorePosts();
+//     }
+//   });
+//});
 </script>
 
 <style>
