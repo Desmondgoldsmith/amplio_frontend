@@ -170,7 +170,7 @@ const videos = await fetchVideos();
 const categories = [...new Set(videos.flatMap(video => video.categories.map(cat => cat.name)))];
 ---
 
-<section class="bg-white mt-12 py-20">
+<section class="bg-white mt-5 pb-10">
   <div class="max-w-[2000px] mx-auto px-4 md:px-8 lg:px-44">
     <div class="text-center mb-16">
       <h2 class="text-4xl font-bold mb-4">Videos</h2>

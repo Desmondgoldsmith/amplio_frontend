@@ -1,12 +1,53 @@
-
 ---
+// Import the Astro Image component
+import { Image } from 'astro:assets';
+
+// Import all images
+import caseStudy01 from '../../assets/case-study/case_study01.jpg';
+import caseStudy02 from '../../assets/case-study/case_study02.jpg';
+import caseStudy03 from '../../assets/case-study/case_study03.png';
+import caseStudy04 from '../../assets/case-study/case_study04.png';
+import caseStudy05 from '../../assets/case-study/case_study05.png';
+import caseStudy06 from '../../assets/case-study/c06.png';
+import caseStudy07 from '../../assets/case-study/c07.png';
+import caseStudy08 from '../../assets/case-study/c08.png';
+import caseStudy09 from '../../assets/case-study/c09.png';
+import caseStudy10 from '../../assets/case-study/case_study10.jpg';
+import caseStudy11 from '../../assets/case-study/case_study11.jpg';
+import caseStudy12 from '../../assets/case-study/case_study12.png';
+import caseStudy13 from '../../assets/case-study/c13.png';
+import caseStudy14 from '../../assets/case-study/c14.png';
+import caseStudy15 from '../../assets/case-study/c15.png';
+import caseStudy16 from '../../assets/case-study/c16.png';
+
+// Create a mapping of image paths to imported images
+const imageMap = {
+  "/assets/case-study/case_study01.jpg": caseStudy01,
+  "/assets/case-study/case_study02.jpg": caseStudy02,
+  "/assets/case-study/case_study03.png": caseStudy03,
+  "/assets/case-study/case_study04.png": caseStudy04,
+  "/assets/case-study/case_study05.png": caseStudy05,
+  "/assets/case-study/c06.png": caseStudy06,
+  "/assets/case-study/c07.png": caseStudy07,
+  "/assets/case-study/c08.png": caseStudy08,
+  "/assets/case-study/c09.png": caseStudy09,
+  "/assets/case-study/case_study10.jpg": caseStudy10,
+  "/assets/case-study/case_study11.jpg": caseStudy11,
+  "/assets/case-study/case_study12.png": caseStudy12,
+  "/assets/case-study/c13.png": caseStudy13,
+  "/assets/case-study/c14.png": caseStudy14,
+  "/assets/case-study/c15.png": caseStudy15,
+  "/assets/case-study/c16.png": caseStudy16,
+};
+
 interface CaseStudy {
     title: string;
     description: string;
     imageUrl: string;
     mainUrl: string;
     readMoreLink: string;
-  }
+}
+
 const caseStudies: CaseStudy[] = [
   {
     title: "CARE'S WOMEN FOR CHANGE PROGRAM: A CASE STUDY",
@@ -52,7 +93,7 @@ const caseStudies: CaseStudy[] = [
   },
   {
     title: "PROMOTING GOOD HYGIENE PRACTICES: A CASE STUDY",
-    description: "Implemented by Amplio Ghana, UNICEF’s Talking Book C4D program in the Upper West Region promotes key family practices for good health and well-being, including knowledge and behaviors for hygiene and sanitation.",
+    description: "Implemented by Amplio Ghana, UNICEF's Talking Book C4D program in the Upper West Region promotes key family practices for good health and well-being, including knowledge and behaviors for hygiene and sanitation.",
     imageUrl: "/assets/case-study/c07.png",
     mainUrl:"https://www.amplio.org/_files/ugd/b4c77e_d934846116434b2caca8c0d6c929e2cb.pdf",
     readMoreLink: "Promoting Good Hygiene Practices: A Case Study"
@@ -123,55 +164,59 @@ const caseStudies: CaseStudy[] = [
 ];
 ---
 
-<section class="bg-white mt-12 py-16">
+<section class="bg-white pb-8">
     <div class="bg-[#475CAA] text-center text-white mx-auto py-8">
         <h1 class="text-4xl font-bold text-white mb-4">Case Studies</h1>
         <p class="text-xl text-white">Read about Talking Book technology and program impact.</p>
     </div>
 
-    <div class = "mt-10 px-52 mx-auto">
-    <div class="grid  gap-8 md:gap-12">
-      {caseStudies.map((study) => (
-        <div class="overflow-hidden border-b border-b-cyan-400">
-          <div class="flex flex-col items-center md:flex-row">
-            <div class="relative p-8">
-              <img
-                src={study.imageUrl}
-                alt={study.title}
-                class="w-36 object-fill"
-              />
-            </div>
+    <div class="mt-10 px-4 md:px-8 lg:px-16 xl:px-52 mx-auto">
+        <div class="grid gap-8 md:gap-12">
+            {caseStudies.map((study) => (
+                <div class="overflow-hidden border-b border-b-cyan-400">
+                    <div class="flex flex-col items-center md:flex-row">
+                        <div class="relative p-4 md:p-8 flex justify-center md:justify-start">
+                            <Image
+                                src={imageMap[study.imageUrl]}
+                                alt={study.title}
+                                width={144}
+                                height={144}
+                                class="w-32 md:w-36 object-contain"
+                            />
+                        </div>
 
-            <div class="md:w-2/3 p-6 md:p-8">
-              <h3 class="text-xl font-bold text-gray-900 mb-4">
-                {study.title}
-              </h3>
-              <p class="text-gray-600 mb-6 leading-relaxed">
-                {study.description}
-              </p>
-              <a
-                href={study.mainUrl}
-                class="text-blue-500 hover:text-blue-600 font-medium inline-flex items-center transition-colors duration-200"
-              >
-                {study.readMoreLink}
-                <svg
-                  class="w-4 h-4 ml-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
+                        <div class="w-full md:w-2/3 p-4 md:p-8">
+                            <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-4 text-center md:text-left">
+                                {study.title}
+                            </h3>
+                            <p class="text-sm md:text-base text-gray-600 mb-4 md:mb-6 leading-relaxed">
+                                {study.description}
+                            </p>
+                            <div class="flex justify-center md:justify-start">
+                                <a
+                                    href={study.mainUrl}
+                                    class="text-blue-500 hover:text-blue-600 font-medium inline-flex items-center transition-colors duration-200 text-sm md:text-base"
+                                >
+                                    {study.readMoreLink}
+                                    <svg
+                                        class="w-4 h-4 ml-2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M9 5l7 7-7 7"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))}
         </div>
-      ))}
-    </div>
     </div>
 </section>
