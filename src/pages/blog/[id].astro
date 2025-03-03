@@ -107,7 +107,6 @@ const searchContext = getSearchContext();
 ---
 
 <Layout title={post.title}>
-  <!-- Navigation Bar -->
   <nav>
     <div class="max-w-[2000px] mx-auto lg:mt-5 md:px-5 lg:px-56 pb-2">
       <div class="flex items-center justify-between text-[17px] mt-8 md:mb-[-50px]">
@@ -724,7 +723,7 @@ const searchContext = getSearchContext();
       },
       
       copyLink() {
-        const url = `${window.location.origin}/blog/${this.postId || getCurrentPostId()}`;
+        const url = `${window.location.origin}/blog/${getCurrentPostId()}`;
         navigator.clipboard.writeText(url).then(() => {
           this.copySuccess = true;
           setTimeout(() => {
