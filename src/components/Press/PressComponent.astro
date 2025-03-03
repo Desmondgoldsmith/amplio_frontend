@@ -1,6 +1,38 @@
 ---
+// Import the Astro Image component
+import { Image } from 'astro:assets';
+
+// Import all media logos
+import allChildrenReadingLogo from '../../assets/press/01.png';
+import designboomLogo from '../../assets/press/02.png';
+import faoLogo from '../../assets/press/03.png';
+import unicefLogo from '../../assets/press/04.png';
+import globalWALogo from '../../assets/press/05.png';
+import microsoftAlumniLogo from '../../assets/press/06.png';
+import drumsLogo from '../../assets/press/07.png';
+import landseaLogo from '../../assets/press/08.png';
+import pulseLogo from '../../assets/press/09.png';
+import internationalFoodLogo from '../../assets/press/10.png';
+import forbesLogo from '../../assets/press/11.jpg';
+import citiLogo from '../../assets/press/12.png';
+import worldBankLogo from '../../assets/press/13.png';
+import develLogo from '../../assets/press/14.jpeg';
+import ktnNewsLogo from '../../assets/press/15.png';
+import millerLogo from '../../assets/press/16.png';
+import forbesLogo2 from '../../assets/press/17.jpg';
+import medaLogo from '../../assets/press/18.png';
+import ituLogo from '../../assets/press/19.png';
+import pearsonLogo from '../../assets/press/20.png';
+import humanLogo from '../../assets/press/21.png';
+import independentLogo from '../../assets/press/23.png';
+import biztecLogo from '../../assets/press/24.png';
+import geekLogo from '../../assets/press/25.png';
+import bbcLogo from '../../assets/press/26.png';
+import pbsLogo from '../../assets/press/27.png';
+import piLogo from '../../assets/press/28.png';
+
 interface MediaItem {
-    logo: string;
+    logo: ImageMetadata;
     logoAlt: string;
     title: string;
     date: string;
@@ -10,7 +42,7 @@ interface MediaItem {
 
 const mediaItems: MediaItem[] = [
     {
-        logo: "assets/press/01.png",
+        logo: allChildrenReadingLogo,
         logoAlt: "All Children Reading Logo",
         title: "All Children Reading: A Grand Challenge for Development celebrates impact on increasing literacy for children worldwide",
         date: "March 23, 2023",
@@ -18,7 +50,7 @@ const mediaItems: MediaItem[] = [
         link: "https://allchildrenreading.org/news/all-children-reading-a-grand-challenge-for-development-celebrates-impact-on-increasing-literacy-for-children-worldwide/"
     },
     {
-        logo: "assets/press/02.png",
+        logo: designboomLogo,
         logoAlt: "Designboom Logo",
         title: "Solar-powered crop storage to educational apps: 10 iF Social Impact Prize 2022 Winners",
         date: "March 26, 2023",
@@ -26,7 +58,7 @@ const mediaItems: MediaItem[] = [
         link: "https://www.designboom.com/design/if-social-impact-prize-2022-03-25-2023/"
     },
     {
-        logo: "assets/press/03.png",
+        logo: faoLogo,
         logoAlt: "FAO Logo",
         title: "Talking Books provide an innovative solution to reach rural communities in Uganda",
         date: "September 15, 2022",
@@ -34,7 +66,7 @@ const mediaItems: MediaItem[] = [
         link: "https://www.fao.org/africa/news/detail-news/en/c/1605049/"
     },
     {
-        logo: "assets/press/04.png",
+        logo: unicefLogo,
         logoAlt: "UNICEF Logo",
         title: "Changing and influencing behaviors through innovation: The Amplio Talking Book",
         date: "January 9, 2022",
@@ -42,7 +74,7 @@ const mediaItems: MediaItem[] = [
         link: "https://www.unicef.org/ghana/reports/changing-and-influencing-behaviors-through-innovation"
     },
     {
-        logo: "assets/press/05.png",
+        logo: globalWALogo,
         logoAlt: "GlobalWA Logo",
         title: "Communication During a Public Health Crisis — Reaching Last-Mile Communities",
         date: "August 19, 2021",
@@ -50,7 +82,7 @@ const mediaItems: MediaItem[] = [
         link: "https://globalwa.org/2021/08/communication-during-a-public-health-crisis-reaching-last-mile-communities/"
     },
     {
-        logo: "assets/press/06.png",
+        logo: microsoftAlumniLogo,
         logoAlt: "Microsoft alumi Logo",
         title: "Network helps put Amplio Talking Books into hands around the world",
         date: "June, 2021",
@@ -58,7 +90,7 @@ const mediaItems: MediaItem[] = [
         link: "https://www.microsoftalumni.com/s/1769/19/interior.aspx?sid=1769&gid=2&pgid=2561&sitebuilder=1&contentbuilder=1"
     },
     {
-        logo: "assets/press/07.png",
+        logo: drumsLogo,
         logoAlt: "drums Logo",
         title: "Talking Books to Facilitate Behaviour Change in Rural Communities in Ghana",
         date: "March 19, 2021",
@@ -66,7 +98,7 @@ const mediaItems: MediaItem[] = [
         link: "https://www.comminit.com/polio/content/talking-books-facilitate-behaviour-change-rural-communities-ghana"
     },
     {
-        logo: "assets/press/08.png",
+        logo: landseaLogo,
         logoAlt: "Landsea Logo",
         title: "Spreading the Word: Landesa and Amplio leverage technology for legal empowerment",
         date: "November 19, 2020",
@@ -74,15 +106,15 @@ const mediaItems: MediaItem[] = [
         link: "https://www.youtube.com/watch?v=L9w4OwD7l8A"
     },
     {
-        logo: "assets/press/09.png",
+        logo: pulseLogo,
         logoAlt: "Pulse Logo",
         title: "S2 E3: Remote Access: Delivering Education to Rural Communities",
         date: "october 22, 2020",
-        description: "Delivering education to remote communities is a challenge that has become more pronounced during COVID-19. Allana Nelson chats with Amplio’s Toffic Dapilaah and Lisa Zook about initiatives that provide educational information to rural communities — and how they’re doing it in safe, socially distanced ways.",
+        description: "Delivering education to remote communities is a challenge that has become more pronounced during COVID-19. Allana Nelson chats with Amplio's Toffic Dapilaah and Lisa Zook about initiatives that provide educational information to rural communities — and how they're doing it in safe, socially distanced ways.",
         link: "https://pulseontheprinciples.libsyn.com/s2e3"
     },
     {
-        logo: "assets/press/10.png",
+        logo: internationalFoodLogo,
         logoAlt: "International Food Logo",
         title: "How to ensure effective government responses as COVID-19 spreads to rural areas",
         date: "June 22, 2020",
@@ -90,15 +122,15 @@ const mediaItems: MediaItem[] = [
         link: "https://www.ifpri.org/blog/how-ensure-effective-government-responses-covid-19-spreads-rural-areas"
     },
     {
-        logo: "assets/press/11.jpg",
+        logo: forbesLogo,
         logoAlt: "Forbes Logo",
         title: "Lessons In Design And Scale For Social Impact Organizations",
         date: "June 2, 2020",
-        description: "Forbes Nonprofit Council member James da Costa writes about the importance of user-centered design and scale—and the lessons learned—as social impact organizations build solutions and programs in today’s COVID-19 crisis.",
+        description: "Forbes Nonprofit Council member James da Costa writes about the importance of user-centered design and scale—and the lessons learned—as social impact organizations build solutions and programs in today's COVID-19 crisis.",
         link: "https://www.forbes.com/sites/forbesnonprofitcouncil/2020/06/02/lessons-in-design-and-scale-for-social-impact-organizations/?sh=645110178e1f"
     },
     {
-        logo: "assets/press/12.png",
+        logo: citiLogo,
         logoAlt: "Citi Logo",
         title: "Preventing CSM & COVID-19",
         date: "April 21, 2020",
@@ -106,23 +138,23 @@ const mediaItems: MediaItem[] = [
         link: "https://www.youtube.com/watch?v=tpkQbThrwiM&t=2s"
     },
     {
-        logo: "assets/press/13.png",
+        logo: worldBankLogo,
         logoAlt: "world bank Logo",
         title: "Inclusive disruption: harnessing the social power of technology",
         date: "March 26, 2020",
-        description: "In this article, the World Banks’ Social Development Global Practice team shares their findings about the use of disruptive technologies to reach and help the world’s poorest and most marginalized people.",
+        description: "In this article, the World Banks' Social Development Global Practice team shares their findings about the use of disruptive technologies to reach and help the world's poorest and most marginalized people.",
         link: "https://blogs.worldbank.org/governance/inclusive-disruption-harnessing-social-power-technology"
     },
     {
-        logo: "assets/press/14.jpeg",
+        logo: develLogo,
         logoAlt: "devel Logo",
         title: "Cliff Schmidt – Developer to CEO of Tech Nonprofit in Education ",
         date: "January 20, 2020",
-        description: "Grant Ingersoll interviews founder and executive director Cliff Schmidt about his inspiration for starting Amplio, why he joined the navy, what he loves about open source technology, and how to get funding when you’re a tech nonprofit.",
+        description: "Grant Ingersoll interviews founder and executive director Cliff Schmidt about his inspiration for starting Amplio, why he joined the navy, what he loves about open source technology, and how to get funding when you're a tech nonprofit.",
         link: "https://develomentor.com/2020/01/20/cliff-schmidt-developer-to-ceo-of-tech-nonprofit-in-education-24/"
     },
     {
-        logo: "assets/press/15.png",
+        logo: ktnNewsLogo,
         logoAlt: "ktn news Logo",
         title: "Rangers to the Rescue: Kalama WIldlife Rangers education women on benefits of delivering in hospitals",
         date: "November 16, 2019",
@@ -130,39 +162,39 @@ const mediaItems: MediaItem[] = [
         link: "https://www.youtube.com/watch?v=YptREBGw1xY"
     },
     {
-        logo: "assets/press/16.png",
+        logo: millerLogo,
         logoAlt: "Miller Logo",
         title: "Talking Book, A New Voice for Isolated Communities",
         date: "October 9, 2019",
-        description: "In today’s internet-connected, mobilized world, it is easy to forget that over 750 million adults remain illiterate, and 800 million live on less than a dollar a day. The Miller Center profiles the Talking Book and Amplio founder, Cliff Schmidt, who participates in the GSBI accelerator program for social entrepreneurship.",
+        description: "In today's internet-connected, mobilized world, it is easy to forget that over 750 million adults remain illiterate, and 800 million live on less than a dollar a day. The Miller Center profiles the Talking Book and Amplio founder, Cliff Schmidt, who participates in the GSBI accelerator program for social entrepreneurship.",
         link: "https://www.scu-social-entrepreneurship.org/case-studies-1/2017/4/3/talking-book-a-new-voice-for-isolated-communities"
     },
     {
-        logo: "assets/press/17.jpg",
+        logo: forbesLogo2,
         logoAlt: "Forbes Logo",
         title: "Little Bits For Big Challenges: Digital Technologies For Social Good",
         date: "september 23, 2018",
-        description: "Arm is the world’s leading semiconductor and software design company. Lorin Fries interviews Dominic Vergine, Head of Sustainability and Corporate Responsibility, about Arm’s 2030 Vision to create technology partnerships for the Sustainable Development Goals—and how Talking Books fit in.",
+        description: "Arm is the world's leading semiconductor and software design company. Lorin Fries interviews Dominic Vergine, Head of Sustainability and Corporate Responsibility, about Arm's 2030 Vision to create technology partnerships for the Sustainable Development Goals—and how Talking Books fit in.",
         link: "https://www.forbes.com/sites/lorinfries/2018/09/23/little-bits-for-big-challenges-digital-technologies-for-social-good/#46d2fc496138"
     },
     {
-        logo: "assets/press/18.png",
+        logo: medaLogo,
         logoAlt: "Meda Logo",
         title: "Teaching With Talking Books ",
         date: "July, 2018",
-        description: "In Ghana, MEDA’s Greater Rural Opportunities for Women (GROW) project has made great use of Talking Books. Devices were distributed to over 1,000 lead women farmers to share with the village savings and loan associations.",
+        description: "In Ghana, MEDA's Greater Rural Opportunities for Women (GROW) project has made great use of Talking Books. Devices were distributed to over 1,000 lead women farmers to share with the village savings and loan associations.",
         link: "https://www.amplio-network.org//wp-content/uploads/2018/09/Amplio-in-Agriculture.pdf"
     },
     {
-        logo: "assets/press/19.png",
+        logo: ituLogo,
         logoAlt: "ITU Logo",
         title: "Interview with Cliff Schmidt, Amplio founder and executive director ",
         date: "June 14, 2017",
-        description: "Journalist Charlotte Kan interviews Cliff Schmidt, Amplio’s executive director, during the World Summit on the Information Society (WSIS) Forum in Geneva. Cliff explains how the Talking Book supports the UN Global Goals and is used for sharing knowledge with people in world’s hardest-to-reach communities.",
+        description: "Journalist Charlotte Kan interviews Cliff Schmidt, Amplio's executive director, during the World Summit on the Information Society (WSIS) Forum in Geneva. Cliff explains how the Talking Book supports the UN Global Goals and is used for sharing knowledge with people in world's hardest-to-reach communities.",
         link: "https://www.youtube.com/watch?v=nd7wQx9FqVg"
     },
     {
-        logo: "assets/press/20.png",
+        logo: pearsonLogo,
         logoAlt: "Pearson Logo",
         title: "UNESCO-Pearson initiative for literacy announces finalists for case studies on inclusive digital solutions ",
         date: "May 22, 2017",
@@ -170,23 +202,23 @@ const mediaItems: MediaItem[] = [
         link: "http://www.unesco.org/new/en/media-services/single-view/news/unesco_pearson_initiatives_case_study_finalists_on_innova/"
     },
     {
-        logo: "assets/press/21.png",
+        logo: humanLogo,
         logoAlt: "Human Logo",
-        title: "How one organization is adapting technology to help world’s poorest ",
+        title: "How one organization is adapting technology to help world's poorest ",
         date: "April 18, 2016",
-        description: "Technology tends to create divides. It doesn’t actually lift up the poorest of the poor. And the reason is because the wealthier, and the more educated, have the most access to technology. Amplio uses clever technology and user feedback to maintain a genuine understanding of its target population’s needs.",
+        description: "Technology tends to create divides. It doesn't actually lift up the poorest of the poor. And the reason is because the wealthier, and the more educated, have the most access to technology. Amplio uses clever technology and user feedback to maintain a genuine understanding of its target population's needs.",
         link: "https://www.humanosphere.org/social-business/2016/04/literacy-bridge-how-one-organization-is-adapting-technology-to-help-worlds-poorest/"
     },
     {
-        logo: "assets/press/17.jpg",
+        logo: forbesLogo2,
         logoAlt: "Forbes Logo",
         title: "Ghana: Simple Technology Offers Rural Communities A Route Out Of Fragility ",
         date: "August 12, 2015",
-        description: "Peter Grant writes about how the challenges of distance and infrastructure in Ghana’s Upper West region mean that many people remain economically isolated, making a living through smallholder agriculture and small-scale trading. The Talking Book aims to fill the gap left by the absence of government services.",
+        description: "Peter Grant writes about how the challenges of distance and infrastructure in Ghana's Upper West region mean that many people remain economically isolated, making a living through smallholder agriculture and small-scale trading. The Talking Book aims to fill the gap left by the absence of government services.",
         link: "https://www.forbes.com/sites/peteguest/2015/08/12/ghana-simple-technology-offers-rural-communities-a-route-out-of-fragility/?sh=552cd2ca4960"
     },
     {
-        logo: "assets/press/23.png",
+        logo: independentLogo,
         logoAlt: "Independent Logo",
         title: "A soap opera is changing women's lives in Ghana with information about family planning",
         date: "August 2, 2015",
@@ -194,7 +226,7 @@ const mediaItems: MediaItem[] = [
         link: "https://www.independent.co.uk/news/world/africa/a-soap-opera-is-changing-womens-lives-in-ghana-with-information-about-family-planning-and-farming-10432653.html"
     },
     {
-        logo: "assets/press/24.png",
+        logo: biztecLogo,
         logoAlt: "Biztec Logo",
         title: "Literacy Bridge, UNICEF, ARM Unite on Talking Books project in Ghana",
         date: "November 24, 2014",
@@ -202,7 +234,7 @@ const mediaItems: MediaItem[] = [
         link: "http://www.biztechafrica.com/article/literacy-bridge-unicef-arm-unite-talking-books-pro/9228/"
     },
     {
-        logo: "assets/press/25.png",
+        logo: geekLogo,
         logoAlt: "Geek Logo",
         title: "Literacy Bridge partners with UN to provide talking audiobooks for farmers, mothers in Ghana",
         date: "November 20, 2014",
@@ -210,15 +242,15 @@ const mediaItems: MediaItem[] = [
         link: "https://www.geekwire.com/2014/literacy-bridge-partners-un-provide-talking-audiobooks-farmers-mothers-ghana/"
     },
     {
-        logo: "assets/press/26.png",
+        logo: bbcLogo,
         logoAlt: "BBC Logo",
-        title: "Talking Book trial to help the “poorest of the poor” in Ghana ",
+        title: `Talking Book trial to help the "poorest of the poor" in Ghana `,
         date: "November 20, 2014",
         description: "Hundreds of handheld audio computers are to be given to some of Ghana's poorest communities to help spread potentially life-saving information. The Talking Books will let families play audio files as well as make their own recordings, which can be shared with others or used to give feedback.",
         link: "https://www.bbc.com/news/technology-30127578"
     },
     {
-        logo: "assets/press/27.png",
+        logo: pbsLogo,
         logoAlt: "PBS Logo",
         title: "Literacy Bridge Uses Talking Books to Spread the Word in Ghana",
         date: "July 23, 2013",
@@ -226,7 +258,7 @@ const mediaItems: MediaItem[] = [
         link: "https://www.pbs.org/newshour/world/literacy-bridge"
     },
     {
-        logo: "assets/press/28.png",
+        logo: piLogo,
         logoAlt: "PI Logo",
         title: "Ex-Microsoft worker creates Talking Book to teach literacy",
         date: "September 7, 2008",
@@ -241,7 +273,7 @@ const rows = Array.from({ length: Math.ceil(mediaItems.length / itemsPerRow) }, 
 );
 ---
 
-<section class="bg-white mt-12 py-16">
+<section class="bg-white pb-8">
     <div class="bg-[#475CAA] text-center text-white mx-auto py-8">
         <h1 class="text-4xl font-bold text-white mb-4">Press & Media</h1>
         <p class="text-xl text-white">For press inquiries, contact communications@amplio.org.</p>
@@ -249,26 +281,28 @@ const rows = Array.from({ length: Math.ceil(mediaItems.length / itemsPerRow) }, 
 
     <div class="mt-10 container mx-auto px-4 lg:px-52">
         {rows.map((row, rowIndex) => (
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-16">
                 {row.map((item) => (
-                    <div class="flex flex-col gap-4">
-                        <a href={item.link} target="_blank" rel="noopener noreferrer" class="flex justify-center">
-                            <img 
+                    <div class="flex flex-col gap-3 sm:gap-4 p-3 sm:p-4 border border-gray-100 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <a href={item.link} target="_blank" rel="noopener noreferrer" class="flex justify-center items-center h-16">
+                            <Image 
                                 src={item.logo} 
                                 alt={item.logoAlt} 
-                                class="h-12 object-contain hover:opacity-80 transition-opacity"
+                                width={120}
+                                height={48}
+                                class="max-h-12 w-auto object-contain hover:opacity-80 transition-opacity"
                             />
                         </a>
                         <a 
                             href={item.link} 
-                            class="text-lg font-semibold text-gray-900 hover:text-blue-600 underline"
+                            class="text-base sm:text-lg font-semibold text-gray-900 hover:text-blue-600 underline line-clamp-3"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
                             {item.title}
                         </a>
-                        <p class="text-gray-600">{item.date}</p>
-                        <p class="text-gray-700 leading-relaxed">
+                        <p class="text-sm sm:text-base text-gray-600">{item.date}</p>
+                        <p class="text-sm sm:text-base text-gray-700 leading-relaxed line-clamp-4 sm:line-clamp-none">
                             {item.description}
                         </p>
                     </div>
@@ -281,5 +315,21 @@ const rows = Array.from({ length: Math.ceil(mediaItems.length / itemsPerRow) }, 
 <style>
     .container {
         max-width: 1440px;
+    }
+    
+    @media (max-width: 640px) {
+        .line-clamp-4 {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     }
 </style>

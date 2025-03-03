@@ -1,114 +1,129 @@
-
 ---
+import { Image } from 'astro:assets';
+
+import talkingBookBrochure from '../../assets/guides/01.png';
+import userInterfaceGuide from '../../assets/guides/02.png';
+import mapAndMatch from '../../assets/guides/06.png';
+import unescoGuide from '../../assets/guides/04.png';
+import principlesForDigitalDevelopment from '../../assets/guides/05.jpeg';
+import claToolkit from '../../assets/guides/06.jpg';
+import genderTransformativeApproaches from '../../assets/guides/07.png';
+
 interface CaseStudy {
-    title: string;
-    description: string;
-    imageUrl: string;
-    mainUrl: string;
-    readMoreLink: string;
-  }
+  title: string;
+  description: string;
+  image: ImageMetadata;
+  mainUrl: string;
+  readMoreLink: string;
+}
+
 const caseStudies: CaseStudy[] = [
   {
     title: "AMPLIO TALKING BOOK BROCHURE",
     description: "The Amplio Talking Book is a battery-powered audio device designed for sharing knowledge with low-literate users in rural, remote, and hard-to-reach areas. Learn about our technology and basic service package.",
-    imageUrl: "/assets/guides/01.png",
+    image: talkingBookBrochure,
     mainUrl: "https://www.amplio.org/_files/ugd/5e68ac_fee8dde2321b4b708fbe2de982ab1882.pdf",
     readMoreLink: "Read Amplio Talking Book Brochure"
   },
   {
     title: "TALKING BOOK USER INTERFACE: VISUAL ICONS GUIDE ",
     description: "This one-page user guide provides an overview of the Talking Book visual interface — the embossed visual icons that are used to turn the device on/off, select a message or playlist, record user feedback, and more.",
-    imageUrl: "/assets/guides/02.png",
+    image: userInterfaceGuide,
     mainUrl: "https://www.amplio.org/_files/ugd/b4c77e_609585f5dd9e455db6ee9ae26e51432f.pdf",
     readMoreLink: "Read Talking Book User Interface Guide"
   },
   {
     title: "MAP & MATCH: DIGITAL HEALTH SYSTEMS TO SUPPORT PANDEMIC RESPONSE IN GHANA",
     description: "The USAID-funded Map & Match project helps the global digital health community leverage and adapt existing digital health tools for COVID-19 response. The Amplio Talking Book is included in the Ghana brief.",
-    imageUrl: "/assets/guides/06.png",
+    image: mapAndMatch,
     mainUrl:"https://www.amplio.org/_files/ugd/b4c77e_86d3b692526a4090979ba560d57e3088.pdf",
     readMoreLink: "Read Map & Match Ghana Country Brief"
   },
   {
     title: "UNESCO DIGITAL DESIGN GUIDE",
     description: "The Amplio Talking Book is featured in UNESCO's guide to designing inclusive digital solutions that low-literate adults and youth can use to gain new skills and knowledge to improve their livelihoods and lives.",
-    imageUrl: "/assets/guides/04.png",
+    image: unescoGuide,
     mainUrl: "https://www.amplio.org/_files/ugd/b4c77e_1022a27b8b1648b9ae0e005a68bced3f.pdf",
     readMoreLink: "Read UNESCO Digital Design Guide "
   },
   {
     title: "PRINCIPLES FOR DIGITAL DEVELOPMENT",
     description: "The Principles for Digital Development are a set of guidelines to help digital development practitioners integrate best practices into technology-enabled programs. PDD's website offers tools, guides, and training courses.",
-    imageUrl: "/assets/guides/05.jpeg",
+    image: principlesForDigitalDevelopment,
     mainUrl: "https://digitalprinciples.org/principles/",
     readMoreLink: "See the Principles for Digital Development "
   },
   {
     title: "CLA TOOLKIT​",
     description: "Yes! Amplio uses Collaborating, Learning, and Adapting (CLA) approaches — a set of practices that help USAID and its partners improve development effectiveness. The USAID Learning Lab has a comprehensive toolkit",
-    imageUrl: "/assets/guides/06.jpg",
+    image: claToolkit,
     mainUrl:"https://usaidlearninglab.org/cla",
     readMoreLink: "Check out USAID's CLA Toolkit"
   },
   {
     title: "GENDER TRANSFORMATIVE APPROACHES: 15 GOOD PRACTICES​",
     description: "The Amplio Talking Book is included as a technology for program scaling and adaption/replication in this Compendium produced by the Joint Program on Gender Transformative Approaches for Food Security and Nutrition.",
-    imageUrl: "/assets/guides/07.png",
+    image: genderTransformativeApproaches,
     mainUrl: "https://openknowledge.fao.org/handle/20.500.14283/cb1331en",
     readMoreLink: "Read Gender Transformative Approaches: A Compendium"
   }
 ];
 ---
 
-<section class="bg-white mt-12 py-16">
-    <div class="bg-[#475CAA] text-center text-white mx-auto py-8">
-        <h1 class="text-4xl font-bold text-white mb-4">Guides & Brochures</h1>
-        <p class="max-w-lg mx-auto text-md text-white">Learn about Amplio technology, guidelines for digital development, gender transformative approaches, and more.</p>
-    </div>
+<section class="bg-white pb-8">
+  <div class="bg-[#475CAA] text-center text-white mx-auto py-8">
+    <h1 class="text-4xl font-bold text-white mb-4">Guides & Brochures</h1>
+    <p class="max-w-lg mx-auto text-md text-white px-4">Learn about Amplio technology, guidelines for digital development, gender transformative approaches, and more.</p>
+  </div>
 
-    <div class = "mt-10 px-52 mx-auto">
-    <div class="grid  gap-8 md:gap-12">
+  <div class="mt-10 px-4 md:px-8 lg:px-20 xl:px-52 mx-auto">
+    <div class="grid gap-8 md:gap-12">
       {caseStudies.map((study) => (
         <div class="overflow-hidden border-b border-b-cyan-400">
           <div class="flex flex-col items-center md:flex-row">
-            <div class="relative p-8">
-              <img
-                src={study.imageUrl}
+            <div class="relative p-4 md:p-8 flex justify-center md:justify-start">
+              <Image
+                src={study.image}
                 alt={study.title}
-                class="w-36 object-fill"
+                width={144}
+                height={180}
+                class="w-32 md:w-36 object-contain"
+                loading="lazy"
               />
             </div>
 
-            <div class="md:w-2/3 p-6 md:p-8">
-              <h3 class="text-xl font-bold text-gray-900 mb-4">
+            <div class="w-full md:w-2/3 p-4 md:p-8">
+              <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-4 text-center md:text-left">
                 {study.title}
               </h3>
-              <p class="text-gray-600 mb-6 leading-relaxed">
+              <p class="text-gray-600 mb-4 md:mb-6 leading-relaxed text-sm md:text-base">
                 {study.description}
               </p>
-              <a
-                href={study.mainUrl}
-                class="text-blue-500 hover:text-blue-600 font-medium inline-flex items-center transition-colors duration-200"
-              >
-                {study.readMoreLink}
-                <svg
-                  class="w-4 h-4 ml-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <div class="text-center md:text-left">
+                <a
+                  href={study.mainUrl}
+                  class="text-blue-500 hover:text-blue-600 font-medium inline-flex items-center transition-colors duration-200"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </a>
+                  {study.readMoreLink}
+                  <svg
+                    class="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       ))}
     </div>
-    </div>
+  </div>
 </section>
